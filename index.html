@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#101311">
   <title>Chemica — A Full-On Chemistry Site</title>
   <link rel="icon" type="image/png" href="./logo.png">
-  <style>
+  <style id="siteStyles">
     :root {
       color-scheme: dark;
       --ink: #f3f2e9;
@@ -14,12 +14,36 @@
       --line: rgba(235, 239, 224, .11);
       --surface: #171b18;
       --surface-raised: #1c211d;
-      --page: #101311;
+      --page: var(--theme-page);
       --accent: #c9ef77;
       --accent-ink: #20271a;
+      --theme-page: #101311;
+      --ambient-glow: rgba(116, 145, 84, .13);
       --tile-text: #f7f5eb;
       --tile-shadow: 0 8px 18px rgba(0, 0, 0, .12);
       --radius: 18px;
+      --motion-ease: cubic-bezier(.22, .75, .22, 1);
+      --text-scale: 1;
+      --element-scale: 1;
+      --model-scale: 1;
+    }
+
+    :root[data-theme="ocean"] {
+      --theme-page: #10151b;
+      --accent: #7ddcff;
+      --accent-ink: #10212a;
+      --surface: #171d24;
+      --surface-raised: #1c242d;
+      --ambient-glow: rgba(76, 151, 190, .16);
+    }
+
+    :root[data-theme="violet"] {
+      --theme-page: #15111a;
+      --accent: #d3a6ff;
+      --accent-ink: #291a36;
+      --surface: #1c1722;
+      --surface-raised: #241d2c;
+      --ambient-glow: rgba(151, 103, 194, .16);
     }
 
     * { box-sizing: border-box; }
@@ -30,7 +54,7 @@
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(ellipse at 74% -18%, rgba(116, 145, 84, .13), transparent 38rem),
+        radial-gradient(ellipse at 74% -18%, var(--ambient-glow), transparent 38rem),
         var(--page);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       letter-spacing: -.015em;
@@ -101,7 +125,7 @@
       width: min(285px, 32vw); height: 40px; padding: 0 35px;
       border: 1px solid rgba(235, 239, 224, .09); border-radius: 10px;
       outline: none; color: var(--ink); background: #101411; font-size: 12px;
-      transition: border-color .2s, box-shadow .2s;
+      transition: border-color .24s var(--motion-ease), box-shadow .24s var(--motion-ease);
     }
     .search:focus { border-color: rgba(201, 239, 119, .55); box-shadow: 0 0 0 3px rgba(201, 239, 119, .08); }
     .search::placeholder { color: #777f76; }
@@ -112,7 +136,7 @@
       color: #d7d9d0; background: #202520; font-size: 11px; cursor: pointer;
     }
     .filter-select { padding: 0 30px 0 11px; }
-    .clear-button { padding: 0 12px; color: #aeb4a9; transition: background .2s, color .2s; }
+    .clear-button { padding: 0 12px; color: #aeb4a9; transition: background .22s var(--motion-ease), color .22s var(--motion-ease); }
     .clear-button:hover { color: var(--accent); background: #282f28; }
     select option { color: #f3f2e9; background: #202520; }
     .result-count { min-width: 60px; color: var(--muted); font-size: 10px; text-align: right; }
@@ -127,15 +151,15 @@
       scrollbar-width: thin;
     }
     .table-inner { min-width: 970px; }
-    .group-labels, .periodic-grid { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 5px; }
+    .group-labels, .periodic-grid { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: calc(5px * var(--element-scale)); }
     .group-labels { margin-bottom: 6px; }
     .group-label { color: #687168; font-size: 9px; text-align: center; }
-    .periodic-grid { grid-template-rows: repeat(9, minmax(57px, 1fr)); gap: 5px; }
+    .periodic-grid { grid-template-rows: repeat(9, minmax(calc(57px * var(--element-scale)), 1fr)); }
 
     .element {
       position: relative;
       min-width: 0;
-      min-height: 57px;
+      min-height: calc(57px * var(--element-scale));
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 6px 3px 5px;
       border: 1px solid rgba(255,255,255,.09);
@@ -145,13 +169,13 @@
       box-shadow: var(--tile-shadow);
       text-align: center;
       cursor: pointer;
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, opacity .18s ease;
+      transition: transform .24s var(--motion-ease), box-shadow .24s var(--motion-ease), filter .24s var(--motion-ease), opacity .24s var(--motion-ease);
     }
     .element:hover, .element:focus-visible { z-index: 1; transform: translateY(-3px) scale(1.035); box-shadow: 0 12px 23px rgba(0,0,0,.28); outline: 2px solid rgba(245,248,225,.8); outline-offset: 1px; }
     .element.is-selected { outline: 2px solid var(--accent); outline-offset: 1px; }
     .atomic-number { position: absolute; top: 5px; left: 6px; color: rgba(255,255,255,.68); font-size: 8px; line-height: 1; }
-    .element-symbol { display: block; font-size: clamp(14px, 1.4vw, 19px); line-height: 1.1; font-weight: 710; letter-spacing: -.06em; }
-    .element-name { display: block; max-width: 100%; margin-top: 4px; overflow: hidden; color: rgba(255,255,255,.83); font-size: clamp(7px, .7vw, 9px); line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
+    .element-symbol { display: block; font-size: calc(clamp(14px, 1.4vw, 19px) * var(--element-scale)); line-height: 1.1; font-weight: 710; letter-spacing: -.06em; }
+    .element-name { display: block; max-width: 100%; margin-top: 4px; overflow: hidden; color: rgba(255,255,255,.83); font-size: calc(clamp(7px, .7vw, 9px) * var(--element-scale)); line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
     .element.is-dim { opacity: .14; filter: saturate(.35); }
     .element.is-match { box-shadow: 0 0 0 2px rgba(201,239,119,.75), 0 0 18px rgba(201,239,119,.25); }
     .element.is-hidden { display: none; }
@@ -159,7 +183,7 @@
     .placeholder {
       min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
       border: 1px dashed rgba(215,224,202,.22); border-radius: 10px; color: #a4ac9f;
-      background: rgba(180, 194, 164, .035); text-align: center; cursor: pointer; transition: background .2s, border-color .2s;
+      background: rgba(180, 194, 164, .035); text-align: center; cursor: pointer; transition: background .22s var(--motion-ease), border-color .22s var(--motion-ease);
     }
     .placeholder:hover { border-color: var(--accent); background: rgba(201,239,119,.08); }
     .placeholder b { font-size: 10px; font-weight: 650; }
@@ -203,8 +227,8 @@
     .molecule-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 17px; border-bottom: 1px solid var(--line); }
     .molecule-card-head h3 { margin: 0; font-size: 12px; font-weight: 680; }
     .molecule-card-head span { color: #838d84; font-size: 9px; }
-    .molecule-model { min-height: 350px; display: grid; place-items: center; padding: 10px 18px; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); }
-    .molecule-svg { width: min(100%, 540px); max-height: 350px; overflow: visible; }
+    .molecule-model { min-height: calc(350px * var(--model-scale)); display: grid; place-items: center; padding: 10px 18px; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); }
+    .molecule-svg { width: min(100%, calc(540px * var(--model-scale))); max-height: calc(350px * var(--model-scale)); overflow: visible; }
     .molecule-svg text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; dominant-baseline: middle; text-anchor: middle; }
     .molecule-svg .atom-label { fill: #f0eee8; font-size: 17px; font-weight: 700; }
     .molecule-svg .atom-small { fill: #86919b; font-size: 11px; }
@@ -230,8 +254,8 @@
     .dipole-scale-line { position: relative; width: 80px; height: 2px; background: linear-gradient(90deg,#ffcf70,#73c8ff); }
     .dipole-scale-line::after { content: ""; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: #73c8ff; }
     .diagram-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 14px; }
-    .diagram-box { min-height: 280px; display: grid; place-items: center; padding: 14px; }
-    .diagram-box .molecule-svg { max-height: 255px; }
+    .diagram-box { min-height: calc(280px * var(--model-scale)); display: grid; place-items: center; padding: 14px; }
+    .diagram-box .molecule-svg { max-height: calc(255px * var(--model-scale)); }
     .diagram-legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 17px 14px; color: #869088; font-size: 9px; }
     .diagram-legend span { display: inline-flex; align-items: center; gap: 5px; }
     .legend-mark { width: 8px; height: 8px; border-radius: 50%; background: var(--mark); }
@@ -262,7 +286,7 @@
     .builder-reset:hover { color: var(--accent); background: rgba(201,239,119,.08); }
     .builder-result { min-width: 0; }
     .builder-result-overview { margin-bottom: 0; }
-    .builder-model { min-height: 315px; }
+    .builder-model { min-height: calc(315px * var(--model-scale)); }
     .builder-note { margin: 12px 2px 0; color: #7f8980; font-size: 10px; line-height: 1.65; }
     .builder-diagrams { margin-top: 14px; }
     .builder-intro { margin-bottom: 25px; }
@@ -320,7 +344,7 @@
     .lab-progress-label { color: #929b91; font-size: 9px; }
     .lab-progress { width: 100%; height: 6px; margin: 12px 0 13px; overflow: hidden; border: 0; border-radius: 999px; background: #282e29; accent-color: var(--accent); }
     .lab-progress::-webkit-progress-bar { border-radius: 999px; background: #282e29; }
-    .lab-progress::-webkit-progress-value { border-radius: 999px; background: var(--accent); transition: width .2s ease; }
+    .lab-progress::-webkit-progress-value { border-radius: 999px; background: var(--accent); transition: width .3s var(--motion-ease); }
     .lab-progress::-moz-progress-bar { border-radius: 999px; background: var(--accent); }
     .lab-check-list { display: grid; gap: 8px; }
     .lab-check-item { display: flex; align-items: flex-start; gap: 9px; padding: 9px 10px; border: 1px solid rgba(235,239,224,.07); border-radius: 9px; color: #c0c8be; background: rgba(255,255,255,.02); font-size: 10px; line-height: 1.5; cursor: pointer; }
@@ -339,7 +363,7 @@
     .lab-material-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
     .lab-material-card { min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
     .lab-material-card[hidden] { display: none; }
-    .lab-material-card[role="button"] { cursor: pointer; text-align: left; font: inherit; color: inherit; transition: border-color .18s ease, transform .18s ease, background .18s ease; }
+    .lab-material-card[role="button"] { cursor: pointer; text-align: left; font: inherit; color: inherit; transition: border-color .24s var(--motion-ease), transform .24s var(--motion-ease), background .24s var(--motion-ease); }
     .lab-material-card[role="button"]:hover { border-color: rgba(201,239,119,.32); background: #1b211c; transform: translateY(-2px); }
     .lab-material-card[role="button"]:focus-visible { outline: 2px solid rgba(201,239,119,.75); outline-offset: 3px; }
     .lab-material-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
@@ -367,8 +391,8 @@
     .bond-controls .builder-field { margin-top: 14px; }
     .bond-result { min-width: 0; }
     .bond-result .molecule-overview { min-height: 132px; }
-    .bond-result-visual { min-height: 255px; display: grid; place-items: center; padding: 16px; }
-    .bond-visual { width: min(100%,560px); height: auto; }
+    .bond-result-visual { min-height: calc(255px * var(--model-scale)); display: grid; place-items: center; padding: 16px; }
+    .bond-visual { width: min(100%,calc(560px * var(--model-scale))); height: auto; }
     .bond-visual text { font-family: Inter,ui-sans-serif,system-ui,sans-serif; text-anchor: middle; dominant-baseline: middle; }
     .bond-visual .bond-atom { fill: #202a25; stroke: #a9d1c0; stroke-width: 2; }
     .bond-visual .bond-atom-label { fill: #f0eee8; font-size: 18px; font-weight: 700; }
@@ -418,12 +442,31 @@
     .update-entry h2 { margin: 7px 0 5px; font-size: 14px; }
     .update-entry p { margin: 0; color: #9da69c; font-size: 10px; line-height: 1.65; }
     .update-badge { display: inline-block; margin-left: 6px; padding: 3px 6px; border: 1px solid rgba(201,239,119,.17); border-radius: 999px; color: #c9ef77; font-size: 8px; vertical-align: 2px; }
+    .feedback-card { max-width: 720px; padding: clamp(20px,4vw,32px); }
+    .feedback-card h2 { margin: 0; font-size: 18px; letter-spacing: -.03em; }
+    .feedback-card p { margin: 9px 0 18px; color: #9da69c; font-size: 11px; line-height: 1.7; }
+    .feedback-contact { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 0 16px; border: 0; border-radius: 10px; color: var(--accent-ink); background: var(--accent); font-size: 11px; font-weight: 740; text-decoration: none; transition: filter .22s var(--motion-ease), transform .22s var(--motion-ease); }
+    .feedback-contact:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .feedback-contact:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .settings-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; max-width: 980px; }
+    .settings-card { min-width: 0; padding: 18px; }
+    .settings-card h2 { margin: 0 0 14px; font-size: 13px; }
+    .settings-field { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 5px 14px; padding: 12px 0; border-top: 1px solid rgba(235,239,224,.07); }
+    .settings-field label { color: #d7ddd4; font-size: 10px; font-weight: 650; }
+    .settings-field output { color: var(--accent); font-size: 10px; font-variant-numeric: tabular-nums; }
+    .settings-field input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+    .settings-field select { min-width: 145px; height: 36px; padding: 0 9px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: #202520; font-size: 10px; }
+    .settings-field input[type="color"] { width: 44px; height: 34px; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: #202520; cursor: pointer; }
+    .settings-field :is(input, select):focus-visible, .settings-reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .settings-description { grid-column: 1 / -1; margin: 0; color: #879187; font-size: 9px; line-height: 1.55; }
+    .settings-reset { margin-top: 14px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 9px; color: #c1c8bb; background: rgba(255,255,255,.035); font-size: 10px; cursor: pointer; }
+    .settings-reset:hover { color: var(--accent); border-color: var(--accent); }
     .learning-summary { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; margin-bottom: 15px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(130deg,rgba(33,43,38,.96),rgba(24,28,34,.96)); }
     .learning-summary h2 { margin: 0; font-size: 15px; }
     .learning-summary p { margin: 6px 0 0; color: #9da69c; font-size: 10px; line-height: 1.6; }
     .learning-total-xp { color: #ffcf70; font-size: 12px; font-weight: 720; white-space: nowrap; }
     .learning-progress-track { height: 7px; margin-top: 12px; overflow: hidden; border-radius: 999px; background: #29302b; }
-    .learning-progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#9dc95b,#d8f48c); transition: width .25s ease; }
+    .learning-progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#9dc95b,#d8f48c); transition: width .36s var(--motion-ease); }
     .learning-columns { display: grid; grid-template-columns: minmax(0,1fr) minmax(230px,.36fr); align-items: start; gap: 15px; }
     .learning-path-card, .learning-aside-card { padding: 17px; }
     .learning-section-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
@@ -453,12 +496,12 @@
     .learning-quiz-progress { flex: 1; min-width: 0; }
     .learning-quiz-progress-label { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 6px; color: #9da69c; font-size: 9px; }
     .learning-quiz-meter { height: 7px; overflow: hidden; border-radius: 99px; background: #29302b; }
-    .learning-quiz-meter-fill { width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .2s ease; }
+    .learning-quiz-meter-fill { width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .3s var(--motion-ease); }
     .learning-question-card { padding: clamp(18px,4vw,30px); border: 1px solid var(--line); border-radius: 17px; background: linear-gradient(145deg,rgba(28,34,29,.98),rgba(21,26,23,.98)); }
     .learning-question-kicker { color: #c9ef77; font-size: 9px; font-weight: 740; letter-spacing: .12em; text-transform: uppercase; }
     .learning-question { margin: 10px 0 20px; font-size: clamp(21px,3vw,30px); font-weight: 610; line-height: 1.25; letter-spacing: -.05em; }
     .learning-choices { display: grid; gap: 9px; }
-    .learning-choice { width: 100%; padding: 13px 15px; border: 1px solid rgba(235,239,224,.12); border-radius: 11px; color: #d7ddd4; background: rgba(255,255,255,.025); text-align: left; font-size: 11px; line-height: 1.5; cursor: pointer; transition: border-color .15s,background .15s,transform .15s; }
+    .learning-choice { width: 100%; padding: 13px 15px; border: 1px solid rgba(235,239,224,.12); border-radius: 11px; color: #d7ddd4; background: rgba(255,255,255,.025); text-align: left; font-size: 11px; line-height: 1.5; cursor: pointer; transition: border-color .22s var(--motion-ease), background .22s var(--motion-ease), transform .22s var(--motion-ease); }
     .learning-choice:hover:not(:disabled) { transform: translateY(-1px); border-color: rgba(201,239,119,.45); background: rgba(201,239,119,.05); }
     .learning-choice[aria-pressed="true"] { border-color: rgba(201,239,119,.62); background: rgba(201,239,119,.08); }
     .learning-choice.correct { border-color: rgba(132,207,144,.7); background: rgba(86,160,103,.13); }
@@ -507,10 +550,10 @@
       background: transparent;
       opacity: 0;
       transform: translateY(12px) scale(.975);
-      transition: opacity 220ms ease, transform 260ms cubic-bezier(.2,.8,.2,1), overlay 260ms allow-discrete, display 260ms allow-discrete;
+      transition: opacity 280ms var(--motion-ease), transform 320ms var(--motion-ease), overlay 320ms allow-discrete, display 320ms allow-discrete;
     }
     .detail-dialog[open] { opacity: 1; transform: translateY(0) scale(1); }
-    .detail-dialog::backdrop { background: rgba(5, 8, 6, 0); backdrop-filter: blur(0); transition: background-color 260ms ease, backdrop-filter 260ms ease, overlay 260ms allow-discrete, display 260ms allow-discrete; }
+    .detail-dialog::backdrop { background: rgba(5, 8, 6, 0); backdrop-filter: blur(0); transition: background-color 320ms var(--motion-ease), backdrop-filter 320ms var(--motion-ease), overlay 320ms allow-discrete, display 320ms allow-discrete; }
     .detail-dialog[open]::backdrop { background: rgba(5, 8, 6, .76); backdrop-filter: blur(5px); }
     @starting-style {
       .detail-dialog[open] { opacity: 0; transform: translateY(12px) scale(.975); }
@@ -534,7 +577,7 @@
     .atom-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
     .atom-heading h3 { margin: 0; font-size: 10px; font-weight: 650; }
     .atom-caption { margin-top: 4px; color: #7e887d; font-size: 8px; }
-    .atom-canvas-wrap { position: relative; height: clamp(400px, 64vh, 620px); margin-top: 5px; overflow: hidden; border-radius: 9px; touch-action: none; cursor: grab; }
+    .atom-canvas-wrap { position: relative; height: clamp(calc(400px * var(--model-scale)), calc(64vh * var(--model-scale)), calc(620px * var(--model-scale))); margin-top: 5px; overflow: hidden; border-radius: 9px; touch-action: none; cursor: grab; }
     .atom-canvas-wrap:active { cursor: grabbing; }
     .atom-canvas-wrap canvas { display: block; width: 100%; height: 100%; }
     .atom-hint { position: absolute; right: 8px; bottom: 7px; color: rgba(181,190,174,.58); font-size: 8px; pointer-events: none; }
@@ -584,7 +627,7 @@
     .atom-heading { z-index: 2; }
     .atom-heading h3 { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
     .atom-caption { font-size: 9px; }
-    .atom-canvas-wrap { flex: 1; width: 100%; min-height: 220px; height: auto; margin: 0; overflow: hidden; }
+    .atom-canvas-wrap { flex: 1; width: 100%; min-height: calc(220px * var(--model-scale)); height: auto; margin: 0; overflow: hidden; }
     .atom-hint { right: 12px; bottom: 12px; font-size: 9px; }
     .atom-legend { z-index: 2; flex-wrap: wrap; gap: 13px 20px; padding: 10px 6px; font-size: 10px; }
     .atom-key { width: 8px; height: 8px; }
@@ -593,7 +636,7 @@
     .atom-stage-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
     .atom-stage-caption { position: absolute; left: 28px; bottom: 23px; color: #69717b; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
     .atom-dock { display: flex; align-items: center; gap: 5px; padding: 4px; border: 1px solid rgba(255,255,255,.07); border-radius: 999px; background: rgba(37,39,47,.88); }
-    .atom-view-button { padding: 9px 14px; border: 0; border-radius: 999px; color: #9399a1; background: transparent; font-size: 10px; font-weight: 600; cursor: pointer; transition: background .18s ease, color .18s ease; }
+    .atom-view-button { padding: 9px 14px; border: 0; border-radius: 999px; color: #9399a1; background: transparent; font-size: 10px; font-weight: 600; cursor: pointer; transition: background .22s var(--motion-ease), color .22s var(--motion-ease); }
     .atom-view-button:hover { color: #f0eee8; }
     .atom-view-button[aria-pressed="true"] { color: #f0eee8; background: rgba(255,255,255,.12); }
     .atom-orbit-count { color: #8f98a2; font-size: 9px; }
@@ -633,7 +676,7 @@
       .detail-info-card { padding: 12px; }
       .detail-particle-stats { margin-top: 6px; padding-top: 8px; }
       .detail-description, .nuclide-note { grid-column: 1 / -1; margin: 0; }
-      .atom-section { min-height: 400px; padding: 18px 16px 14px; }
+      .atom-section { min-height: calc(400px * var(--model-scale)); padding: 18px 16px 14px; }
       .atom-heading > .atom-controls { max-width: min(210px, 55vw); flex-wrap: wrap; justify-content: flex-end; }
       .orbital-picker { flex-basis: 100%; justify-content: flex-end; }
       .orbital-picker select { max-width: 126px; }
@@ -683,16 +726,17 @@
       .atom-orbit-count, .atom-charge-label { font-size: 8px; }
       .diagram-grid { grid-template-columns: 1fr; }
       .lesson-grid { grid-template-columns: 1fr; }
-      .molecule-model { min-height: 270px; }
+      .molecule-model { min-height: calc(270px * var(--model-scale)); }
       .molecule-model-controls .model-hint { flex-basis: 100%; margin-left: 0; }
       .builder-controls { padding: 15px; }
-      .builder-model { min-height: 265px; }
+      .builder-model { min-height: calc(265px * var(--model-scale)); }
       .thermo-card { padding: 15px; }
       .thermo-fields { grid-template-columns: 1fr; }
       .thermo-lesson-grid { grid-template-columns: 1fr; }
       .lab-rule-grid, .lab-material-grid { grid-template-columns: 1fr; }
       .bond-type-grid { grid-template-columns: 1fr; }
       .bond-result .molecule-overview { grid-template-columns: 1fr; }
+      .settings-layout { grid-template-columns: 1fr; }
       .learning-summary { grid-template-columns: 1fr; gap: 9px; }
       .learning-aside { grid-template-columns: 1fr; }
       .learning-unit { grid-template-columns: 43px minmax(0,1fr) auto; gap: 8px; }
@@ -726,9 +770,11 @@
     <button class="page-tab" id="thermoTab" type="button" role="tab" aria-selected="false" aria-controls="thermoPage" tabindex="-1">Thermochemistry</button>
     <button class="page-tab" id="labTab" type="button" role="tab" aria-selected="false" aria-controls="labPage" tabindex="-1">Science lab</button>
     <button class="page-tab" id="bondsTab" type="button" role="tab" aria-selected="false" aria-controls="bondsPage" tabindex="-1">Types of bonds</button>
-    <button class="page-tab" id="learningTab" type="button" role="tab" aria-selected="false" aria-controls="learningPage" tabindex="-1">Learning path</button>
-    <button class="page-tab" id="chemaiTab" type="button" role="tab" aria-selected="false" aria-controls="chemaiPage" tabindex="-1">Chema AI</button>
+    <button class="page-tab" id="learningTab" type="button" role="tab" aria-selected="false" aria-controls="learningPage" tabindex="-1">Learning path (Beta)</button>
+    <button class="page-tab" id="chemaiTab" type="button" role="tab" aria-selected="false" aria-controls="chemaiPage" tabindex="-1">Chema AI (Beta) </button>
     <button class="page-tab" id="updatesTab" type="button" role="tab" aria-selected="false" aria-controls="updatesPage" tabindex="-1">Update log</button>
+    <button class="page-tab" id="feedbackTab" type="button" role="tab" aria-selected="false" aria-controls="feedbackPage" tabindex="-1">Feedback</button>
+    <button class="page-tab" id="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsPage" tabindex="-1">Settings</button>
   </nav>
 
   <main id="periodicPage" role="tabpanel" aria-labelledby="periodicTab">
@@ -1449,8 +1495,73 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Meet Chema AI <span class="update-badge">NEW</span></h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson. The Netlify AI function keeps provider credentials on the server.</p></article>
-      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>A fresh new mark</h2><p>The provided Fe logo is now part of the site header and browser tab.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Meet Chema AI (Beta) <span class="update-badge">NEW</span></h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
+    </section>
+  </main>
+
+  <main id="feedbackPage" role="tabpanel" aria-labelledby="feedbackTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Help make Chemica better</p>
+        <h1>Share your <em>feedback.</em></h1>
+        <p class="intro-copy">Have a suggestion, found something that needs a fix, or just want to say hello? I’d love to hear from you.</p>
+      </div>
+    </section>
+    <section class="molecule-card feedback-card" aria-labelledby="feedbackContactHeading">
+      <h2 id="feedbackContactHeading">Get in touch</h2>
+      <p>Your default email app will open with a message addressed to the site owner. Add your feedback and send it when you’re ready.</p>
+      <a class="feedback-contact" href="mailto:luparker567@gmail.com">Contact the owner</a>
+    </section>
+  </main>
+
+  <main id="settingsPage" role="tabpanel" aria-labelledby="settingsTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Make Chemica yours</p>
+        <h1>Display <em>settings.</em></h1>
+        <p class="intro-copy">Adjust the reading and visualization experience. Your preferences are saved in this browser.</p>
+      </div>
+    </section>
+    <section class="settings-layout" aria-label="Display customization">
+      <article class="molecule-card settings-card">
+        <h2>Size and scale</h2>
+        <div class="settings-field">
+          <label for="textScale">Text &amp; interface size</label>
+          <output id="textScaleValue" for="textScale">100%</output>
+          <input id="textScale" type="range" min="0.85" max="1.25" step="0.05" value="1">
+          <p class="settings-description">Scales the page interface, including text and controls.</p>
+        </div>
+        <div class="settings-field">
+          <label for="elementScale">Periodic table elements</label>
+          <output id="elementScaleValue" for="elementScale">100%</output>
+          <input id="elementScale" type="range" min="0.75" max="1.3" step="0.05" value="1">
+          <p class="settings-description">Changes element tile height, spacing, and labels.</p>
+        </div>
+        <div class="settings-field">
+          <label for="modelScale">Molecular and atom models</label>
+          <output id="modelScaleValue" for="modelScale">100%</output>
+          <input id="modelScale" type="range" min="0.75" max="1.25" step="0.05" value="1">
+          <p class="settings-description">Changes the display area and scale of interactive diagrams and atom models.</p>
+        </div>
+      </article>
+      <article class="molecule-card settings-card">
+        <h2>Colors and theme</h2>
+        <div class="settings-field">
+          <label for="themeSelect">Color theme</label>
+          <select id="themeSelect">
+            <option value="classic">Chemica green</option>
+            <option value="ocean">Ocean blue</option>
+            <option value="violet">Violet</option>
+          </select>
+          <p class="settings-description">Choose the accent and background palette used across the guide.</p>
+        </div>
+        <div class="settings-field">
+          <label for="backgroundColor">Page background</label>
+          <input id="backgroundColor" type="color" value="#101311">
+          <p class="settings-description">Pick a custom page background color. Changing the theme resets it to that theme’s default.</p>
+        </div>
+        <button class="settings-reset" id="resetSettings" type="button">Reset display settings</button>
+      </article>
     </section>
   </main>
 
@@ -1915,6 +2026,8 @@
       ]
     };
     let atomFrame = 0;
+    let atomAnimationTime = 0;
+    let atomLastFrameTime = null;
     let atomPaused = false;
     let atomRotation = {x: -.28, y: .45};
     let atomZoom = 1;
@@ -2186,6 +2299,8 @@
       cancelAnimationFrame(atomFrame);
       if (atomResizeObserver) atomResizeObserver.disconnect();
       atomPaused = false;
+      atomAnimationTime = 0;
+      atomLastFrameTime = null;
       atomRotation = {x: -.28, y: .45};
       atomZoom = 1;
       const random = createRandomGenerator(element.number * 1009 + massNumber * 31 + 7);
@@ -2307,7 +2422,7 @@
 
       const resize = () => {
         const bounds = canvas.getBoundingClientRect();
-        const ratio = window.devicePixelRatio || 1;
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.round(bounds.width * ratio);
         canvas.height = Math.round(bounds.height * ratio);
         context.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -2334,6 +2449,11 @@
           cancelAnimationFrame(atomFrame);
           return;
         }
+        const deltaSeconds = atomLastFrameTime === null
+          ? 0
+          : Math.min(Math.max((time - atomLastFrameTime) / 1000, 0), .05);
+        atomLastFrameTime = time;
+        if (!atomPaused) atomAnimationTime += deltaSeconds;
         const width = canvas.clientWidth, height = canvas.clientHeight;
         context.clearRect(0, 0, width, height);
         const centerX = width / 2, centerY = height / 2;
@@ -2349,7 +2469,7 @@
             context.fill();
           });
           const orbitalScale = Math.min(width * .34, height * .39) * atomZoom;
-          const densityRotation = atomPaused ? atomRotation.y : atomRotation.y + time * .000035;
+          const densityRotation = atomRotation.y + atomAnimationTime * .035;
           const densityCos = Math.cos(densityRotation), densitySin = Math.sin(densityRotation);
           const tiltCos = Math.cos(atomRotation.x), tiltSin = Math.sin(atomRotation.x);
           orbitalPoints.forEach(point => {
@@ -2375,7 +2495,7 @@
           context.arc(centerX, centerY, 15, 0, Math.PI * 2);
           context.fill();
           if (!atomPaused) {
-            atomRotation.y += .00018;
+            atomRotation.y += .12 * deltaSeconds;
             atomFrame = requestAnimationFrame(draw);
           } else {
             atomFrame = 0;
@@ -2507,7 +2627,7 @@
           context.strokeStyle = atomView === "orbitals" ? "rgba(111,208,225,.34)" : "rgba(204,222,189,.20)";
           context.lineWidth = atomView === "orbitals" ? 1.4 : 1;
           context.stroke();
-          const phase = atomPaused ? 0 : time * (.00045 / (1 + shellIndex * .12));
+          const phase = atomAnimationTime * (.45 / (1 + shellIndex * .12));
           for (let electron = 0; electron < count; electron++) {
             const angle = (electron / count) * Math.PI * 2 + phase + shellIndex * .53;
             const x = Math.cos(angle) * radius;
@@ -2547,7 +2667,7 @@
           context.globalAlpha = 1;
         });
         if (!atomPaused) {
-          atomRotation.y += .00035;
+          atomRotation.y += .12 * deltaSeconds;
           atomFrame = requestAnimationFrame(draw);
         } else {
           atomFrame = 0;
@@ -3601,8 +3721,104 @@
       document.getElementById("learningQuestion").tabIndex=-1;
     }
 
+    const displaySettingsKey = "chemica-display-settings-v1";
+    const displayThemes = {
+      classic: {background:"#101311"},
+      ocean: {background:"#10151b"},
+      violet: {background:"#15111a"}
+    };
+    const defaultDisplaySettings = {theme:"classic",background:"#101311",textScale:1,elementScale:1,modelScale:1};
+    let displaySettings = {...defaultDisplaySettings};
+
+    function loadDisplaySettings() {
+      try {
+        const stored = localStorage.getItem(displaySettingsKey);
+        if (!stored) return {...defaultDisplaySettings};
+        const parsed = JSON.parse(stored);
+        if (!parsed || typeof parsed !== "object") throw new Error("Saved display settings are not an object.");
+        const theme = Object.hasOwn(displayThemes, parsed.theme) ? parsed.theme : defaultDisplaySettings.theme;
+        const isInRange = (value,min,max) => Number.isFinite(value)&&value>=min&&value<=max;
+        return {
+          theme,
+          background: typeof parsed.background === "string" && /^#[\da-f]{6}$/i.test(parsed.background)
+            ? parsed.background
+            : displayThemes[theme].background,
+          textScale: isInRange(parsed.textScale,.85,1.25) ? parsed.textScale : 1,
+          elementScale: isInRange(parsed.elementScale,.75,1.3) ? parsed.elementScale : 1,
+          modelScale: isInRange(parsed.modelScale,.75,1.25) ? parsed.modelScale : 1
+        };
+      } catch (error) {
+        console.error("Could not load display settings; using the defaults.",error);
+        return {...defaultDisplaySettings};
+      }
+    }
+
+    function saveDisplaySettings() {
+      try {
+        localStorage.setItem(displaySettingsKey,JSON.stringify(displaySettings));
+      } catch (error) {
+        console.error("Could not save display settings in this browser.",error);
+      }
+    }
+
+    function scaleTextStyles(rules) {
+      for (const rule of rules) {
+        const fontSize = rule.style?.getPropertyValue("font-size");
+        if (fontSize) {
+          const priority = rule.style.getPropertyPriority("font-size");
+          rule.style.setProperty("font-size",`calc(${fontSize} * var(--text-scale))`,priority);
+        }
+        if (rule.cssRules) scaleTextStyles(rule.cssRules);
+      }
+    }
+
+    function applyDisplaySettings() {
+      const root = document.documentElement;
+      root.dataset.theme = displaySettings.theme;
+      root.style.setProperty("--page",displaySettings.background);
+      root.style.setProperty("--text-scale",String(displaySettings.textScale));
+      root.style.setProperty("--element-scale",String(displaySettings.elementScale));
+      root.style.setProperty("--model-scale",String(displaySettings.modelScale));
+      document.querySelector('meta[name="theme-color"]').content = displaySettings.background;
+      document.getElementById("themeSelect").value = displaySettings.theme;
+      document.getElementById("backgroundColor").value = displaySettings.background;
+      for (const [key,label] of [["textScale","textScaleValue"],["elementScale","elementScaleValue"],["modelScale","modelScaleValue"]]) {
+        document.getElementById(key).value = String(displaySettings[key]);
+        document.getElementById(label).textContent = `${Math.round(displaySettings[key]*100)}%`;
+      }
+    }
+
+    function initializeDisplaySettings() {
+      displaySettings = loadDisplaySettings();
+      scaleTextStyles(document.getElementById("siteStyles").sheet.cssRules);
+      applyDisplaySettings();
+      [["textScale","textScale"],["elementScale","elementScale"],["modelScale","modelScale"]].forEach(([id,key])=>{
+        document.getElementById(id).addEventListener("input",event=>{
+          displaySettings[key] = Number(event.currentTarget.value);
+          applyDisplaySettings();
+          saveDisplaySettings();
+        });
+      });
+      document.getElementById("themeSelect").addEventListener("change",event=>{
+        displaySettings.theme = event.currentTarget.value;
+        displaySettings.background = displayThemes[displaySettings.theme].background;
+        applyDisplaySettings();
+        saveDisplaySettings();
+      });
+      document.getElementById("backgroundColor").addEventListener("input",event=>{
+        displaySettings.background = event.currentTarget.value;
+        applyDisplaySettings();
+        saveDisplaySettings();
+      });
+      document.getElementById("resetSettings").addEventListener("click",()=>{
+        displaySettings = {...defaultDisplaySettings};
+        applyDisplaySettings();
+        saveDisplaySettings();
+      });
+    }
+
     function setPageTab(tab) {
-      ["periodic","molecule","builder","thermo","lab","bonds","learning","chemai","updates"].forEach(name=>{
+      ["periodic","molecule","builder","thermo","lab","bonds","learning","chemai","updates","feedback","settings"].forEach(name=>{
         const selected = name===tab;
         document.getElementById(`${name}Tab`).setAttribute("aria-selected",String(selected));
         document.getElementById(`${name}Tab`).tabIndex = selected ? 0 : -1;
@@ -3618,6 +3834,8 @@
     document.getElementById("learningTab").addEventListener("click",()=>setPageTab("learning"));
     document.getElementById("chemaiTab").addEventListener("click",()=>setPageTab("chemai"));
     document.getElementById("updatesTab").addEventListener("click",()=>setPageTab("updates"));
+    document.getElementById("feedbackTab").addEventListener("click",()=>setPageTab("feedback"));
+    document.getElementById("settingsTab").addEventListener("click",()=>setPageTab("settings"));
     document.getElementById("updatesFooterLink").addEventListener("click",event=>{event.preventDefault();setPageTab("updates");document.getElementById("updatesTab").focus();});
     document.querySelector(".page-tabs").addEventListener("keydown",event=>{
       if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
@@ -3628,6 +3846,7 @@
       tabs[next].focus();
       tabs[next].click();
     });
+    initializeDisplaySettings();
     initializeMoleculeTab();
     initializeBuilder();
     initializeThermochemistry();
