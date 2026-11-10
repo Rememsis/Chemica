@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101311">
   <title>Chemica — A Full-On Chemistry Site</title>
-  <meta name="description" content="Explore the periodic table, molecular shapes, chemical bonds, thermochemistry, and interactive chemistry lessons with Chemica.">
+  <meta name="description" content="Explore the periodic table, interactive Bohr models and Lewis diagrams, molecular shapes, chemical bonds, and chemistry lessons with Chemica.">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Chemica">
   <meta property="og:title" content="Chemica — A Full-On Chemistry Site">
-  <meta property="og:description" content="Explore elements, molecular shapes, chemical bonds, thermochemistry, and interactive chemistry lessons.">
+  <meta property="og:description" content="Explore elements, Bohr models, Lewis diagrams, molecular shapes, chemical bonds, thermochemistry, and interactive chemistry lessons.">
   <meta property="og:image" content="./logo.png">
   <meta property="og:image:alt" content="Chemica chemistry guide logo">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Chemica — A Full-On Chemistry Site">
-  <meta name="twitter:description" content="Explore elements, molecular shapes, chemical bonds, thermochemistry, and interactive chemistry lessons.">
+  <meta name="twitter:description" content="Explore elements, Bohr models, Lewis diagrams, molecular shapes, chemical bonds, thermochemistry, and interactive chemistry lessons.">
   <meta name="twitter:image" content="./logo.png">
   <meta name="twitter:image:alt" content="Chemica chemistry guide logo">
   <link rel="icon" type="image/png" href="./logo.png">
@@ -109,12 +109,37 @@
       border: 1px solid var(--line); border-radius: 50%; background: var(--surface);
       cursor: pointer;
     }
-    .page-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; padding: 10px 20px; border-bottom: 1px solid var(--line); background: rgba(15,18,16,.72); }
-    .page-tab { padding: 9px 16px; border: 1px solid transparent; border-radius: 999px; color: #929991; background: transparent; font-size: 11px; font-weight: 650; cursor: pointer; }
-    .page-tab:hover { color: var(--ink); background: rgba(255,255,255,.04); }
-    .page-tab[aria-selected="true"] { border-color: rgba(201,239,119,.23); color: var(--accent); background: rgba(201,239,119,.08); }
+    .nav-toggle {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border: 1px solid var(--line); border-radius: 11px; color: #aeb6ab;
+      background: var(--surface); font-size: 17px; cursor: pointer;
+      transition: color .2s var(--motion-ease), border-color .2s var(--motion-ease), background .2s var(--motion-ease);
+    }
+    .nav-toggle:hover { color: var(--accent); border-color: rgba(201,239,119,.3); background: var(--surface-raised); }
+    .page-tabs {
+      position: fixed; z-index: 20; top: 76px; bottom: 0; left: 0;
+      width: 258px; display: flex; flex-direction: column; align-items: stretch; gap: 18px;
+      padding: 24px 14px; overflow-x: hidden; overflow-y: auto;
+      border-right: 1px solid var(--line); background: rgba(15,18,16,.96);
+      backdrop-filter: blur(18px); transition: width .24s var(--motion-ease), transform .24s var(--motion-ease);
+    }
+    .nav-section { display: grid; gap: 4px; }
+    .nav-section-label { padding: 0 12px 6px; color: #6f796f; font-size: 9px; font-weight: 740; letter-spacing: .14em; text-transform: uppercase; }
+    .page-tab {
+      min-height: 41px; width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 0 12px; border: 1px solid transparent; border-radius: 10px;
+      color: #a0a79e; background: transparent; font-size: 11px; font-weight: 620;
+      text-align: left; white-space: nowrap; cursor: pointer;
+      transition: color .2s var(--motion-ease), border-color .2s var(--motion-ease), background .2s var(--motion-ease);
+    }
+    .page-tab::before { content: attr(data-icon); flex: 0 0 19px; color: #818a80; font-size: 15px; text-align: center; }
+    .page-tab:hover { color: var(--ink); background: rgba(255,255,255,.045); }
+    .page-tab:hover::before { color: var(--accent); }
+    .page-tab[aria-selected="true"] { border-color: rgba(201,239,119,.17); color: var(--accent); background: rgba(201,239,119,.09); }
+    .page-tab[aria-selected="true"]::before { color: var(--accent); }
+    .menu-scrim { display: none; }
 
-    main { width: min(1540px, 100%); margin: 0 auto; padding: 58px clamp(20px, 4vw, 64px) 48px; }
+    main { width: min(1540px, calc(100% - 258px)); margin: 0 auto 0 258px; padding: 58px clamp(20px, 4vw, 64px) 48px; }
     .intro { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 32px; }
     .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 13px; color: var(--accent); font-size: 10px; font-weight: 720; letter-spacing: .17em; text-transform: uppercase; }
     .eyebrow::before { content: ""; width: 19px; height: 1px; background: var(--accent); }
@@ -289,6 +314,37 @@
     .builder-preset { padding: 7px 10px; border: 1px solid rgba(235,239,224,.1); border-radius: 999px; color: #b6beb3; background: rgba(255,255,255,.025); font-size: 10px; cursor: pointer; }
     .builder-preset:hover { border-color: rgba(201,239,119,.45); color: var(--accent); background: rgba(201,239,119,.08); }
     .builder-workbench { display: grid; grid-template-columns: minmax(260px,.72fr) minmax(0,1.28fr); gap: 14px; }
+    .electron-model-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(260px,.68fr); gap: 14px; }
+    .electron-model-stage { min-height: 390px; display: grid; place-items: center; padding: 18px; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); }
+    .electron-model-svg { width: min(100%, 440px); max-height: 430px; overflow: visible; }
+    .electron-model-svg text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; dominant-baseline: middle; text-anchor: middle; }
+    .electron-shell { fill: none; stroke: rgba(165,183,170,.32); stroke-width: 1.4; }
+    .electron-dot { fill: #c9ef77; stroke: #172019; stroke-width: 1; }
+    .electron-nucleus { fill: #29352d; stroke: rgba(201,239,119,.42); stroke-width: 1.5; }
+    .electron-nucleus-label { fill: #f0eee8; font-size: 15px; font-weight: 750; }
+    .electron-shell-label { fill: #788579; font-size: 9px; }
+    .electron-stat-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 16px; }
+    .electron-stat { padding: 12px; border: 1px solid rgba(235,239,224,.08); border-radius: 11px; background: rgba(255,255,255,.025); }
+    .electron-stat-label { color: #899389; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+    .electron-stat-value { margin-top: 5px; color: var(--accent); font-size: 18px; font-weight: 640; }
+    .electron-shell-list { display: grid; gap: 7px; margin-top: 13px; }
+    .electron-shell-row { display: flex; justify-content: space-between; gap: 12px; color: #adb6ac; font-size: 10px; }
+    .electron-shell-row b { color: #d7ddd4; }
+    .electron-model-note { margin: 13px 2px 0; color: #7f8980; font-size: 10px; line-height: 1.65; }
+    .lewis-select { min-width: min(100%,240px); }
+    .lewis-stage { min-height: 350px; display: grid; place-items: center; padding: 16px; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); }
+    .lewis-svg { width: min(100%,560px); max-height: 350px; overflow: visible; }
+    .lewis-svg text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; dominant-baseline: middle; text-anchor: middle; }
+    .lewis-bond { stroke: #ced5d1; stroke-width: 2; stroke-linecap: round; }
+    .lewis-lone-pair { fill: #d6bdff; }
+    .lewis-atom { fill: #f0eee8; font-size: 22px; font-weight: 720; }
+    .lewis-summary { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 14px 17px; border-top: 1px solid var(--line); }
+    .lewis-summary h2 { margin: 0; font-size: 14px; }
+    .lewis-summary p { margin: 5px 0 0; color: #899389; font-size: 10px; line-height: 1.55; }
+    .lewis-total { color: var(--accent); font-size: 11px; font-weight: 650; white-space: nowrap; }
+    .lewis-key { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 17px 14px; color: #869088; font-size: 9px; }
+    .lewis-key span { display: inline-flex; align-items: center; gap: 6px; }
+    .lewis-key-dots { color: #d6bdff; font-weight: 800; letter-spacing: .1em; }
     .builder-controls { padding: 18px; }
     .builder-controls h2 { margin: 0 0 6px; font-size: 15px; letter-spacing: -.03em; }
     .builder-controls > p { margin: 0 0 18px; color: #899389; font-size: 10px; line-height: 1.6; }
@@ -667,9 +723,15 @@
     .spectrum-note { position: absolute; top: 26px; left: 28px; right: 28px; color: #78818d; font-size: 9px; letter-spacing: .04em; }
     .spectrum-note a { margin-left: 6px; color: #b7c8e7; text-decoration: underline; text-underline-offset: 3px; }
 
-    footer { width: min(1540px, 100%); display: flex; justify-content: space-between; gap: 18px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 64px) 24px; color: #70796f; font-size: 9px; }
+    footer { width: min(1540px, calc(100% - 258px)); display: flex; justify-content: space-between; gap: 18px; margin: 0 auto 0 258px; padding: 0 clamp(20px, 4vw, 64px) 24px; color: #70796f; font-size: 9px; }
     footer a { color: #a6aea1; text-decoration: none; }
     footer a:hover { color: var(--accent); }
+
+    body.nav-collapsed .page-tabs { width: 76px; padding-right: 10px; padding-left: 10px; }
+    body.nav-collapsed .nav-section-label, body.nav-collapsed .page-tab-label { display: none; }
+    body.nav-collapsed .page-tab { justify-content: center; padding: 0; }
+    body.nav-collapsed .page-tab::before { flex-basis: auto; font-size: 17px; }
+    body.nav-collapsed main, body.nav-collapsed footer { width: min(1540px, calc(100% - 76px)); margin-left: 76px; }
 
     @media (min-width: 1400px) {
       .table-inner { min-width: 0; }
@@ -678,8 +740,16 @@
       .element { border-radius: 11px; }
     }
     @media (max-width: 760px) {
-      main { padding-top: 39px; }
-      .topbar { min-height: 66px; }
+      .page-tabs { top: 66px; bottom: 0; width: min(84vw, 320px); padding: 20px 14px; transform: translateX(-105%); visibility: hidden; box-shadow: 20px 0 60px rgba(0,0,0,.32); transition: transform .24s var(--motion-ease), visibility 0s linear .24s; }
+      body.nav-open .page-tabs { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+      .menu-scrim { position: fixed; z-index: 19; inset: 66px 0 0; display: block; border: 0; background: rgba(0,0,0,.58); opacity: 0; visibility: hidden; transition: opacity .24s var(--motion-ease), visibility .24s; }
+      body.nav-open .menu-scrim { opacity: 1; visibility: visible; }
+      .nav-toggle { display: grid; }
+      body.nav-collapsed .nav-section-label, body.nav-collapsed .page-tab-label { display: block; }
+      body.nav-collapsed .page-tab { justify-content: flex-start; padding: 0 12px; }
+      body.nav-collapsed .page-tab::before { flex-basis: 19px; font-size: 15px; }
+      main, body.nav-collapsed main { width: 100%; margin: 0 auto; padding-top: 39px; }
+      footer, body.nav-collapsed footer { width: 100%; margin: 0 auto; }
       .top-note { display: none; }
       .menu-button { display: grid; }
       .intro { display: block; }
@@ -710,6 +780,9 @@
       .molecule-toolbar { align-items: flex-start; flex-direction: column; }
       .molecule-select { width: 100%; }
       .builder-workbench { grid-template-columns: 1fr; }
+      .electron-model-layout { grid-template-columns: 1fr; }
+      .electron-model-stage { min-height: 330px; }
+      .lewis-summary { grid-template-columns: 1fr; }
       .bond-overview, .bond-explorer { grid-template-columns: 1fr; }
       .chema-layout { grid-template-columns: 1fr; }
       .learning-columns { grid-template-columns: 1fr; }
@@ -751,6 +824,8 @@
       .molecule-model { min-height: calc(270px * var(--model-scale)); }
       .molecule-model-controls .model-hint { flex-basis: 100%; margin-left: 0; }
       .builder-controls { padding: 15px; }
+      .electron-model-stage { min-height: 280px; padding: 10px; }
+      .lewis-stage { min-height: 280px; padding: 8px; }
       .builder-model { min-height: calc(265px * var(--model-scale)); }
       .thermo-card { padding: 15px; }
       .thermo-fields { grid-template-columns: 1fr; }
@@ -775,6 +850,7 @@
 </head>
 <body>
   <header class="topbar">
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Collapse navigation" aria-controls="pageNavigation" aria-expanded="true" title="Collapse navigation">☰</button>
     <a class="brand" href="#" aria-label="Chemica home">
       <img class="brand-mark" src="./logo.png" alt="">
       <span class="brand-name">chemica<span>the Earth Chemistry Guide</span></span>
@@ -785,21 +861,33 @@
     </div>
   </header>
 
-  <nav class="page-tabs" role="tablist" aria-label="Chemica topics">
-    <button class="page-tab" id="periodicTab" type="button" role="tab" aria-selected="true" aria-controls="periodicPage">Periodic table</button>
-    <button class="page-tab" id="moleculeTab" type="button" role="tab" aria-selected="false" aria-controls="moleculePage" tabindex="-1">Molecular shapes</button>
-    <button class="page-tab" id="builderTab" type="button" role="tab" aria-selected="false" aria-controls="builderPage" tabindex="-1">Build an AXE molecule</button>
-    <button class="page-tab" id="thermoTab" type="button" role="tab" aria-selected="false" aria-controls="thermoPage" tabindex="-1">Thermochemistry</button>
-    <button class="page-tab" id="labTab" type="button" role="tab" aria-selected="false" aria-controls="labPage" tabindex="-1">Science lab</button>
-    <button class="page-tab" id="bondsTab" type="button" role="tab" aria-selected="false" aria-controls="bondsPage" tabindex="-1">Types of bonds</button>
-    <button class="page-tab" id="learningTab" type="button" role="tab" aria-selected="false" aria-controls="learningPage" tabindex="-1">Learning path (Beta)</button>
-    <button class="page-tab" id="lessonsTab" type="button" role="tab" aria-selected="false" aria-controls="lessonsPage" tabindex="-1">Practice Quizzes</button>
-    <button class="page-tab" id="chemaiTab" type="button" role="tab" aria-selected="false" aria-controls="chemaiPage" tabindex="-1">Chema AI (Beta) </button>
-    <button class="page-tab" id="updatesTab" type="button" role="tab" aria-selected="false" aria-controls="updatesPage" tabindex="-1">Update log</button>
-    <button class="page-tab" id="feedbackTab" type="button" role="tab" aria-selected="false" aria-controls="feedbackPage" tabindex="-1">Feedback</button>
-    <button class="page-tab" id="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsPage" tabindex="-1">Settings</button>
-    <button class="page-tab" id="reactionsTab" type="button" role="tab" aria-selected="false" aria-controls="reactionsPage" tabindex="-1">Properties &amp; reactions</button>
+  <nav class="page-tabs" id="pageNavigation" role="tablist" aria-label="Chemica topics">
+    <div class="nav-section" role="presentation">
+      <span class="nav-section-label" aria-hidden="true">Explore</span>
+      <button class="page-tab" id="periodicTab" type="button" role="tab" aria-label="Periodic table" data-icon="▦" aria-selected="true" aria-controls="periodicPage"><span class="page-tab-label">Periodic table</span></button>
+      <button class="page-tab" id="bohrTab" type="button" role="tab" aria-label="Bohr model" data-icon="◎" aria-selected="false" aria-controls="bohrPage" tabindex="-1"><span class="page-tab-label">Bohr model</span></button>
+      <button class="page-tab" id="lewisTab" type="button" role="tab" aria-label="Lewis diagrams" data-icon="∴" aria-selected="false" aria-controls="lewisPage" tabindex="-1"><span class="page-tab-label">Lewis diagrams</span></button>
+      <button class="page-tab" id="moleculeTab" type="button" role="tab" aria-label="Molecular shapes" data-icon="◇" aria-selected="false" aria-controls="moleculePage" tabindex="-1"><span class="page-tab-label">Molecular shapes</span></button>
+      <button class="page-tab" id="builderTab" type="button" role="tab" aria-label="Build an AXE molecule" data-icon="⌬" aria-selected="false" aria-controls="builderPage" tabindex="-1"><span class="page-tab-label">Build an AXE molecule</span></button>
+      <button class="page-tab" id="thermoTab" type="button" role="tab" aria-label="Thermochemistry" data-icon="↗" aria-selected="false" aria-controls="thermoPage" tabindex="-1"><span class="page-tab-label">Thermochemistry</span></button>
+      <button class="page-tab" id="labTab" type="button" role="tab" aria-label="Science lab" data-icon="⚗" aria-selected="false" aria-controls="labPage" tabindex="-1"><span class="page-tab-label">Science lab</span></button>
+      <button class="page-tab" id="bondsTab" type="button" role="tab" aria-label="Types of bonds" data-icon="∞" aria-selected="false" aria-controls="bondsPage" tabindex="-1"><span class="page-tab-label">Types of bonds</span></button>
+      <button class="page-tab" id="reactionsTab" type="button" role="tab" aria-label="Properties and reactions" data-icon="⇌" aria-selected="false" aria-controls="reactionsPage" tabindex="-1"><span class="page-tab-label">Properties &amp; reactions</span></button>
+    </div>
+    <div class="nav-section" role="presentation">
+      <span class="nav-section-label" aria-hidden="true">Study</span>
+      <button class="page-tab" id="learningTab" type="button" role="tab" aria-label="Learning path (Beta)" data-icon="➤" aria-selected="false" aria-controls="learningPage" tabindex="-1"><span class="page-tab-label">Learning path (Beta)</span></button>
+      <button class="page-tab" id="lessonsTab" type="button" role="tab" aria-label="Practice Quizzes" data-icon="✓" aria-selected="false" aria-controls="lessonsPage" tabindex="-1"><span class="page-tab-label">Practice Quizzes</span></button>
+      <button class="page-tab" id="chemaiTab" type="button" role="tab" aria-label="Chema AI (Beta)" data-icon="✳" aria-selected="false" aria-controls="chemaiPage" tabindex="-1"><span class="page-tab-label">Chema AI (Beta)</span></button>
+    </div>
+    <div class="nav-section" role="presentation">
+      <span class="nav-section-label" aria-hidden="true">More</span>
+      <button class="page-tab" id="updatesTab" type="button" role="tab" aria-label="Update log" data-icon="◷" aria-selected="false" aria-controls="updatesPage" tabindex="-1"><span class="page-tab-label">Update log</span></button>
+      <button class="page-tab" id="feedbackTab" type="button" role="tab" aria-label="Feedback" data-icon="✉" aria-selected="false" aria-controls="feedbackPage" tabindex="-1"><span class="page-tab-label">Feedback</span></button>
+      <button class="page-tab" id="settingsTab" type="button" role="tab" aria-label="Settings" data-icon="⚙" aria-selected="false" aria-controls="settingsPage" tabindex="-1"><span class="page-tab-label">Settings</span></button>
+    </div>
   </nav>
+  <button class="menu-scrim" id="menuScrim" type="button" aria-label="Close navigation" tabindex="-1"></button>
 
   <main id="periodicPage" role="tabpanel" aria-labelledby="periodicTab">
     <section class="intro" aria-labelledby="page-title">
@@ -846,6 +934,70 @@
         <div class="legend" id="legend"></div>
       </div>
     </section>
+  </main>
+
+  <main id="bohrPage" role="tabpanel" aria-labelledby="bohrTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Explore electrons by energy level</p>
+        <h1>Build a <em>Bohr model.</em></h1>
+        <p class="intro-copy">Choose an element to see its nucleus and electron-shell arrangement. The model uses each element’s electron configuration to show shell populations.</p>
+      </div>
+      <div class="intro-aside" aria-label="Bohr model overview">
+        <div class="stat"><strong>118</strong><span>elements</span></div>
+        <div class="stat"><strong>Shells</strong><span>electron levels</span></div>
+      </div>
+    </section>
+    <section class="molecule-toolbar" aria-label="Choose an element for the Bohr model">
+      <label for="bohrElementSelect">Element</label>
+      <select class="molecule-select" id="bohrElementSelect"></select>
+    </section>
+    <section class="electron-model-layout" aria-label="Interactive Bohr model">
+      <article class="molecule-card">
+        <div class="molecule-card-head"><h3 id="bohrModelTitle">Electron shells</h3><span>Shell model · schematic, not to scale</span></div>
+        <div class="electron-model-stage" id="bohrModelStage"></div>
+      </article>
+      <aside class="molecule-card builder-controls">
+        <h2 id="bohrElementName">Element</h2>
+        <p id="bohrConfiguration"></p>
+        <div class="electron-stat-grid">
+          <div class="electron-stat"><div class="electron-stat-label">Protons</div><div class="electron-stat-value" id="bohrProtons"></div></div>
+          <div class="electron-stat"><div class="electron-stat-label">Electrons</div><div class="electron-stat-value" id="bohrElectrons"></div></div>
+          <div class="electron-stat"><div class="electron-stat-label">Neutrons*</div><div class="electron-stat-value" id="bohrNeutrons"></div></div>
+          <div class="electron-stat"><div class="electron-stat-label">Valence shell</div><div class="electron-stat-value" id="bohrValence"></div></div>
+        </div>
+        <div class="electron-shell-list" id="bohrShellList" aria-live="polite"></div>
+      </aside>
+    </section>
+    <p class="electron-model-note">*Neutrons are estimated from the rounded standard atomic mass, not a selected isotope. Bohr diagrams are useful introductory models; electrons in atoms are described more accurately by quantum orbitals, not fixed circular paths.</p>
+  </main>
+
+  <main id="lewisPage" role="tabpanel" aria-labelledby="lewisTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Dots, pairs, and bonds</p>
+        <h1>Read <em>Lewis diagrams.</em></h1>
+        <p class="intro-copy">Choose a molecule to explore its valence electrons, shared bonding pairs, and lone pairs. Each bond line represents one shared pair.</p>
+      </div>
+      <div class="intro-aside" aria-label="Lewis diagram overview">
+        <div class="stat"><strong>Dots</strong><span>lone pairs</span></div>
+        <div class="stat"><strong>Lines</strong><span>shared pairs</span></div>
+      </div>
+    </section>
+    <section class="molecule-toolbar" aria-label="Choose a molecule for the Lewis diagram">
+      <label for="lewisMoleculeSelect">Molecule</label>
+      <select class="molecule-select lewis-select" id="lewisMoleculeSelect"></select>
+    </section>
+    <section class="molecule-card" aria-live="polite">
+      <div class="molecule-card-head"><h3>Lewis structure</h3><span>Neutral molecule · 2D layout</span></div>
+      <div class="lewis-stage" id="lewisDiagramStage"></div>
+      <div class="lewis-summary">
+        <div><h2 id="lewisMoleculeTitle"></h2><p id="lewisMoleculeDescription"></p></div>
+        <div class="lewis-total" id="lewisElectronTotal"></div>
+      </div>
+      <div class="lewis-key" aria-label="Diagram legend"><span><i class="lewis-key-dots">••</i> Lone pair</span><span>— Single bond · two shared electrons</span><span>═ Double bond · four shared electrons</span><span>≡ Triple bond · six shared electrons</span></div>
+    </section>
+    <p class="electron-model-note">These are simplified neutral Lewis structures. Some atoms, such as boron in BF₃, can have fewer than eight electrons; actual bonding may require resonance or more advanced models.</p>
   </main>
 
   <main id="moleculePage" role="tabpanel" aria-labelledby="moleculeTab" hidden>
@@ -1416,11 +1568,11 @@
     <section class="intro thermo-intro">
       <div>
         <p class="eyebrow">Chemistry, one concept at a time</p>
-        <h1>Explore the <em>lessons.</em></h1>
+        <h1>Review the <em>topics.</em></h1>
         <p class="intro-copy">Review a concept, open its interactive guide, then practice with 10 randomly selected questions from a larger challenge bank. Challenge progress is saved separately from the learning path.</p>
       </div>
       <div class="intro-aside" aria-label="Lesson library details">
-        <div class="stat"><strong id="lessonLibraryCount">7</strong><span>topic lessons</span></div>
+        <div class="stat"><strong id="lessonLibraryCount">9</strong><span>topic lessons</span></div>
         <div class="stat"><strong>10</strong><span>random questions each</span></div>
       </div>
     </section>
@@ -1436,27 +1588,37 @@
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="periodic-table">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="periodic">Explore the table</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">03 · Bonds</span><h3>Bonding basics</h3>
+        <span class="lesson-index">03 · Electron shells</span><h3>Bohr models</h3>
+        <p>Use an element’s electron configuration to show how electrons occupy principal energy levels, then relate the outer shell to valence electrons.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="bohr-model">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="bohr">Explore Bohr models</button></div>
+      </article>
+      <article class="lesson-card">
+        <span class="lesson-index">04 · Valence electrons</span><h3>Lewis diagrams</h3>
+        <p>Represent valence electrons as dots, lone pairs as paired dots, and covalent bonds as shared pairs of electrons.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="lewis-diagrams">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="lewis">Explore Lewis diagrams</button></div>
+      </article>
+      <article class="lesson-card">
+        <span class="lesson-index">05 · Bonds</span><h3>Bonding basics</h3>
         <p>Ionic bonding describes electrostatic attraction between ions, covalent bonding describes shared electron density, and metallic bonding involves delocalized electrons.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="bonding">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="bonds">Explore bonds</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">04 · Shape</span><h3>Molecular shapes</h3>
+        <span class="lesson-index">06 · Shape</span><h3>Molecular shapes</h3>
         <p>VSEPR relates the arrangement of electron domains around a central atom to molecular shape. Lone pairs count as domains and can affect bond angles.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="molecular-shapes">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="molecule">Explore shapes</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">05 · Energy</span><h3>Heat &amp; energy</h3>
+        <span class="lesson-index">07 · Energy</span><h3>Heat &amp; energy</h3>
         <p>Calorimetry estimates heat transfer with q = mcΔT. Enthalpy tracks heat at constant pressure, while Gibbs energy describes thermodynamic favorability under stated conditions—not reaction speed.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="thermochemistry">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="thermo">Explore thermochemistry</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">06 · Lab</span><h3>Lab-ready habits</h3>
+        <span class="lesson-index">08 · Lab</span><h3>Lab-ready habits</h3>
         <p>Follow the written procedure and instructor directions, use required protective equipment, report spills or injuries immediately, and use only the designated waste stream.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="lab-safety">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="lab">Explore lab safety</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">07 · Matter &amp; change</span><h3>Properties &amp; reactions</h3>
+        <span class="lesson-index">09 · Matter &amp; change</span><h3>Properties &amp; reactions</h3>
         <p>Physical properties describe a substance without changing its identity. Chemical properties describe how it can form new substances; reactions rearrange atoms while conserving each element.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="properties-reactions">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="reactions">Explore properties &amp; reactions</button></div>
       </article>
@@ -1471,7 +1633,7 @@
         <p class="intro-copy">Take a quick lesson, answer 10 questions, and build your chemistry streak one concept at a time. Your completed lessons and earned points stay saved on this device.</p>
       </div>
       <div class="intro-aside" aria-label="Learning path details">
-        <div class="stat"><strong id="learningLessonCount">7</strong><span>short lessons</span></div>
+        <div class="stat"><strong id="learningLessonCount">9</strong><span>short lessons</span></div>
         <div class="stat"><strong>10</strong><span>questions each</span></div>
       </div>
     </section>
@@ -1480,7 +1642,7 @@
       <div>
         <h2 id="learningProgressTitle">Your chemistry journey</h2>
         <p id="learningProgressDescription">Complete a lesson to unlock the next step on the path.</p>
-        <div class="learning-progress-track" role="progressbar" aria-label="Lessons completed" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
+        <div class="learning-progress-track" role="progressbar" aria-label="Lessons completed" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0">
           <div class="learning-progress-fill" id="learningProgressFill"></div>
         </div>
       </div>
@@ -1554,13 +1716,15 @@
       <aside class="chema-side">
         <article class="molecule-card"><h2>Try asking</h2><div class="chema-prompts">
           <button class="chema-prompt" type="button">How do I find neutrons?</button>
+          <button class="chema-prompt" type="button">Show me a Bohr model of oxygen</button>
+          <button class="chema-prompt" type="button">How do Lewis dots show bonding?</button>
           <button class="chema-prompt" type="button">Explain VSEPR and lone pairs</button>
           <button class="chema-prompt" type="button">What makes a molecule polar?</button>
           <button class="chema-prompt" type="button">Compare ionic and covalent bonds</button>
           <button class="chema-prompt" type="button">How does calorimetry work?</button>
           <button class="chema-prompt" type="button">What should I do after a lab splash?</button>
         </div></article>
-        <article class="molecule-card"><h2>About Chema</h2><p id="chemaPrivacy">With an OpenAI key configured, your question is sent to OpenAI to generate a reply. Without a key, Chema uses its built-in guide. Don’t include personal or sensitive information.</p></article>
+        <article class="molecule-card"><h2>About Chema</h2><p id="chemaPrivacy">Chema uses its built-in guide. Don’t include personal or sensitive information.</p></article>
       </aside>
     </section>
   </main>
@@ -1570,7 +1734,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Meet Chema AI (Beta) <span class="update-badge">NEW</span></h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-09">November 9, 2026</time><h2>New Menu Layout and More Tools<span class="update-badge">NEW</span></h2><p>Easily Navigate through the lessons. Also added new resources and new rules for science labs.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Meet Chema AI (Beta)</h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
     </section>
   </main>
 
@@ -3605,6 +3770,160 @@
       renderBondExplorer();
     }
 
+    const lewisMolecules = {
+      water:{
+        name:"Water",formula:"H₂O",description:"Oxygen forms two single bonds and keeps two lone pairs.",
+        atoms:[{symbol:"O",x:250,y:165,lonePairs:[210,330]},{symbol:"H",x:145,y:250,lonePairs:[]},{symbol:"H",x:355,y:250,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1}]
+      },
+      ammonia:{
+        name:"Ammonia",formula:"NH₃",description:"Nitrogen forms three single bonds and has one lone pair.",
+        atoms:[{symbol:"N",x:250,y:160,lonePairs:[270]},{symbol:"H",x:145,y:245,lonePairs:[]},{symbol:"H",x:250,y:270,lonePairs:[]},{symbol:"H",x:355,y:245,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}]
+      },
+      methane:{
+        name:"Methane",formula:"CH₄",description:"Carbon shares one pair with each of four hydrogen atoms; there are no lone pairs.",
+        atoms:[{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"H",x:150,y:80,lonePairs:[]},{symbol:"H",x:350,y:80,lonePairs:[]},{symbol:"H",x:150,y:250,lonePairs:[]},{symbol:"H",x:350,y:250,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1}]
+      },
+      carbonDioxide:{
+        name:"Carbon dioxide",formula:"CO₂",description:"Carbon forms a double bond to each oxygen; each oxygen has two lone pairs.",
+        atoms:[{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"O",x:115,y:165,lonePairs:[90,270]},{symbol:"O",x:385,y:165,lonePairs:[90,270]}],
+        bonds:[{from:0,to:1,order:2},{from:0,to:2,order:2}]
+      },
+      oxygen:{
+        name:"Oxygen",formula:"O₂",description:"The common Lewis structure has an O=O double bond and two lone pairs on each atom.",
+        atoms:[{symbol:"O",x:190,y:165,lonePairs:[90,270]},{symbol:"O",x:310,y:165,lonePairs:[90,270]}],
+        bonds:[{from:0,to:1,order:2}]
+      },
+      nitrogen:{
+        name:"Nitrogen",formula:"N₂",description:"The N≡N triple bond gives each nitrogen an octet when paired with one lone pair per atom.",
+        atoms:[{symbol:"N",x:190,y:165,lonePairs:[180]},{symbol:"N",x:310,y:165,lonePairs:[0]}],
+        bonds:[{from:0,to:1,order:3}]
+      },
+      hydrogenCyanide:{
+        name:"Hydrogen cyanide",formula:"HCN",description:"Hydrogen bonds once to carbon; carbon and nitrogen share a triple bond, and nitrogen has one lone pair.",
+        atoms:[{symbol:"H",x:115,y:165,lonePairs:[]},{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"N",x:385,y:165,lonePairs:[0]}],
+        bonds:[{from:0,to:1,order:1},{from:1,to:2,order:3}]
+      },
+      boronTrifluoride:{
+        name:"Boron trifluoride",formula:"BF₃",description:"Each fluorine has three lone pairs. Boron has three bonds and an incomplete octet.",
+        atoms:[{symbol:"B",x:250,y:165,lonePairs:[]},{symbol:"F",x:250,y:65,lonePairs:[210,270,330]},{symbol:"F",x:145,y:245,lonePairs:[90,150,210]},{symbol:"F",x:355,y:245,lonePairs:[330,30,90]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}]
+      },
+      formaldehyde:{
+        name:"Formaldehyde",formula:"CH₂O",description:"Carbon forms a double bond to oxygen and single bonds to two hydrogens; oxygen has two lone pairs.",
+        atoms:[{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"O",x:370,y:165,lonePairs:[90,270]},{symbol:"H",x:190,y:250,lonePairs:[]},{symbol:"H",x:190,y:80,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:2},{from:0,to:2,order:1},{from:0,to:3,order:1}]
+      }
+    };
+
+    function renderBohrModel(element) {
+      const shells=shellElectrons(element);
+      const svg=moleculeSvgNode("svg",{viewBox:"0 0 440 440",class:"electron-model-svg",role:"img","aria-label":`${element.name} Bohr model with shell populations ${shells.join(", ")}`});
+      const center=220;
+      const nucleusRadius=28;
+      shells.forEach((count,index)=>{
+        const radius=48+index*24;
+        svg.append(moleculeSvgNode("circle",{cx:center,cy:center,r:radius,class:"electron-shell"}));
+        for(let electron=0;electron<count;electron++){
+          const angle=-Math.PI/2+electron/count*Math.PI*2+(index%2)*.12;
+          svg.append(moleculeSvgNode("circle",{cx:center+Math.cos(angle)*radius,cy:center+Math.sin(angle)*radius,r:4,class:"electron-dot"}));
+        }
+      });
+      svg.append(moleculeSvgNode("circle",{cx:center,cy:center,r:nucleusRadius,class:"electron-nucleus"}));
+      svg.append(moleculeSvgNode("text",{x:center,y:center,class:"electron-nucleus-label"},element.symbol));
+      document.getElementById("bohrModelStage").replaceChildren(svg);
+      document.getElementById("bohrModelTitle").textContent=`${element.name} · ${element.symbol}`;
+      document.getElementById("bohrElementName").textContent=`${element.name} (${element.symbol})`;
+      document.getElementById("bohrConfiguration").textContent=`Electron configuration: ${element.configuration}`;
+      document.getElementById("bohrProtons").textContent=String(element.number);
+      document.getElementById("bohrElectrons").textContent=String(element.number);
+      document.getElementById("bohrNeutrons").textContent=String(Math.max(0,Math.round(element.mass)-element.number));
+      document.getElementById("bohrValence").textContent=String(shells.at(-1)||0);
+      const shellList=document.getElementById("bohrShellList");
+      shellList.replaceChildren();
+      shells.forEach((count,index)=>{
+        const row=document.createElement("div");
+        row.className="electron-shell-row";
+        const name=document.createElement("span");
+        name.textContent=`Shell ${index+1}`;
+        const amount=document.createElement("b");
+        amount.textContent=`${count} ${count===1?"electron":"electrons"}`;
+        row.append(name,amount);
+        shellList.append(row);
+      });
+    }
+
+    function renderLewisDiagram(moleculeKey) {
+      const molecule=lewisMolecules[moleculeKey];
+      if(!molecule)throw new Error(`Unknown Lewis diagram: ${moleculeKey}`);
+      const svg=moleculeSvgNode("svg",{viewBox:"0 0 500 320",class:"lewis-svg",role:"img","aria-label":`${molecule.name} Lewis structure`});
+      molecule.bonds.forEach(bond=>{
+        const first=molecule.atoms[bond.from];
+        const second=molecule.atoms[bond.to];
+        const dx=second.x-first.x;
+        const dy=second.y-first.y;
+        const length=Math.hypot(dx,dy);
+        const ux=dx/length;
+        const uy=dy/length;
+        const nx=-dy/length;
+        const ny=dx/length;
+        const firstRadius=first.symbol.length>1?18:first.symbol==="H"?11:15;
+        const secondRadius=second.symbol.length>1?18:second.symbol==="H"?11:15;
+        const offsets=bond.order===1?[0]:bond.order===2?[-5,5]:[-8,0,8];
+        offsets.forEach(offset=>svg.append(moleculeSvgNode("line",{
+          x1:first.x+ux*firstRadius+nx*offset,y1:first.y+uy*firstRadius+ny*offset,
+          x2:second.x-ux*secondRadius+nx*offset,y2:second.y-uy*secondRadius+ny*offset,class:"lewis-bond"
+        })));
+      });
+      molecule.atoms.forEach(atom=>{
+        atom.lonePairs.forEach(angleDegrees=>{
+          const angle=angleDegrees*Math.PI/180;
+          const pairX=atom.x+Math.cos(angle)*34;
+          const pairY=atom.y+Math.sin(angle)*34;
+          const tangentX=-Math.sin(angle)*4;
+          const tangentY=Math.cos(angle)*4;
+          svg.append(moleculeSvgNode("circle",{cx:pairX-tangentX,cy:pairY-tangentY,r:2.5,class:"lewis-lone-pair"}));
+          svg.append(moleculeSvgNode("circle",{cx:pairX+tangentX,cy:pairY+tangentY,r:2.5,class:"lewis-lone-pair"}));
+        });
+        svg.append(moleculeSvgNode("text",{x:atom.x,y:atom.y,class:"lewis-atom"},atom.symbol));
+      });
+      document.getElementById("lewisDiagramStage").replaceChildren(svg);
+      document.getElementById("lewisMoleculeTitle").textContent=`${molecule.name} · ${molecule.formula}`;
+      document.getElementById("lewisMoleculeDescription").textContent=molecule.description;
+      const valenceByElement={H:1,B:3,C:4,N:5,O:6,F:7,Cl:7};
+      const valenceElectrons=molecule.atoms.reduce((total,atom)=>total+valenceByElement[atom.symbol],0);
+      const representedElectrons=molecule.bonds.reduce((total,bond)=>total+bond.order*2,0)
+        +molecule.atoms.reduce((total,atom)=>total+atom.lonePairs.length*2,0);
+      document.getElementById("lewisElectronTotal").textContent=`${valenceElectrons} valence electrons · ${representedElectrons} drawn`;
+    }
+
+    function initializeElectronModelPages() {
+      const bohrSelect=document.getElementById("bohrElementSelect");
+      elements.forEach(element=>{
+        const option=document.createElement("option");
+        option.value=String(element.number);
+        option.textContent=`${element.number}. ${element.name} (${element.symbol})`;
+        bohrSelect.append(option);
+      });
+      bohrSelect.addEventListener("change",()=>{
+        const element=elements.find(item=>item.number===Number(bohrSelect.value));
+        if(!element)throw new Error(`Unknown element number: ${bohrSelect.value}`);
+        renderBohrModel(element);
+      });
+      const lewisSelect=document.getElementById("lewisMoleculeSelect");
+      Object.entries(lewisMolecules).forEach(([key,molecule])=>{
+        const option=document.createElement("option");
+        option.value=key;
+        option.textContent=`${molecule.formula} · ${molecule.name}`;
+        lewisSelect.append(option);
+      });
+      lewisSelect.addEventListener("change",()=>renderLewisDiagram(lewisSelect.value));
+      renderBohrModel(elements[0]);
+      renderLewisDiagram(lewisSelect.value);
+    }
+
     const learningLessons = [
       {
         id:"atoms",icon:"⚛",title:"Inside the atom",subtitle:"Meet protons, neutrons, electrons, and ions.",
@@ -3634,6 +3953,36 @@
           ["Moving down a group, atoms generally gain…",["An occupied electron shell","A proton with no limit","The same mass","Fewer occupied shells"],0,"Each new period downward adds another principal electron shell."],
           ["Which is a metalloid?",["Silicon","Sodium","Neon","Bromine"],0,"Silicon lies along the metalloid staircase and has properties between typical metals and nonmetals."],
           ["Which element is a halogen?",["Chlorine","Calcium","Argon","Iron"],0,"Chlorine is in group 17, the halogen family."]
+        ]
+      },
+      {
+        id:"bohr-model",icon:"◎",title:"Bohr models",subtitle:"Arrange electrons into shells and identify valence electrons.",
+        questions:[
+          ["A neutral sodium atom has 11 electrons. What is its shell arrangement in the basic Bohr model?",["2–8–1","2–7–2","2–8–2","8–3"],0,"Sodium’s electron configuration is 1s² 2s² 2p⁶ 3s¹, giving shell counts 2–8–1."],
+          ["How many protons are in a neutral atom of oxygen?",["8","6","16","10"],0,"Oxygen’s atomic number is 8, and atomic number equals the number of protons."],
+          ["How many valence electrons does a neutral chlorine atom have?",["7","1","8","17"],0,"Chlorine’s shell arrangement is 2–8–7, so its outer shell contains seven electrons."],
+          ["A neutral magnesium atom has the shell arrangement 2–8–2. How many electrons are in its outer shell?",["2","8","10","12"],0,"The last occupied shell contains two electrons; these are magnesium’s valence electrons."],
+          ["What happens to the proton count when a neutral atom becomes an ion?",["It stays the same","It increases by the charge","It decreases by the charge","It becomes equal to the neutron count"],0,"Ordinary ion formation changes electron count, not the number of protons in the nucleus."],
+          ["A chlorine atom gains one electron. What charge does the ion have?",["−1","+1","−7","0"],0,"Gaining one negatively charged electron gives chlorine a −1 charge."],
+          ["Which shell arrangement represents a neutral atom with 10 electrons?",["2–8","2–7–1","2–8–1","8–2"],0,"The first shell holds two electrons and the second holds eight, totaling ten."],
+          ["How many electrons can the first shell hold in the introductory shell model?",["2","8","18","1"],0,"The first energy level contains the 1s orbital, which holds up to two electrons."],
+          ["Two isotopes of carbon have different neutron counts. What remains the same?",["Their proton count","Their mass number","Their neutron count","Their number of occupied shells in every ion"],0,"Isotopes are atoms of the same element, so they have the same number of protons."],
+          ["A neutral sodium atom loses one electron. Which description is correct?",["It becomes Na⁺ with 10 electrons","It becomes Na⁻ with 12 electrons","It becomes Mg⁺ with 10 electrons","It remains neutral with 11 electrons"],0,"Removing one electron leaves sodium with one more proton than electron, producing Na⁺ with 10 electrons."]
+        ]
+      },
+      {
+        id:"lewis-diagrams",icon:"∴",title:"Lewis diagrams",subtitle:"Count valence electrons and interpret bonds and lone pairs.",
+        questions:[
+          ["What does one line between two atoms represent in a Lewis structure?",["One shared pair of electrons","One proton transferred","Two lone pairs","One electron shell"],0,"A single bond is one shared pair, or two bonding electrons."],
+          ["How many valence electrons does a neutral oxygen atom have?",["6","2","8","4"],0,"Oxygen is in group 16 and has six valence electrons."],
+          ["How many electrons are shown in one lone pair?",["2","1","4","8"],0,"A lone pair consists of two nonbonding valence electrons localized around one atom in the Lewis model."],
+          ["How many total valence electrons are in a neutral H₂O molecule?",["8","6","10","4"],0,"Oxygen contributes six and the two hydrogen atoms contribute one each, for eight total."],
+          ["How many shared pairs are represented by a double bond?",["2","1","3","4"],0,"A double bond contains two shared electron pairs, or four bonding electrons."],
+          ["How many single bonds does carbon form in the usual Lewis structure of methane, CH₄?",["4","2","3","1"],0,"Carbon shares one pair with each of four hydrogen atoms in methane."],
+          ["How many lone pairs are usually shown on each fluorine atom in HF?",["3","1","2","4"],0,"Fluorine has seven valence electrons; one pair is shared in the H–F bond and six remain as three lone pairs."],
+          ["What is the total number of valence electrons in CO₂?",["16","12","18","14"],0,"Carbon contributes four and the two oxygen atoms contribute twelve, totaling sixteen."],
+          ["Which Lewis structure contains a triple bond?",["N₂","O₂","H₂O","CH₄"],0,"Each nitrogen shares three pairs in N≡N; O₂ has a double bond in its common Lewis structure."],
+          ["Why is BF₃ commonly shown with only six electrons around boron?",["Boron is a common incomplete-octet exception","Fluorine has no valence electrons","The molecule has a +3 charge","A line represents three electrons"],0,"Boron trifluoride is a standard incomplete-octet example; boron has three single bonds and six electrons around it."]
         ]
       },
       {
@@ -3797,6 +4146,20 @@
         ["In aqueous solution, AgNO₃ and NaCl form AgCl(s) and NaNO₃(aq). What drives this double-replacement reaction?",["Formation of insoluble AgCl precipitate","Formation of a metal alloy","Water changing to steam","The sodium atoms becoming protons"],0,"AgCl is insoluble under the usual conditions and precipitates from solution."],
         ["Which statement about balancing a chemical equation is correct?",["Change coefficients to conserve atoms; do not alter subscripts in formulas","Change subscripts until both sides look similar","Balance only the most abundant element","Atoms can be omitted if charge is conserved"],0,"Coefficients change particle amounts while formulas preserve each substance's identity."],
         ["A gas appears when two solutions are mixed. What is the most careful interpretation?",["Gas formation may indicate a reaction, but identify the products and rule out physical release of dissolved gas","Any bubbles prove a chemical reaction","Gas formation proves that atoms were destroyed","The mixture must be a pure element"],0,"Gas formation can be evidence of a reaction, but observations need context; dissolved gas can also escape physically."]
+      ],
+      "bohr-model":[
+        ["A neutral rubidium atom has 37 electrons. Which shell arrangement matches its configuration?",["2–8–18–8–1","2–8–18–9","2–8–8–18–1","2–8–18–7–2"],0,"Rubidium’s configuration ends in 5s¹; the shell populations are 2, 8, 18, 8, and 1."],
+        ["A neutral nickel atom has configuration [Ar] 3d⁸ 4s². What are its shell populations?",["2–8–16–2","2–8–18","2–8–8–10","2–8–14–4"],0,"The third shell contains 3s², 3p⁶, and 3d⁸ for 16 electrons; the fourth contains 4s²."],
+        ["What is the shell arrangement of Ca²⁺?",["2–8–8","2–8–10","2–8–8–2","2–8–6"],0,"Neutral calcium is 2–8–8–2. Losing its two outer 4s electrons leaves 18 electrons arranged 2–8–8."],
+        ["How many neutrons are in a neutral ²³Na atom?",["12","11","23","34"],0,"Sodium has 11 protons; 23 − 11 = 12 neutrons."],
+        ["A neutral atom’s shell populations are 2–8–6. Which element is it?",["Sulfur","Chlorine","Argon","Phosphorus"],0,"The populations total 16 electrons, identifying neutral sulfur, atomic number 16."]
+      ],
+      "lewis-diagrams":[
+        ["How many total valence electrons should be shown for formaldehyde, CH₂O?",["12","10","14","16"],0,"Carbon contributes four, two hydrogen atoms contribute two, and oxygen contributes six: 12 total."],
+        ["In the usual Lewis structure of CH₂O, how many lone pairs are on oxygen?",["2","1","3","0"],0,"The C=O double bond uses two oxygen valence electrons, leaving four nonbonding electrons as two lone pairs."],
+        ["What is the formal charge on oxygen in a neutral water Lewis structure with two O–H bonds and two lone pairs?",["0","+1","−1","+2"],0,"For oxygen, formal charge = 6 − 4 nonbonding − 2 assigned bonding electrons = 0."],
+        ["How many electron pairs are shared in the two C=O bonds of a CO₂ Lewis structure?",["4","2","3","6"],0,"Each C=O double bond has two shared pairs, so the two bonds contain four shared pairs total."],
+        ["A Lewis drawing has three single bonds and three lone pairs on each fluorine in BF₃. How many electrons are around boron?",["6","8","12","24"],0,"Boron participates in three single bonds, accounting for three shared pairs or six electrons around it."]
       ]
     };
 
@@ -3854,6 +4217,30 @@
         ["Which is a chemical property rather than a physical property?",["Copper's tendency to react with nitric acid","Copper's electrical conductivity","Copper's melting point","Copper's reddish color"],0,"Reaction with acid describes how copper can form new substances; the others can be observed without changing its identity."],
         ["For 2Al + 3Cl₂ → 2AlCl₃, how many chlorine atoms are represented on each side?",["6","3","2","9"],0,"Three Cl₂ molecules contain 3 × 2 = 6 chlorine atoms; two AlCl₃ units also contain 6."],
         ["A candle wax sample melts, then the vapor burns. Which classification is most accurate?",["Melting is physical; combustion is chemical","Both are physical","Melting is chemical; combustion is physical","Both are chemical"],0,"Melting changes wax's state; combustion reacts wax vapor with oxygen to form new substances."]
+      ],
+      "bohr-model":[
+        ["Which shell arrangement matches a neutral potassium atom with 19 electrons?",["2–8–8–1","2–8–9","2–8–7–2","2–9–8"],0,"Potassium’s configuration ends in 4s¹; its shell populations are 2, 8, 8, and 1."],
+        ["A neutral aluminum atom has atomic number 13. How many electrons are in its third shell?",["3","8","5","13"],0,"Aluminum’s shell arrangement is 2–8–3, so three electrons occupy the third shell."],
+        ["A neutral iron atom has 26 electrons and configuration [Ar] 3d⁶ 4s². What are its shell populations?",["2–8–14–2","2–8–8–8","2–8–16","2–8–6–10"],0,"The third shell includes 3s², 3p⁶, and 3d⁶ for 14 electrons; the fourth contains 4s²."],
+        ["What is the electron arrangement of Na⁺ in the basic shell model?",["2–8","2–8–1","2–7","2–8–2"],0,"Neutral sodium is 2–8–1. Losing its outer electron leaves 10 electrons arranged 2–8."],
+        ["How many neutrons are in a neutral ³⁵Cl atom?",["18","17","35","52"],0,"Chlorine has 17 protons; 35 − 17 = 18 neutrons."],
+        ["Two neutral isotopes of the same element have different mass numbers. Which Bohr-model count stays the same?",["Electron count in each shell","Neutron count","Mass number","Total nucleons"],0,"Neutral isotopes have the same proton and electron counts, so their electron-shell populations match; neutron counts differ."],
+        ["Using the 2n² capacity rule, what is the maximum electron capacity of the third shell?",["18","8","32","9"],0,"For n = 3, 2n² = 2 × 3² = 18 electrons."],
+        ["A neutral atom has 20 protons. Which element and neutral electron count does it have?",["Calcium, 20 electrons","Argon, 18 electrons","Potassium, 19 electrons","Scandium, 21 electrons"],0,"Atomic number 20 identifies calcium; a neutral atom has 20 electrons."],
+        ["A neutral oxygen atom gains two electrons. What shell arrangement does O²⁻ have?",["2–8","2–6","2–8–2","2–7"],0,"Oxygen has eight protons and gains two electrons for 10 total, arranged 2–8."],
+        ["Which is a limitation of a Bohr shell diagram for multi-electron atoms?",["It does not show orbitals as probability distributions","It changes the number of protons","It cannot show electron counts","It predicts the isotope’s neutron count exactly"],0,"Bohr diagrams show simplified shells, not the orbital probability distributions used in the quantum model."]
+      ],
+      "lewis-diagrams":[
+        ["How many total valence electrons should be shown for HCN?",["10","8","12","14"],0,"HCN has 1 + 4 + 5 = 10 valence electrons."],
+        ["Which Lewis structure uses all 10 HCN valence electrons and gives carbon an octet?",["H–C≡N:","H=C=N","H–C=N:","H≡C–N"],0,"One H–C single bond and one C≡N triple bond use eight electrons; nitrogen’s lone pair uses the remaining two."],
+        ["How many valence electrons are in C₂H₄ (ethene)?",["12","10","14","16"],0,"Two carbons contribute eight electrons and four hydrogens contribute four, for 12 total."],
+        ["In the usual Lewis structure of C₂H₄, how many bonding pairs are present?",["6","4","5","8"],0,"The C=C double bond contains two pairs and four C–H single bonds contain four more: six pairs."],
+        ["How many valence electrons are in NH₄⁺?",["8","9","5","10"],0,"Nitrogen plus four hydrogens gives 9; subtract one electron for the +1 charge, giving 8."],
+        ["How many lone pairs are on nitrogen in the common Lewis structure of NH₄⁺?",["0","1","2","4"],0,"Four N–H single bonds use all eight valence electrons; nitrogen has no lone pair in the ammonium ion."],
+        ["In a neutral O₂ Lewis structure with an O=O double bond, how many lone pairs are on each oxygen?",["2","1","3","0"],0,"The double bond uses two electrons from each oxygen’s valence count, leaving four nonbonding electrons, or two lone pairs, on each."],
+        ["Which statement about BF₃ is correct?",["Boron has six electrons around it in the common Lewis structure","Boron has three lone pairs","Each B–F bond is a triple bond","The neutral molecule has 18 total valence electrons"],0,"BF₃ has 3 + 3(7) = 24 valence electrons; three single bonds and three lone pairs on each F leave boron with an incomplete octet."],
+        ["How many lone pairs are on the fluorine atom in CH₃F?",["3","1","2","0"],0,"Fluorine has seven valence electrons; one is shared in the C–F bond, leaving six electrons as three lone pairs."],
+        ["Which Lewis-structure adjustment is allowed when calculating formal charges?",["Move lone pairs or bonding electrons while preserving total electron count","Change an atom’s element symbol","Change the number of protons","Add an electron without changing the charge"],0,"Formal-charge structures rearrange the placement of valence electrons without changing nuclei or the molecule’s total electron count."]
       ]
     };
     Object.entries(additionalLessonChallengeQuestions).forEach(([lessonId,questions])=>{
@@ -4308,15 +4695,54 @@
       });
     }
 
+    const navToggle = document.getElementById("navToggle");
+    const pageNavigation = document.getElementById("pageNavigation");
+    const isMobileNavigation = () => window.matchMedia("(max-width: 760px)").matches;
+    function syncNavigationToggle() {
+      const mobile = isMobileNavigation();
+      const expanded = mobile ? document.body.classList.contains("nav-open") : !document.body.classList.contains("nav-collapsed");
+      const label = mobile ? (expanded ? "Close navigation" : "Open navigation") : (expanded ? "Collapse navigation" : "Expand navigation");
+      navToggle.setAttribute("aria-expanded",String(expanded));
+      navToggle.setAttribute("aria-label",label);
+      navToggle.title = label;
+      navToggle.textContent = mobile && expanded ? "×" : "☰";
+    }
+    function closeMobileNavigation(returnFocus = false) {
+      if (!document.body.classList.contains("nav-open")) return;
+      document.body.classList.remove("nav-open");
+      syncNavigationToggle();
+      if (returnFocus) navToggle.focus({preventScroll:true});
+    }
+    navToggle.addEventListener("click",()=>{
+      if (isMobileNavigation()) {
+        document.body.classList.toggle("nav-open");
+      } else {
+        document.body.classList.toggle("nav-collapsed");
+      }
+      syncNavigationToggle();
+    });
+    document.getElementById("menuScrim").addEventListener("click",()=>closeMobileNavigation(true));
+    document.addEventListener("keydown",event=>{
+      if (event.key==="Escape") closeMobileNavigation(true);
+    });
+    window.addEventListener("resize",()=>{
+      if (!isMobileNavigation()) closeMobileNavigation();
+      syncNavigationToggle();
+    });
+    syncNavigationToggle();
+
     function setPageTab(tab) {
-      ["periodic","molecule","builder","thermo","lab","bonds","learning","lessons","chemai","updates","feedback","settings","reactions"].forEach(name=>{
+      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","learning","lessons","chemai","updates","feedback","settings","reactions"].forEach(name=>{
         const selected = name===tab;
         document.getElementById(`${name}Tab`).setAttribute("aria-selected",String(selected));
         document.getElementById(`${name}Tab`).tabIndex = selected ? 0 : -1;
         document.getElementById(`${name}Page`).hidden = !selected;
       });
+      closeMobileNavigation(pageNavigation.contains(document.activeElement));
     }
     document.getElementById("periodicTab").addEventListener("click",()=>setPageTab("periodic"));
+    document.getElementById("bohrTab").addEventListener("click",()=>setPageTab("bohr"));
+    document.getElementById("lewisTab").addEventListener("click",()=>setPageTab("lewis"));
     document.getElementById("moleculeTab").addEventListener("click",()=>setPageTab("molecule"));
     document.getElementById("builderTab").addEventListener("click",()=>setPageTab("builder"));
     document.getElementById("thermoTab").addEventListener("click",()=>setPageTab("thermo"));
@@ -4345,6 +4771,7 @@
     initializeThermochemistry();
     initializeLabPage();
     initializeBondExplorer();
+    initializeElectronModelPages();
     initializeLearningPath();
 
     let chemaAiAvailable = location.protocol==="http:"||location.protocol==="https:";
@@ -4362,7 +4789,7 @@
         const jump=document.createElement("button");
         jump.type="button";
         jump.className="chema-jump";
-        jump.textContent=`Open ${({periodic:"Periodic table",molecule:"Molecular shapes",builder:"AXE builder",thermo:"Thermochemistry",lab:"Science lab",bonds:"Types of bonds",learning:"Learning path"})[tab]||"guide"}`;
+        jump.textContent=`Open ${({periodic:"Periodic table",bohr:"Bohr model",lewis:"Lewis diagrams",molecule:"Molecular shapes",builder:"AXE builder",thermo:"Thermochemistry",lab:"Science lab",bonds:"Types of bonds",learning:"Learning path"})[tab]||"guide"}`;
         jump.addEventListener("click",()=>{setPageTab(tab);document.getElementById(`${tab}Tab`).focus();});
         message.append(document.createElement("br"),jump);
       }
@@ -4373,6 +4800,8 @@
     function chemaSuggestedPage(question) {
       const text=question.toLowerCase();
       if(/lab|safety|spill|splash|equipment|eyewash|goggles/.test(text))return "lab";
+      if(/bohr|shell model|electron shell/.test(text))return "bohr";
+      if(/lewis|dot structure|valence electron/.test(text))return "lewis";
       if(/vsepr|molecular shape|molecule|axe|lone pair|dipole|polarity|polar/.test(text))return "molecule";
       if(/intermolecular|hydrogen bond|dispersion|imf/.test(text))return "molecule";
       if(/calorimetry|thermochem|enthalpy|entropy|gibbs|heat|energy/.test(text))return "thermo";
@@ -4386,6 +4815,10 @@
       const text=question.toLowerCase();
       if(/lab|safety|spill|splash|eyewash|chemical.*(eye|skin)|eye.*chemical/.test(text))
         return "Lab safety first: stop work, alert your instructor immediately, and follow your lab’s emergency directions. For a chemical splash on skin or in eyes, use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t clean an unknown spill yourself.";
+      if(/bohr|shell model|electron shell/.test(text))
+        return "A Bohr diagram groups an atom’s electrons by principal energy level. For a neutral atom, the electron count equals its atomic number; the nucleus contains that many protons. The shell picture is a simplified model, while modern chemistry describes electrons with orbitals. Open the Bohr model page to explore an element.";
+      if(/lewis|dot structure|valence electron/.test(text))
+        return "Lewis structures show valence electrons: a line is one shared electron pair, and a pair of dots is a lone pair. Count the atoms’ valence electrons, account for any charge, and check the electron total after drawing bonds and lone pairs. Open Lewis diagrams to inspect examples.";
       if(/vsepr|molecular shape|axe|lone pair/.test(text))
         return "VSEPR predicts shape by counting electron groups around a central atom: bonds and lone pairs each count as one group. In AXE notation, A is the center, X atoms are bonded neighbors, and E lone pairs. Lone pairs repel more strongly and can change bond angles and the molecular shape.";
       if(/intermolecular|hydrogen bond|dispersion|\bimf\b/.test(text))
@@ -4406,7 +4839,7 @@
         return `${mentionedElement.name} (${mentionedElement.symbol}) is element ${mentionedElement.number}, a ${mentionedElement.category.toLowerCase()}. Its listed standard atomic mass is ${mentionedElement.mass} u. Select it in the periodic table for its electron configuration, isotopes, ions, atom model, and spectrum.`;
       if(/period|group|family|periodic table/.test(text))
         return "Rows in the periodic table are periods and columns are groups. Elements in a group often share valence-electron patterns and chemical properties. Use the table’s search and category filters, or select an element to see its details.";
-      return "I’m in built-in guide mode right now. I can help with atoms and elements, ions and isotopes, bonding, VSEPR and polarity, intermolecular forces, thermochemistry, orbitals, and lab safety. Try asking about one of those topics or open the matching lesson.";
+      return "I’m in built-in guide mode right now. I can help with atoms and elements, Bohr shells, Lewis diagrams, ions and isotopes, bonding, VSEPR and polarity, intermolecular forces, thermochemistry, orbitals, and lab safety. Try asking about one of those topics or open the matching lesson.";
     }
 
     async function askChema(question) {
