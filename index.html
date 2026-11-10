@@ -117,9 +117,10 @@
     }
     .nav-toggle:hover { color: var(--accent); border-color: rgba(201,239,119,.3); background: var(--surface-raised); }
     .page-tabs {
-      position: fixed; z-index: 20; top: 76px; bottom: 0; left: 0;
+      position: absolute; z-index: 20; top: 76px; left: 0;
       width: 258px; display: flex; flex-direction: column; align-items: stretch; gap: 18px;
-      padding: 24px 14px; overflow-x: hidden; overflow-y: auto;
+      min-height: calc(100vh - 76px); height: max-content;
+      padding: 24px 14px; overflow: visible;
       border-right: 1px solid var(--line); background: rgba(15,18,16,.96);
       backdrop-filter: blur(18px); transition: width .24s var(--motion-ease), transform .24s var(--motion-ease);
     }
@@ -608,6 +609,8 @@
     .equipment-dialog-title { margin: 6px 0 0; font-size: 23px; font-weight: 620; letter-spacing: -.05em; }
     .equipment-dialog-category { display: inline-block; margin-top: 8px; padding: 5px 8px; border: 1px solid rgba(201,239,119,.14); border-radius: 999px; color: #aeca81; background: rgba(201,239,119,.045); font-size: 8px; }
     .equipment-dialog-body { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 17px; padding: 18px 21px 21px; }
+    .equipment-dialog-body.no-illustration { grid-template-columns: minmax(0,1fr); }
+    .equipment-visual-panel[hidden] { display: none; }
     .equipment-illustration-wrap { min-width: 0; display: grid; min-height: 260px; place-items: center; padding: 13px; border: 1px solid rgba(235,239,224,.08); border-radius: 13px; background: radial-gradient(ellipse at center,rgba(115,145,116,.11),transparent 72%),#131713; }
     .equipment-illustration { display: block; width: min(100%,300px); height: 240px; }
     .equipment-illustration-caption { margin: 8px 0 0; color: #737e74; font-size: 8px; text-align: center; }
@@ -1339,7 +1342,7 @@
       <div>
         <p class="eyebrow">Prepare · protect · observe</p>
         <h1>In the <em>science lab.</em></h1>
-        <p class="intro-copy">Review the student safety contract before working. These reminders follow its main rules for lab conduct, protective clothing, experiments, chemicals, equipment, heating, and incident response.</p>
+        <p class="intro-copy">Review the safety-contract summaries and browse the equipment inventory before lab. Always follow your signed contract, procedure, and instructor’s directions.</p>
       </div>
       <div class="intro-aside" aria-label="Lab guide sections">
         <div class="stat"><strong>Before</strong><span>plan & protect</span></div>
@@ -1358,7 +1361,7 @@
 
     <section aria-labelledby="labRulesHeading">
       <div class="lab-section-heading">
-        <div><h2 id="labRulesHeading">Student safety contract rules</h2><p>Organized by the topics in your supplied contract. Review the complete contract with your instructor.</p></div>
+        <div><h2 id="labRulesHeading">Student safety contract rules</h2><p>Concise summaries of the supplied Flinn Scientific contract—not a replacement for the complete signed contract or your instructor’s directions.</p></div>
       </div>
       <div class="lab-rule-grid">
         <article class="lab-rule-card"><h3><span class="lab-rule-index">01</span>General rules</h3><p>Act responsibly; follow written and verbal directions; ask when unsure. Do not begin until instructed, work alone, engage in horseplay, eat, drink, apply cosmetics, or use lab glassware for food. Keep the work area orderly, aisles clear, and know where safety equipment is located.</p></article>
@@ -1408,7 +1411,7 @@
 
     <section aria-labelledby="labMaterialsHeading">
       <div class="lab-section-heading">
-        <div><h2 id="labMaterialsHeading">Common lab materials</h2><p>What equipment is for—and a reminder to use it only as directed.</p></div>
+        <div><h2 id="labMaterialsHeading">Lab equipment inventory</h2><p>Browse the equipment from your supplied inventory, plus a few common lab essentials.</p></div>
       </div>
       <div class="lab-material-toolbar" aria-label="Filter lab materials">
         <input class="thermo-input lab-material-search" id="labMaterialSearch" type="search" placeholder="Search equipment…" aria-label="Search lab materials">
@@ -1418,24 +1421,48 @@
           <option value="glassware">Glassware</option>
           <option value="measuring">Measuring</option>
           <option value="handling">Handling & heating</option>
+          <option value="heating">Heating</option>
         </select>
         <span class="lab-material-count" id="labMaterialCount" aria-live="polite">0 materials</span>
       </div>
       <div class="lab-material-grid" id="labMaterialGrid">
-        <article class="lab-material-card" data-equipment="goggles" data-category="protection" data-search="splash goggles eye protection" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Splash goggles</h3><span class="lab-material-category">Protection</span></div><p>Protect eyes from splashes and flying particles. Wear the type and fit required by your lab; regular glasses may not be sufficient.</p></article>
+        <article class="lab-material-card" data-equipment="goggles" data-category="protection" data-search="safety splash goggles eye protection" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Safety goggles</h3><span class="lab-material-category">Protection</span></div><p>Protect eyes from splashes and flying particles. Wear the type and fit required by your lab; regular glasses may not be sufficient.</p></article>
         <article class="lab-material-card" data-equipment="coat" data-category="protection" data-search="lab coat apron clothing" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Lab coat or apron</h3><span class="lab-material-category">Protection</span></div><p>Provides a protective outer layer when required. Wear, remove, and store it as your instructor directs.</p></article>
         <article class="lab-material-card" data-equipment="gloves" data-category="protection" data-search="gloves nitrile chemical resistant" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Protective gloves</h3><span class="lab-material-category">Protection</span></div><p>Use only the glove material selected for the specific chemical and task. Gloves are not universal protection; remove and dispose of them as directed.</p></article>
         <article class="lab-material-card" data-equipment="beaker" data-category="glassware" data-search="beaker mix hold approximate volume" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Beaker</h3><span class="lab-material-category">Glassware</span></div><p>Useful for holding, mixing, or heating compatible liquids when the procedure allows. Its graduations give approximate—not precise—volume.</p></article>
         <article class="lab-material-card" data-equipment="flask" data-category="glassware" data-search="erlenmeyer flask swirl conical" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Erlenmeyer flask</h3><span class="lab-material-category">Glassware</span></div><p>The narrow neck helps contain splashes while swirling. Do not stopper or heat it unless the procedure specifies the correct setup.</p></article>
-        <article class="lab-material-card" data-equipment="test-tube" data-category="glassware" data-search="test tube small sample rack" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Test tube & rack</h3><span class="lab-material-category">Glassware</span></div><p>Holds small samples. Keep tubes in a rack when not in use and point openings away from yourself and others when instructed to warm them.</p></article>
+        <article class="lab-material-card" data-equipment="test-tube" data-category="glassware" data-search="test tube small sample" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Test tube</h3><span class="lab-material-category">Glassware</span></div><p>Holds small samples. When warming a tube as instructed, use the correct holder and point its opening away from everyone.</p></article>
+        <article class="lab-material-card" data-equipment="test-tube-rack" data-category="handling" data-search="test tube rack stand holder organize" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Test tube rack</h3><span class="lab-material-category">Handling</span></div><p>Keeps test tubes upright and organized. Use a rack suited to the tube size and keep it on a stable surface.</p></article>
         <article class="lab-material-card" data-equipment="cylinder" data-category="measuring" data-search="graduated cylinder liquid volume" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Graduated cylinder</h3><span class="lab-material-category">Measuring</span></div><p>Measures liquid volume more accurately than a beaker. Place it on a level surface and read the meniscus at eye level.</p></article>
         <article class="lab-material-card" data-equipment="balance" data-category="measuring" data-search="balance mass weighing" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Balance</h3><span class="lab-material-category">Measuring</span></div><p>Measures mass. Keep the pan clean and dry; use weighing paper or a container and follow instructions for taring and cleanup.</p></article>
-        <article class="lab-material-card" data-equipment="thermometer" data-category="measuring" data-search="thermometer temperature probe" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Thermometer or probe</h3><span class="lab-material-category">Measuring</span></div><p>Measures temperature. Avoid using it as a stirring rod, and keep it from contacting the bottom of heated glassware unless directed.</p></article>
-        <article class="lab-material-card" data-equipment="pipette" data-category="handling" data-search="pipette dropper transfer small volumes" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Transfer pipette</h3><span class="lab-material-category">Handling</span></div><p>Moves small amounts of liquid. Use a pipette bulb or approved device—never pipette by mouth—and avoid cross-contamination.</p></article>
-        <article class="lab-material-card" data-equipment="spatula" data-category="handling" data-search="spatula scoop solid chemicals" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Spatula or scoopula</h3><span class="lab-material-category">Handling</span></div><p>Transfers small quantities of solid material. Use clean tools as directed and do not return excess material to the stock container.</p></article>
-        <article class="lab-material-card" data-equipment="tongs" data-category="handling" data-search="tongs crucible holder hot glassware" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Tongs or holder</h3><span class="lab-material-category">Handling</span></div><p>Handles designated hot or awkward items. Select the correct tool, check its condition, and assume heated glass can look cool.</p></article>
+        <article class="lab-material-card" data-equipment="thermometer" data-category="measuring" data-search="thermometer temperature probe" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Thermometer</h3><span class="lab-material-category">Measuring</span></div><p>Measures temperature. Avoid using it as a stirring rod, and keep it from contacting the bottom of heated glassware unless directed.</p></article>
+        <article class="lab-material-card" data-equipment="pipette" data-category="handling" data-search="dropping pipette eyedropper transfer small volumes" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Dropping pipette (eyedropper)</h3><span class="lab-material-category">Handling</span></div><p>Transfers liquid a few drops at a time; it is not a precision measuring tool. Never pipette by mouth and avoid cross-contamination.</p></article>
+        <article class="lab-material-card" data-equipment="spatula" data-category="handling" data-search="scoopula spatula solid chemicals" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Scoopula</h3><span class="lab-material-category">Handling</span></div><p>Transfers small quantities of solid material. Use a clean, dry tool and do not return excess material to the stock container.</p></article>
+        <article class="lab-material-card" data-equipment="tongs" data-category="handling" data-search="general purpose tongs hot objects" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>General-purpose tongs</h3><span class="lab-material-category">Handling</span></div><p>Grip designated hot or awkward objects. Use the specific tong type suited to the item rather than substituting tools.</p></article>
         <article class="lab-material-card" data-equipment="hot-plate" data-category="handling" data-search="hot plate heating station" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Hot plate</h3><span class="lab-material-category">Handling</span></div><p>Provides controlled heating when authorized. Keep flammables away, use compatible glassware, and treat the surface as hot after switching off.</p></article>
         <article class="lab-material-card" data-equipment="wash-bottle" data-category="handling" data-search="wash bottle distilled water rinse" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Wash bottle</h3><span class="lab-material-category">Handling</span></div><p>Dispenses the labeled rinse liquid. Check its label first and never assume an unlabeled bottle contains water.</p></article>
+        <article class="lab-material-card" data-equipment="beaker-tongs" data-category="handling" data-search="beaker tongs hot beaker" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Beaker tongs</h3><span class="lab-material-category">Handling</span></div><p>Grip beakers designed to fit their curved jaws. Check the grip before lifting and move hot glassware only as instructed.</p></article>
+        <article class="lab-material-card" data-equipment="bunsen-burner" data-category="heating" data-search="bunsen burner gas flame heating" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Bunsen burner</h3><span class="lab-material-category">Heating</span></div><p>Provides a gas flame for authorized procedures. Tie back hair, secure loose clothing, clear flammables, and never leave a lit burner unattended.</p></article>
+        <article class="lab-material-card" data-equipment="clay-triangle" data-category="heating" data-search="clay triangle crucible support burner" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Clay triangle</h3><span class="lab-material-category">Heating</span></div><p>Supports a crucible on a ring during heating. Use only in the demonstrated setup and treat it as hot after use.</p></article>
+        <article class="lab-material-card" data-equipment="crucible" data-category="glassware" data-search="crucible cover lid heat ceramic" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Crucible & cover</h3><span class="lab-material-category">Glassware</span></div><p>Holds small solid samples during high-temperature procedures. Use only with the prescribed support and heating method.</p></article>
+        <article class="lab-material-card" data-equipment="crucible-tongs" data-category="handling" data-search="crucible tongs hot ceramic" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Crucible tongs</h3><span class="lab-material-category">Handling</span></div><p>Move a crucible and cover with the tool intended for them. Confirm the grip and use a designated heat-safe resting place.</p></article>
+        <article class="lab-material-card" data-equipment="evaporating-dish" data-category="glassware" data-search="evaporating dish ceramic evaporation" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Evaporating dish</h3><span class="lab-material-category">Glassware</span></div><p>Holds a small amount of liquid for an authorized evaporation procedure. It can become very hot; use the assigned support and handling tool.</p></article>
+        <article class="lab-material-card" data-equipment="flask-tongs" data-category="handling" data-search="flask tongs flask holder" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Flask tongs</h3><span class="lab-material-category">Handling</span></div><p>Handle flasks of compatible shape when directed. Verify the jaws fit securely before moving any vessel.</p></article>
+        <article class="lab-material-card" data-equipment="flint-lighter" data-category="heating" data-search="flint lighter striker ignite burner" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Flint lighter</h3><span class="lab-material-category">Heating</span></div><p>Creates a spark to ignite a burner when the instructor authorizes it. Keep it pointed away from people and use it only as demonstrated.</p></article>
+        <article class="lab-material-card" data-equipment="funnel" data-category="glassware" data-search="funnel transfer liquid filtration filter paper" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Funnel</h3><span class="lab-material-category">Glassware</span></div><p>Guides liquids or solids into a narrow opening; with suitable filter paper, it can support filtration. Secure it and avoid overfilling.</p></article>
+        <article class="lab-material-card" data-equipment="stirring-rod" data-category="glassware" data-search="glass stirring rod mix dissolve" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Glass stirring rod</h3><span class="lab-material-category">Glassware</span></div><p>Stirs or helps guide a liquid pour when instructed. Check for chips and avoid striking the vessel or using it as a thermometer.</p></article>
+        <article class="lab-material-card" data-equipment="mortar-pestle" data-category="glassware" data-search="mortar pestle grind crush solids" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Mortar & pestle</h3><span class="lab-material-category">Glassware</span></div><p>Grinds solid samples when the procedure requires it. Use gentle, controlled pressure and avoid creating dust or contaminating other samples.</p></article>
+        <article class="lab-material-card" data-equipment="petri-dish" data-category="glassware" data-search="petri dish cover culture sample" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Petri dish & cover</h3><span class="lab-material-category">Glassware</span></div><p>Holds or covers shallow samples. Use only for the assigned materials and follow the lab’s directions for handling and disposal.</p></article>
+        <article class="lab-material-card" data-equipment="retort-stand" data-category="handling" data-search="retort stand support rod clamp apparatus" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Retort stand</h3><span class="lab-material-category">Handling</span></div><p>Provides a stable support for clamps and apparatus. Secure the base and check every connection before use.</p></article>
+        <article class="lab-material-card" data-equipment="ring-clamp" data-category="handling" data-search="ring clamp retort stand support wire mesh triangle" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Ring clamp</h3><span class="lab-material-category">Handling</span></div><p>Attaches to a retort stand to support a funnel, wire mesh, or clay triangle. Tighten securely and keep the setup balanced.</p></article>
+        <article class="lab-material-card" data-equipment="rubber-stopper" data-category="handling" data-search="rubber stopper bung flask test tube" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Rubber stoppers</h3><span class="lab-material-category">Handling</span></div><p>Close compatible vessels only when the procedure calls for it. Never stopper a vessel that is being heated or generating gas unless a specified safe setup requires it.</p></article>
+        <article class="lab-material-card" data-equipment="spot-plate" data-category="glassware" data-search="spot plate well plate small reactions" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Spot plate</h3><span class="lab-material-category">Glassware</span></div><p>Holds small, separate drops for microscale observations. Keep wells identified and avoid transferring material between them.</p></article>
+        <article class="lab-material-card" data-equipment="test-tube-clamp" data-category="handling" data-search="test tube clamp holder heating" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Test tube clamp</h3><span class="lab-material-category">Handling</span></div><p>Secures a test tube to a stand. Adjust it to hold the tube firmly without crushing it and keep it away from the tube opening.</p></article>
+        <article class="lab-material-card" data-equipment="test-tube-holder" data-category="handling" data-search="test tube holder hand clamp heating" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Test tube holder</h3><span class="lab-material-category">Handling</span></div><p>Holds a single test tube by hand when directed, including during gentle warming. Keep the tube opening pointed away from everyone.</p></article>
+        <article class="lab-material-card" data-equipment="thermometer-clamp" data-category="handling" data-search="thermometer clamp retort stand probe support" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Thermometer clamp</h3><span class="lab-material-category">Handling</span></div><p>Attaches a thermometer or probe to a stand. Secure it without overtightening or damaging the instrument.</p></article>
+        <article class="lab-material-card" data-equipment="tweezers" data-category="handling" data-search="tweezers forceps small objects" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Tweezers</h3><span class="lab-material-category">Handling</span></div><p>Pick up small objects when the procedure directs. They are not a substitute for the specified chemical-resistant tool or protective equipment.</p></article>
+        <article class="lab-material-card" data-equipment="watch-glass" data-category="glassware" data-search="watch glass cover evaporate weigh" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Watch glass</h3><span class="lab-material-category">Glassware</span></div><p>Covers a beaker or holds a small sample. It is not a sealed lid; use it for heating only if the procedure allows.</p></article>
+        <article class="lab-material-card" data-equipment="wire-mesh" data-category="handling" data-search="wire mesh gauze ring clamp spread heat" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="equipmentDialog"><div class="lab-material-top"><h3>Wire mesh</h3><span class="lab-material-category">Handling</span></div><p>Supports compatible labware on a ring and spreads heat. Use only in the demonstrated setup and treat it as hot after heating.</p></article>
       </div>
     </section>
     <p class="lab-footnote">Equipment descriptions are general. Verify compatibility, operating instructions, and hazards for your exact experiment with your instructor, procedure, equipment labels, and Safety Data Sheets.</p>
@@ -1629,7 +1656,7 @@
       <div>
         <p class="eyebrow">Small steps · big chemistry</p>
         <h1>Your <em>learning path.</em></h1>
-        <p class="intro-copy">Take a quick lesson, answer 10 questions, and build your chemistry streak one concept at a time. Your completed lessons and earned points stay saved on this device.</p>
+        <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, and thermochemistry. Each lesson has 10 questions, and your progress stays saved on this device.</p>
       </div>
       <div class="intro-aside" aria-label="Learning path details">
         <div class="stat"><strong id="learningLessonCount">9</strong><span>short lessons</span></div>
@@ -1651,7 +1678,7 @@
     <section class="learning-path-view" id="learningPathView">
       <div class="learning-columns">
         <article class="molecule-card learning-path-card">
-          <div class="learning-section-heading"><h2>Follow the trail</h2><span>Finish a unit to unlock the next</span></div>
+          <div class="learning-section-heading"><h2>Follow the trail</h2><span>Foundations first · most advanced last</span></div>
           <div class="learning-path" id="learningPath" style="--path-progress:0%"></div>
         </article>
         <aside class="learning-aside">
@@ -1923,7 +1950,7 @@
         <button class="detail-close" id="equipmentDialogClose" type="button" aria-label="Close equipment details">×</button>
       </header>
       <div class="equipment-dialog-body">
-        <div>
+        <div class="equipment-visual-panel" id="equipmentVisualPanel">
           <div class="equipment-illustration-wrap" id="equipmentIllustration"></div>
           <p class="equipment-illustration-caption">Illustration · designs vary by lab</p>
         </div>
@@ -3752,7 +3779,7 @@
       gloves:{title:"Protective gloves",category:"Protection",purpose:"Create a barrier between hands and certain materials. The right glove depends on the chemical, concentration, contact time, and task.",use:"Use only the glove type selected by your instructor or SDS. Check for tears, avoid touching shared surfaces with contaminated gloves, and never assume one material protects against every chemical.",care:"Remove them without touching the contaminated exterior, then dispose of or clean them as directed. Wash hands after glove removal.",illustration:`<path d="M126 200 L120 148 Q119 139 126 138 Q133 137 135 145 L139 164 L139 106 Q139 97 147 97 Q155 97 155 106 L156 155 L160 91 Q161 83 169 84 Q177 85 176 94 L173 154 L181 101 Q183 92 191 94 Q199 96 197 104 L190 160 L202 119 Q205 111 213 114 Q221 117 218 125 L209 177 Q205 198 188 211 L158 223 Q137 222 126 200 Z" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M126 182 Q160 194 210 177" fill="none" stroke="#c9ef77" stroke-width="4"/>`},
       beaker:{title:"Beaker",category:"Glassware",purpose:"Holds, mixes, or heats compatible liquids when the procedure permits. Printed graduations are usually approximate rather than precision volume measurements.",use:"Check for chips or cracks, use compatible heat sources only when directed, and keep the opening pointed away from people when heating or mixing.",care:"Use appropriate tongs or heat protection for hot glassware. Let it cool in the designated area and clean or dispose of it as instructed.",illustration:`<path d="M123 91 H237 M132 91 V106 L143 206 Q145 218 158 218 H216 Q229 218 231 206 L242 106 V91" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M140 166 H235 M145 184 H231" fill="none" stroke="#70bfd0" stroke-width="4" opacity=".8"/><path d="M215 121 H238 M211 139 H234 M207 157 H236" fill="none" stroke="#c9ef77" stroke-width="3" stroke-linecap="round"/>`},
       flask:{title:"Erlenmeyer flask",category:"Glassware",purpose:"Holds and mixes liquids. Its broad base and narrow neck make controlled swirling easier than in an open beaker.",use:"Inspect before use and keep it on a stable surface. Do not seal it or apply heat unless the procedure specifies a suitable setup.",care:"Use appropriate heat protection if it was warmed. Allow hot glass to cool in a designated place and clean it as directed.",illustration:`<path d="M165 82 H205 M171 82 V133 L121 207 Q114 220 132 220 H238 Q256 220 249 207 L199 133 V82" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M139 183 Q185 174 230 183 L247 209 Q251 218 237 218 H134 Q120 218 125 208 Z" fill="#70bfd0" opacity=".45"/><path d="M156 85 H214" stroke="#c9ef77" stroke-width="4" stroke-linecap="round"/>`},
-      "test-tube":{title:"Test tube & rack",category:"Glassware",purpose:"Holds small samples for reactions, observations, or authorized warming. A rack keeps tubes upright and organized.",use:"Inspect for cracks and use a holder when required. If warming is directed, keep the opening angled away from everyone and gently move the tube as instructed.",care:"Never set a hot tube directly on an unprotected bench. Return it to a rack only when safe, and place broken glass in the designated container.",illustration:`<path d="M137 83 H185 M144 83 V176 Q144 198 161 198 Q178 198 178 176 V83" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M146 158 H176" stroke="#70bfd0" stroke-width="5"/><path d="M107 203 H216 L229 218 H96 Z M118 183 H205 V203 H118 Z" fill="#34453e" stroke="#c9ef77" stroke-width="4" stroke-linejoin="round"/><circle cx="137" cy="191" r="5" fill="#101311"/><circle cx="162" cy="191" r="5" fill="#101311"/><circle cx="187" cy="191" r="5" fill="#101311"/>`},
+      "test-tube":{title:"Test tube",category:"Glassware",purpose:"Holds small samples for reactions, observations, or authorized warming.",use:"Inspect for cracks and use a holder when required. If warming is directed, keep the opening angled away from everyone and gently move the tube as instructed.",care:"Never set a hot tube directly on an unprotected bench. Place broken glass in the designated container.",illustration:`<path d="M137 83 H185 M144 83 V176 Q144 198 161 198 Q178 198 178 176 V83" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M146 158 H176" stroke="#70bfd0" stroke-width="5"/>`},
       cylinder:{title:"Graduated cylinder",category:"Measuring",purpose:"Measures liquid volume with finer graduations than a beaker. It is designed for measuring and transferring, not for heating or mixing.",use:"Set it upright on a level surface. Bring your eye to the liquid level and read the bottom of the meniscus for most clear aqueous liquids.",care:"Avoid bumps and use the base for support. Empty, rinse, and store it as directed; do not use it as a stirring rod.",illustration:`<path d="M153 77 H215 M162 77 V200 Q162 210 173 210 H195 Q206 210 206 200 V77" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M164 151 H204 M165 171 H203" stroke="#70bfd0" stroke-width="5"/><path d="M165 99 H178 M165 115 H174 M165 132 H178 M165 187 H174" stroke="#c9ef77" stroke-width="3"/><path d="M142 220 H226 L214 211 H154 Z" fill="#34453e" stroke="#c9ef77" stroke-width="4" stroke-linejoin="round"/>`},
       balance:{title:"Balance",category:"Measuring",purpose:"Measures the mass of a sample. Electronic balances vary in capacity and readability, so use the instrument assigned for the measurement.",use:"Check that the balance is level and reads zero. Place a clean weighing container on the pan, tare if directed, and never put chemicals directly on the pan.",care:"Keep the pan dry and free of residue. Brush or wipe spills only as instructed, and report any balance that behaves unusually.",illustration:`<path d="M127 122 H243 L231 168 H139 Z" fill="#29332e" stroke="#a9d1c0" stroke-width="5" stroke-linejoin="round"/><path d="M185 168 V202 M145 205 H225 Q234 205 234 214 V222 H136 V214 Q136 205 145 205 Z" fill="#34453e" stroke="#c9ef77" stroke-width="4"/><rect x="158" y="181" width="54" height="14" rx="4" fill="#101713" stroke="#70bfd0" stroke-width="3"/><path d="M149 111 H221 M151 125 H219" stroke="#70bfd0" stroke-width="3"/>`},
       thermometer:{title:"Thermometer or probe",category:"Measuring",purpose:"Measures temperature in a sample or environment. Digital probes and liquid thermometers have different ranges and handling requirements.",use:"Use the appropriate range and immerse only as directed. Do not use it as a stirring rod or let a probe touch hot vessel surfaces unless instructed.",care:"Handle the sensor gently, clean it as directed, and store it safely. Report cracked glass or a damaged probe immediately.",illustration:`<path d="M175 85 V178 A25 25 0 1 0 205 178 V85 A15 15 0 0 0 175 85 Z" fill="url(#equipmentFill)" stroke="#a9d1c0" stroke-width="5"/><path d="M190 111 V190" stroke="#ffb274" stroke-width="8" stroke-linecap="round"/><circle cx="190" cy="191" r="15" fill="#ffb274"/><path d="M208 112 H226 M208 132 H220 M208 152 H226 M208 172 H220" stroke="#c9ef77" stroke-width="3" stroke-linecap="round"/>`},
@@ -3766,11 +3793,13 @@
     let lastEquipmentTrigger = null;
 
     function openEquipmentDialog(card) {
-      const details = equipmentDetails[card.dataset.equipment];
-      if (!details) {
-        console.error(`Missing equipment details for "${card.dataset.equipment}".`);
-        return;
-      }
+      const details = equipmentDetails[card.dataset.equipment] || {
+        title:card.querySelector("h3").textContent.trim(),
+        category:card.querySelector(".lab-material-category").textContent.trim(),
+        purpose:card.querySelector("p").textContent.trim(),
+        use:"Use this item only for its intended purpose, as described in the procedure and demonstrated by the instructor. Do not improvise or substitute equipment.",
+        care:"Report damage or contamination to the instructor. Clean, dispose of, and return the item as directed."
+      };
       const dialog = document.getElementById("equipmentDialog");
       lastEquipmentTrigger = card;
       document.getElementById("equipmentDialogTitle").textContent = details.title;
@@ -3778,13 +3807,21 @@
       document.getElementById("equipmentPurpose").textContent = details.purpose;
       document.getElementById("equipmentUse").textContent = details.use;
       document.getElementById("equipmentCare").textContent = details.care;
-      const illustration = document.createElement("svg");
-      illustration.setAttribute("class","equipment-illustration");
-      illustration.setAttribute("viewBox","0 0 370 300");
-      illustration.setAttribute("role","img");
-      illustration.setAttribute("aria-label",`${details.title} illustration`);
-      illustration.innerHTML = `<defs><linearGradient id="equipmentFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#314039"/><stop offset="1" stop-color="#1b2520"/></linearGradient></defs><path d="M46 239 Q185 269 324 239" fill="none" stroke="rgba(201,239,119,.15)" stroke-width="2"/>${details.illustration}`;
-      document.getElementById("equipmentIllustration").replaceChildren(illustration);
+      const visualPanel = document.getElementById("equipmentVisualPanel");
+      const dialogBody = visualPanel.parentElement;
+      visualPanel.hidden = !details.illustration;
+      dialogBody.classList.toggle("no-illustration",!details.illustration);
+      if (details.illustration) {
+        const illustration = document.createElement("svg");
+        illustration.setAttribute("class","equipment-illustration");
+        illustration.setAttribute("viewBox","0 0 370 300");
+        illustration.setAttribute("role","img");
+        illustration.setAttribute("aria-label",`${details.title} illustration`);
+        illustration.innerHTML = `<defs><linearGradient id="equipmentFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#314039"/><stop offset="1" stop-color="#1b2520"/></linearGradient></defs><path d="M46 239 Q185 269 324 239" fill="none" stroke="rgba(201,239,119,.15)" stroke-width="2"/>${details.illustration}`;
+        document.getElementById("equipmentIllustration").replaceChildren(illustration);
+      } else {
+        document.getElementById("equipmentIllustration").replaceChildren();
+      }
       if (!dialog.open) dialog.showModal();
     }
 
@@ -4206,6 +4243,20 @@
       }
     ];
 
+    const learningLessonOrder = [
+      {id:"lab-safety",label:"Lab safety"},
+      {id:"atoms",label:"Atoms"},
+      {id:"periodic-table",label:"Periodic table"},
+      {id:"bohr-model",label:"Electron shells"},
+      {id:"lewis-diagrams",label:"Lewis diagrams"},
+      {id:"bonding",label:"Bonds"},
+      {id:"molecular-shapes",label:"Molecular shapes"},
+      {id:"properties-reactions",label:"Reactions"},
+      {id:"thermochemistry",label:"Energy"}
+    ];
+    const learningLessonOrderIndex = new Map(learningLessonOrder.map((item,index)=>[item.id,index]));
+    learningLessons.sort((first,second)=>learningLessonOrderIndex.get(first.id)-learningLessonOrderIndex.get(second.id));
+
     const lessonChallengeQuestions = {
       atoms:[
         ["A species has 17 protons, 18 electrons, and 20 neutrons. Which description is correct?",["Cl⁻ with mass number 37","Ar⁺ with mass number 37","Cl⁺ with mass number 35","S²⁻ with mass number 38"],0,"Seventeen protons identify chlorine. One extra electron gives a −1 charge, and 17 + 20 = 37 is the mass number."],
@@ -4426,9 +4477,7 @@
         const run=parsed.run;
         const lesson=learningLessons.find(item=>item.id===run?.lessonId);
         if (lesson&&Number.isInteger(run.questionIndex)&&run.questionIndex>=0&&run.questionIndex<lesson.questions.length&&Number.isInteger(run.correct)&&run.correct>=0&&run.correct<=run.questionIndex+(run.answered===true?1:0)&&(!run.answered||(Number.isInteger(run.selectedIndex)&&run.selectedIndex>=0&&run.selectedIndex<lesson.questions[run.questionIndex][1].length))) {
-          const priorLesson=learningLessons[learningLessons.indexOf(lesson)-1];
-          const unlocked=!priorLesson||completed[priorLesson.id]?.completed;
-          if (unlocked&&!completed[lesson.id]?.completed) {
+          if (!completed[lesson.id]?.completed) {
             learningState.run={
               lessonId:lesson.id,questionIndex:run.questionIndex,correct:run.correct,
               selectedIndex:Number.isInteger(run.selectedIndex)?run.selectedIndex:null,
@@ -4505,10 +4554,24 @@
 
     function isLearningLessonUnlocked(lesson) {
       const index=learningLessons.indexOf(lesson);
-      return index<=0||Boolean(learningState.completed[learningLessons[index-1].id]?.completed);
+      return index<=0||Boolean(learningState.completed[lesson.id]?.completed)||learningState.run?.lessonId===lesson.id||Boolean(learningState.completed[learningLessons[index-1].id]?.completed);
     }
 
     function renderLessonCatalogActions() {
+      const catalog=document.getElementById("lessonCatalog");
+      Array.from(catalog.querySelectorAll(".lesson-card"))
+        .sort((first,second)=>{
+          const firstId=first.querySelector("[data-lesson-id]")?.dataset.lessonId;
+          const secondId=second.querySelector("[data-lesson-id]")?.dataset.lessonId;
+          return learningLessonOrderIndex.get(firstId)-learningLessonOrderIndex.get(secondId);
+        })
+        .forEach((card,index)=>{
+          const lessonId=card.querySelector("[data-lesson-id]")?.dataset.lessonId;
+          const orderItem=learningLessonOrder[index];
+          const label=card.querySelector(".lesson-index");
+          if(label&&orderItem?.id===lessonId)label.textContent=`${String(index+1).padStart(2,"0")} · ${orderItem.label}`;
+          catalog.append(card);
+        });
       document.querySelectorAll("#lessonCatalog [data-lesson-id]").forEach(button=>{
         const lesson=learningLessons.find(item=>item.id===button.dataset.lessonId);
         if(!lesson)return;
