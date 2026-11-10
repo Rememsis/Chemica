@@ -249,9 +249,7 @@
     .molecule-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(23,27,24,.78); }
     .molecule-toolbar label { color: #8d958c; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
     .molecule-select { min-width: 190px; height: 38px; padding: 0 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: #202520; font-size: 12px; }
-    .molecule-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
-    .molecule-chip { padding: 7px 10px; border: 1px solid rgba(235,239,224,.1); border-radius: 999px; color: #9da49b; background: rgba(255,255,255,.025); font-size: 10px; cursor: pointer; }
-    .molecule-chip:hover, .molecule-chip[aria-pressed="true"] { border-color: rgba(201,239,119,.45); color: var(--accent); background: rgba(201,239,119,.08); }
+    #moleculePage .molecule-select { flex: 1; }
     .molecule-overview { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px; margin-bottom: 15px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 17px; background: linear-gradient(130deg, rgba(33,43,38,.96), rgba(24,28,34,.96)); }
     .molecule-title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
     .molecule-title-row h2 { margin: 0; font-size: clamp(24px, 3vw, 36px); letter-spacing: -.06em; font-weight: 610; }
@@ -265,7 +263,10 @@
     .molecule-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 17px; border-bottom: 1px solid var(--line); }
     .molecule-card-head h3 { margin: 0; font-size: 12px; font-weight: 680; }
     .molecule-card-head span { color: #838d84; font-size: 9px; }
-    .molecule-model { min-height: calc(350px * var(--model-scale)); display: grid; place-items: center; padding: 10px 18px; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); }
+    .molecule-model { position: relative; min-height: calc(350px * var(--model-scale)); overflow: hidden; background: radial-gradient(ellipse at center, rgba(90,120,145,.08), transparent 68%); touch-action: none; }
+    .molecule-model canvas { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
+    .molecule-model-status { position: absolute; inset: 0; display: grid; place-items: center; color: #8d958c; font-size: 11px; }
+    .molecule-model.model-error { display: grid; place-items: center; padding: 24px; color: #f2bf87; font-size: 12px; line-height: 1.6; text-align: center; }
     .molecule-svg { width: min(100%, calc(540px * var(--model-scale))); max-height: calc(350px * var(--model-scale)); overflow: visible; }
     .molecule-svg text { font-family: Inter, ui-sans-serif, system-ui, sans-serif; dominant-baseline: middle; text-anchor: middle; }
     .molecule-svg .atom-label { fill: #f0eee8; font-size: 17px; font-weight: 700; }
@@ -776,7 +777,6 @@
       .molecule-workbench { grid-template-columns: 1fr; }
       .molecule-overview { grid-template-columns: 1fr; padding: 18px; }
       .molecule-badges { justify-content: flex-start; }
-      .molecule-picker { margin-left: 0; }
       .molecule-toolbar { align-items: flex-start; flex-direction: column; }
       .molecule-select { width: 100%; }
       .builder-workbench { grid-template-columns: 1fr; }
@@ -1017,7 +1017,6 @@
     <section class="molecule-toolbar" aria-label="Choose a molecule">
       <label for="moleculeSelect">Real molecule</label>
       <select class="molecule-select" id="moleculeSelect"></select>
-      <div class="molecule-picker" id="moleculePicker" aria-label="Molecule examples"></div>
     </section>
 
     <section class="molecule-overview" aria-live="polite">
@@ -1034,13 +1033,13 @@
 
     <section class="molecule-workbench" aria-label="Interactive molecular model and properties">
       <article class="molecule-card">
-        <div class="molecule-card-head"><h3>Interactive molecule</h3><span>Approximate 2D projection · not to scale</span></div>
-        <div class="molecule-model" id="moleculeModel"></div>
+        <div class="molecule-card-head"><h3>Interactive 3D molecule</h3><span>Idealized VSEPR model · not to scale</span></div>
+        <div class="molecule-model" id="moleculeModel" aria-label="Interactive three-dimensional molecule"><span class="molecule-model-status">Loading 3D model…</span></div>
         <div class="molecule-model-controls">
           <label class="molecule-toggle"><input id="showPartialCharges" type="checkbox" checked> Partial charges</label>
           <label class="molecule-toggle"><input id="showMolecularDipole" type="checkbox" checked> Molecular dipole</label>
           <label class="molecule-toggle"><input id="showLonePairs" type="checkbox"> Lone pairs</label>
-          <span class="model-hint">Arrow points toward δ−; crossed tail marks δ+</span>
+          <span class="model-hint">Drag to rotate · scroll to zoom · arrow points toward δ−</span>
         </div>
       </article>
       <article class="molecule-card">
@@ -1184,8 +1183,8 @@
           </div>
         </section>
         <article class="molecule-card">
-          <div class="molecule-card-head"><h3>Bond arrangement</h3><span>Approximate 2D VSEPR projection</span></div>
-          <div class="molecule-model builder-model" id="builderModel"></div>
+          <div class="molecule-card-head"><h3>3D bond arrangement</h3><span>Idealized VSEPR model</span></div>
+          <div class="molecule-model builder-model" id="builderModel" aria-label="Interactive three-dimensional VSEPR model"><span class="molecule-model-status">Loading 3D model…</span></div>
         </article>
         <p class="builder-note" id="builderAngle"></p>
       </div>
@@ -1734,8 +1733,9 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><time datetime="2026-11-09">November 9, 2026</time><h2>New Menu Layout and More Tools<span class="update-badge">NEW</span></h2><p>Easily Navigate through the lessons. Also added new resources and new rules for science labs.</p></article>
-      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Meet Chema AI (Beta)</h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-09">November 9, 2026</time><h2>Version 1.2.0 - New Menu Layout and More Tools, Added 3D interactive models instead of 2D<span class="update-badge">NEW</span><span class="update-badge">MAJOR UPDATE</span></h2><p>Easily Navigate through the lessons. Also added new resources and new rules for science labs. Switched to Interactive 3D models instead of 2D.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Version 1.1.0 - Meet Chema AI <span class="update-badge">Beta</span></h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Version 1.0.0 <span class="update-badge">First Release</span></h2><p>Initial Release to Public</p></article>
     </section>
   </main>
 
@@ -3196,6 +3196,150 @@
         imf:["Dipole–dipole","London dispersion"],imfNote:"ClF₃ is a polar interhalogen molecule.",
         atoms:[{symbol:"Cl",x:250,y:155,partial:"δ+",central:true,lonePairs:[-35,35]},{symbol:"F",x:250,y:45,partial:"δ−",lonePairs:[]},{symbol:"F",x:250,y:265,partial:"δ−",lonePairs:[]},{symbol:"F",x:115,y:155,partial:"δ−",lonePairs:[]}],
         bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:{from:[400,244],to:[280,244]},cancel:false
+      },
+      {
+        id:"hydrogen-sulfide",name:"Hydrogen sulfide",formula:"H₂S",axe:"AX₂E₂",electronGeometry:"Tetrahedral",shape:"Bent",angle:"≈92°",
+        central:"S",summary:"Two S–H bonds and two lone pairs give a bent molecule. The H–S–H angle is smaller than water’s.",
+        polarity:"Polar",dipoleText:"The bent shape keeps the S–H bond dipoles from cancelling.",
+        bondDipoles:"The two bond dipoles add along the angle bisector.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"H₂S does not form the strong hydrogen-bond network found in water.",
+        atoms:[{symbol:"S",x:250,y:155,partial:"δ−",central:true,lonePairs:[-135,-45]},{symbol:"H",x:165,y:210,partial:"δ+",lonePairs:[]},{symbol:"H",x:335,y:210,partial:"δ+",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1]],dipole:{from:[250,250],to:[250,185]},cancel:false
+      },
+      {
+        id:"phosphine",name:"Phosphine",formula:"PH₃",axe:"AX₃E",electronGeometry:"Tetrahedral",shape:"Trigonal pyramidal",angle:"≈93.5°",
+        central:"P",summary:"Three P–H bonds and one lone pair make a trigonal-pyramidal molecule with a relatively small bond angle.",
+        polarity:"Very weakly polar",dipoleText:"PH₃ has a small molecular dipole compared with NH₃.",
+        bondDipoles:"The pyramidal arrangement is not perfectly symmetric in its charge distribution.",
+        imf:["London dispersion","Very weak dipole–dipole"],imfNote:"PH₃ does not form the strong hydrogen bonds characteristic of NH₃.",
+        atoms:[{symbol:"P",x:250,y:155,partial:"δ−",central:true,lonePairs:[90]},{symbol:"H",x:155,y:220,partial:"δ+",lonePairs:[]},{symbol:"H",x:345,y:220,partial:"δ+",lonePairs:[]},{symbol:"H",x:250,y:55,partial:"δ+",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:{from:[250,245],to:[250,180]},cancel:false
+      },
+      {
+        id:"silane",name:"Silane",formula:"SiH₄",axe:"AX₄",electronGeometry:"Tetrahedral",shape:"Tetrahedral",angle:"109.5°",
+        central:"Si",summary:"Four Si–H bonds point toward the corners of a tetrahedron.",
+        polarity:"Nonpolar molecule",dipoleText:"The tetrahedral arrangement is symmetric, so the small bond dipoles cancel.",
+        bondDipoles:"Four equivalent bonds are arranged symmetrically around silicon.",
+        imf:["London dispersion"],imfNote:"Silane is a simple tetrahedral hydride of silicon.",
+        atoms:[{symbol:"Si",x:250,y:155,partial:"δ+",central:true,lonePairs:[]},{symbol:"H",x:140,y:78,partial:"δ−",lonePairs:[]},{symbol:"H",x:360,y:78,partial:"δ−",lonePairs:[]},{symbol:"H",x:140,y:232,partial:"δ−",lonePairs:[]},{symbol:"H",x:360,y:232,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1]],dipole:null,cancel:true
+      },
+      {
+        id:"ozone",name:"Ozone",formula:"O₃",axe:"AX₂E",electronGeometry:"Trigonal planar",shape:"Bent",angle:"≈117°",
+        central:"O",summary:"The central oxygen has two bonding domains and one lone pair. Resonance makes the two O–O bonds equivalent in the real molecule.",
+        polarity:"Polar",dipoleText:"The bent molecule has a net dipole along its angle bisector.",
+        bondDipoles:"The bent geometry prevents the bond dipoles from cancelling.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"Ozone is a bent, resonance-stabilized form of elemental oxygen.",
+        atoms:[{symbol:"O",x:250,y:155,partial:"δ+",central:true,lonePairs:[-90]},{symbol:"O",x:140,y:220,partial:"δ−",lonePairs:[-145,145]},{symbol:"O",x:360,y:220,partial:"δ−",lonePairs:[-35,35]}],
+        bonds:[[0,1,2],[0,2,1]],dipole:{from:[250,250],to:[250,180]},cancel:false
+      },
+      {
+        id:"xenon-difluoride",name:"Xenon difluoride",formula:"XeF₂",axe:"AX₂E₃",electronGeometry:"Trigonal bipyramidal",shape:"Linear",angle:"180°",
+        central:"Xe",summary:"Three equatorial lone pairs leave the two Xe–F bonds in opposite axial positions, giving a linear molecule.",
+        polarity:"Nonpolar molecule",dipoleText:"The two equal Xe–F bond dipoles point in opposite directions and cancel.",
+        bondDipoles:"The linear geometry makes the bond dipoles equal and opposite.",
+        imf:["London dispersion"],imfNote:"XeF₂ is a real example of a linear molecule with five electron domains.",
+        atoms:[{symbol:"Xe",x:250,y:155,partial:"δ+",central:true,lonePairs:[0,120,240]},{symbol:"F",x:125,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:375,y:155,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1]],dipole:null,cancel:true
+      },
+      {
+        id:"sulfur-tetrafluoride",name:"Sulfur tetrafluoride",formula:"SF₄",axe:"AX₄E",electronGeometry:"Trigonal bipyramidal",shape:"Seesaw",angle:"<90°, <120°, 180°",
+        central:"S",summary:"One equatorial lone pair in a trigonal-bipyramidal electron arrangement leaves four S–F bonds in a seesaw shape.",
+        polarity:"Polar",dipoleText:"The seesaw shape is asymmetric, so its bond dipoles do not cancel.",
+        bondDipoles:"The axial and equatorial bond dipoles have a nonzero vector sum.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"SF₄ is a classic AX₄E seesaw-shaped molecule.",
+        atoms:[{symbol:"S",x:250,y:155,partial:"δ+",central:true,lonePairs:[0]},{symbol:"F",x:250,y:35,partial:"δ−",lonePairs:[]},{symbol:"F",x:250,y:275,partial:"δ−",lonePairs:[]},{symbol:"F",x:130,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:370,y:155,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1]],dipole:{from:[380,250],to:[270,250]},cancel:false
+      },
+      {
+        id:"bromine-pentafluoride",name:"Bromine pentafluoride",formula:"BrF₅",axe:"AX₅E",electronGeometry:"Octahedral",shape:"Square pyramidal",angle:"≈90°, 180°",
+        central:"Br",summary:"Five Br–F bonds and one lone pair give six electron domains. The molecular shape is square pyramidal.",
+        polarity:"Polar",dipoleText:"The square-pyramidal shape is asymmetric, leaving a net dipole.",
+        bondDipoles:"The four square-plane bond dipoles cancel in pairs; the axial bond is not cancelled.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"BrF₅ is a real AX₅E example with octahedral electron geometry.",
+        atoms:[{symbol:"Br",x:250,y:155,partial:"δ+",central:true,lonePairs:[-90]},{symbol:"F",x:250,y:35,partial:"δ−",lonePairs:[]},{symbol:"F",x:130,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:370,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:190,y:230,partial:"δ−",lonePairs:[]},{symbol:"F",x:310,y:230,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1]],dipole:{from:[250,265],to:[250,195]},cancel:false
+      },
+      {
+        id:"nitrogen-trifluoride",name:"Nitrogen trifluoride",formula:"NF₃",axe:"AX₃E",electronGeometry:"Tetrahedral",shape:"Trigonal pyramidal",angle:"≈102.5°",
+        central:"N",summary:"Three N–F bonds and one lone pair arrange four electron domains tetrahedrally, giving the molecule a trigonal-pyramidal shape.",
+        polarity:"Polar",dipoleText:"NF₃ has a small net dipole; the N–F bond dipoles oppose the lone-pair direction.",
+        bondDipoles:"The three bond dipoles do not cancel completely in the pyramidal shape.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"Unlike NH₃, NF₃ cannot donate hydrogen bonds.",
+        atoms:[{symbol:"N",x:250,y:155,partial:"δ+",central:true,lonePairs:[90]},{symbol:"F",x:145,y:220,partial:"δ−",lonePairs:[45,135,225]},{symbol:"F",x:355,y:220,partial:"δ−",lonePairs:[-45,45,135]},{symbol:"F",x:250,y:50,partial:"δ−",lonePairs:[0,180,90]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:{from:[250,240],to:[250,180]},cancel:false
+      },
+      {
+        id:"boron-trichloride",name:"Boron trichloride",formula:"BCl₃",axe:"AX₃",electronGeometry:"Trigonal planar",shape:"Trigonal planar",angle:"120°",
+        central:"B",summary:"Three B–Cl bonds spread evenly in one plane, making a trigonal-planar molecule.",
+        polarity:"Nonpolar molecule",dipoleText:"The three identical B–Cl bond dipoles cancel by symmetry.",
+        bondDipoles:"The bond dipoles point toward chlorine and cancel in the trigonal plane.",
+        imf:["London dispersion"],imfNote:"Like BF₃, BCl₃ is a planar molecule with polar bonds but no net dipole.",
+        atoms:[{symbol:"B",x:250,y:155,partial:"δ+",central:true,lonePairs:[]},{symbol:"Cl",x:120,y:230,partial:"δ−",lonePairs:[45,135,-135]},{symbol:"Cl",x:380,y:230,partial:"δ−",lonePairs:[45,135,-135]},{symbol:"Cl",x:250,y:45,partial:"δ−",lonePairs:[0,180,90]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:null,cancel:true
+      },
+      {
+        id:"silicon-tetrachloride",name:"Silicon tetrachloride",formula:"SiCl₄",axe:"AX₄",electronGeometry:"Tetrahedral",shape:"Tetrahedral",angle:"109.5°",
+        central:"Si",summary:"Four Si–Cl bonds point to the corners of a tetrahedron.",
+        polarity:"Nonpolar molecule",dipoleText:"The tetrahedral arrangement makes the four Si–Cl bond dipoles cancel.",
+        bondDipoles:"Each Si–Cl bond is polar, but their symmetric geometry gives zero net dipole.",
+        imf:["London dispersion"],imfNote:"SiCl₄ is a molecular liquid at room temperature and hydrolyzes on contact with water.",
+        atoms:[{symbol:"Si",x:250,y:155,partial:"δ+",central:true,lonePairs:[]},{symbol:"Cl",x:140,y:78,partial:"δ−",lonePairs:[]},{symbol:"Cl",x:360,y:78,partial:"δ−",lonePairs:[]},{symbol:"Cl",x:140,y:232,partial:"δ−",lonePairs:[]},{symbol:"Cl",x:360,y:232,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1]],dipole:null,cancel:true
+      },
+      {
+        id:"carbon-disulfide",name:"Carbon disulfide",formula:"CS₂",axe:"AX₂",electronGeometry:"Linear",shape:"Linear",angle:"180°",
+        central:"C",summary:"Two C=S bonding domains point in opposite directions, giving CS₂ a linear structure.",
+        polarity:"Nonpolar molecule",dipoleText:"The two identical C=S bond dipoles cancel in the linear molecule.",
+        bondDipoles:"The equal bond dipoles point in opposite directions.",
+        imf:["London dispersion"],imfNote:"CS₂ is a nonpolar molecule despite its polarizable electron cloud.",
+        atoms:[{symbol:"C",x:250,y:160,partial:"δ+",central:true,lonePairs:[]},{symbol:"S",x:110,y:160,partial:"δ−",lonePairs:[-90,90]},{symbol:"S",x:390,y:160,partial:"δ−",lonePairs:[-90,90]}],
+        bonds:[[0,1,2],[0,2,2]],dipole:null,cancel:true
+      },
+      {
+        id:"beryllium-chloride",name:"Beryllium chloride (gas)",formula:"BeCl₂",axe:"AX₂",electronGeometry:"Linear",shape:"Linear",angle:"180°",
+        central:"Be",summary:"An isolated BeCl₂ molecule is linear, with two bonding domains around beryllium. Solid BeCl₂ has a different extended structure.",
+        polarity:"Nonpolar molecule",dipoleText:"The two equal Be–Cl bond dipoles cancel in the gas-phase linear molecule.",
+        bondDipoles:"The bond dipoles point in opposite directions.",
+        imf:["London dispersion"],imfNote:"The linear geometry describes an isolated gas-phase molecule, not the solid.",
+        atoms:[{symbol:"Be",x:250,y:160,partial:"δ+",central:true,lonePairs:[]},{symbol:"Cl",x:110,y:160,partial:"δ−",lonePairs:[-90,90]},{symbol:"Cl",x:390,y:160,partial:"δ−",lonePairs:[-90,90]}],
+        bonds:[[0,1,1],[0,2,1]],dipole:null,cancel:true
+      },
+      {
+        id:"sulfur-difluoride",name:"Sulfur difluoride",formula:"SF₂",axe:"AX₂E₂",electronGeometry:"Tetrahedral",shape:"Bent",angle:"≈98°",
+        central:"S",summary:"Two S–F bonds and two lone pairs give a tetrahedral electron arrangement and a bent molecular shape.",
+        polarity:"Polar",dipoleText:"The bent structure gives SF₂ a net dipole toward the fluorine side.",
+        bondDipoles:"The two S–F bond dipoles add along the angle bisector.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"SF₂ is a reactive sulfur halide with a bent molecular geometry.",
+        atoms:[{symbol:"S",x:250,y:155,partial:"δ+",central:true,lonePairs:[-135,-45]},{symbol:"F",x:150,y:220,partial:"δ−",lonePairs:[45,135,225]},{symbol:"F",x:350,y:220,partial:"δ−",lonePairs:[-45,45,135]}],
+        bonds:[[0,1,1],[0,2,1]],dipole:{from:[250,250],to:[250,185]},cancel:false
+      },
+      {
+        id:"bromine-trifluoride",name:"Bromine trifluoride",formula:"BrF₃",axe:"AX₃E₂",electronGeometry:"Trigonal bipyramidal",shape:"T-shaped",angle:"≈86°, 180°",
+        central:"Br",summary:"Three Br–F bonds and two equatorial lone pairs give BrF₃ a T-shaped molecular geometry.",
+        polarity:"Polar",dipoleText:"The T shape is asymmetric, so the bond dipoles do not cancel.",
+        bondDipoles:"The two axial bond dipoles largely cancel, leaving a net dipole along the third bond.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"BrF₃ is a real AX₃E₂ example of trigonal-bipyramidal electron geometry.",
+        atoms:[{symbol:"Br",x:250,y:155,partial:"δ+",central:true,lonePairs:[-35,35]},{symbol:"F",x:250,y:45,partial:"δ−",lonePairs:[]},{symbol:"F",x:250,y:265,partial:"δ−",lonePairs:[]},{symbol:"F",x:115,y:155,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:{from:[400,244],to:[280,244]},cancel:false
+      },
+      {
+        id:"iodine-trichloride",name:"Iodine trichloride",formula:"ICl₃",axe:"AX₃E₂",electronGeometry:"Trigonal bipyramidal",shape:"T-shaped",angle:"≈90°, 180°",
+        central:"I",summary:"Three I–Cl bonds and two equatorial lone pairs make a T-shaped molecule.",
+        polarity:"Polar",dipoleText:"The asymmetric T shape gives ICl₃ a net dipole.",
+        bondDipoles:"The axial bond dipoles largely cancel; the third bond leaves a net dipole.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"ICl₃ is a real AX₃E₂ example with a T-shaped molecular geometry.",
+        atoms:[{symbol:"I",x:250,y:155,partial:"δ+",central:true,lonePairs:[-35,35]},{symbol:"Cl",x:250,y:45,partial:"δ−",lonePairs:[]},{symbol:"Cl",x:250,y:265,partial:"δ−",lonePairs:[]},{symbol:"Cl",x:115,y:155,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1]],dipole:{from:[400,244],to:[280,244]},cancel:false
+      },
+      {
+        id:"iodine-pentafluoride",name:"Iodine pentafluoride",formula:"IF₅",axe:"AX₅E",electronGeometry:"Octahedral",shape:"Square pyramidal",angle:"≈90°, 180°",
+        central:"I",summary:"Five I–F bonds and one lone pair give six electron domains and a square-pyramidal molecular shape.",
+        polarity:"Polar",dipoleText:"The square-pyramidal arrangement is asymmetric and has a net dipole.",
+        bondDipoles:"The four basal bond dipoles cancel in pairs, but the axial bond remains.",
+        imf:["Dipole–dipole","London dispersion"],imfNote:"IF₅ is a real example of an AX₅E square-pyramidal molecule.",
+        atoms:[{symbol:"I",x:250,y:155,partial:"δ+",central:true,lonePairs:[-90]},{symbol:"F",x:250,y:35,partial:"δ−",lonePairs:[]},{symbol:"F",x:130,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:370,y:155,partial:"δ−",lonePairs:[]},{symbol:"F",x:190,y:230,partial:"δ−",lonePairs:[]},{symbol:"F",x:310,y:230,partial:"δ−",lonePairs:[]}],
+        bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1]],dipole:{from:[250,265],to:[250,195]},cancel:false
       }
     ];
 
@@ -3293,6 +3437,12 @@
       return svg;
     }
 
+    function updateMolecule3D(target, molecule, options = {}) {
+      window.dispatchEvent(new CustomEvent("molecule3d:update", {
+        detail: {target, molecule, ...options}
+      }));
+    }
+
     function renderMolecule(molecule) {
       activeMolecule = molecule;
       document.getElementById("moleculeName").textContent = molecule.name;
@@ -3316,33 +3466,27 @@
       const note = document.createElement("small");
       note.textContent = molecule.imfNote;
       imf.append(note);
-      document.getElementById("moleculeModel").replaceChildren(renderMoleculeSvg(molecule,"model"));
+      updateMolecule3D("moleculeModel",molecule,{
+        showPartialCharges:document.getElementById("showPartialCharges").checked,
+        showDipole:document.getElementById("showMolecularDipole").checked,
+        showLonePairs:document.getElementById("showLonePairs").checked
+      });
       document.getElementById("lewisDiagram").replaceChildren(renderMoleculeSvg(molecule,"lewis"));
       document.getElementById("vseprDiagram").replaceChildren(renderMoleculeSvg(molecule,"vsepr"));
       document.getElementById("moleculeSelect").value = molecule.id;
-      document.querySelectorAll(".molecule-chip").forEach(button => button.setAttribute("aria-pressed",String(button.dataset.molecule===molecule.id)));
     }
 
     function initializeMoleculeTab() {
       const select = document.getElementById("moleculeSelect");
-      const picker = document.getElementById("moleculePicker");
       molecules.forEach(molecule => {
         const option = document.createElement("option");
         option.value = molecule.id;
         option.textContent = `${molecule.name} · ${molecule.formula}`;
         select.append(option);
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "molecule-chip";
-        button.dataset.molecule = molecule.id;
-        button.textContent = molecule.formula;
-        button.setAttribute("aria-label",molecule.name);
-        button.addEventListener("click",()=>renderMolecule(molecule));
-        picker.append(button);
       });
       select.addEventListener("change",()=>renderMolecule(molecules.find(molecule=>molecule.id===select.value)||molecules[0]));
       ["showPartialCharges","showMolecularDipole","showLonePairs"].forEach(id=>{
-        document.getElementById(id).addEventListener("change",()=>document.getElementById("moleculeModel").replaceChildren(renderMoleculeSvg(activeMolecule,"model")));
+        document.getElementById(id).addEventListener("change",()=>renderMolecule(activeMolecule));
       });
       renderMolecule(molecules[0]);
     }
@@ -3465,7 +3609,7 @@
       document.getElementById("builderElectronGeometry").textContent = electronGeometry;
       document.getElementById("builderShape").textContent = shape;
       document.getElementById("builderAngle").textContent = `Typical bond angle${angle.includes(",")?"s":""}: ${angle}. Lone pairs take up more space than bonding pairs, so actual angles can differ.`;
-      document.getElementById("builderModel").replaceChildren(renderMoleculeSvg(molecule,"model",{showLonePairsOverride:true}));
+      updateMolecule3D("builderModel",molecule,{showLonePairs:true});
       document.getElementById("builderLewis").replaceChildren(renderMoleculeSvg(molecule,"lewis"));
       document.getElementById("builderVsepr").replaceChildren(renderMoleculeSvg(molecule,"vsepr"));
     }
@@ -4768,6 +4912,10 @@
     initializeDisplaySettings();
     initializeMoleculeTab();
     initializeBuilder();
+    window.addEventListener("molecule3d:ready",()=>{
+      renderMolecule(activeMolecule);
+      renderBuilder();
+    });
     initializeThermochemistry();
     initializeLabPage();
     initializeBondExplorer();
@@ -4922,6 +5070,312 @@
     renderElements();
     renderLegend();
     updateFilters();
+  </script>
+  <script type="module">
+    const modelContainers = [...document.querySelectorAll(".molecule-model")];
+    const showLoadError = (container, error) => {
+      console.error("Could not initialize the Three.js molecule view:", error);
+      container.classList.add("model-error");
+      container.textContent = "The 3D model could not load. Check your connection and reload the page.";
+    };
+
+    try {
+      const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js");
+      const atomColors = {
+        H: 0xf0eee8, Be: 0x79a89a, B: 0xe7a399, C: 0x8e989e, N: 0x739bf2, O: 0xf06f67,
+        F: 0x8ccf8a, Si: 0xb59c8b, P: 0xe9a64d, S: 0xe5cf63,
+        Cl: 0x85c987, Br: 0x9b694f, I: 0x9a78bd, Xe: 0xb69ce5
+      };
+      const atomRadii = {H:0.18,Be:0.27,B:0.28,C:0.3,N:0.29,O:0.3,F:0.27,Si:0.34,P:0.34,S:0.33,Cl:0.33,Br:0.35,I:0.37,Xe:0.38};
+      const views = new Map();
+
+      function vectorSlots(domainCount) {
+        const points = {
+          2:[[1,0,0],[-1,0,0]],
+          3:[[1,0,0],[-0.5,0.866,0],[-0.5,-0.866,0]],
+          4:[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],
+          5:[[0,1,0],[0,-1,0],[1,0,0],[-0.5,0,0.866],[-0.5,0,-0.866]],
+          6:[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]
+        };
+        const entries = points[domainCount] || points[6];
+        return entries.map(point => new THREE.Vector3(...point).normalize());
+      }
+
+      function lonePairIndices(domainCount, count, shape) {
+        const name = (shape || "").toLowerCase();
+        if (domainCount === 5) {
+          if (name.includes("t-shaped")) return [2,3].slice(0,count);
+          if (name.includes("linear")) return [2,3,4].slice(0,count);
+          return [2,3,4,0,1].slice(0,count);
+        }
+        if (domainCount === 6) {
+          if (name.includes("square planar")) return [4,5].slice(0,count);
+          if (name.includes("square pyramidal")) return [4].slice(0,count);
+          if (name.includes("linear") && count === 4) return [0,1,2,3];
+          if (name.includes("t-shaped") && count === 3) return [2,3,4];
+          if (count === 2) return [4,5];
+          if (count === 1) return [4];
+        }
+        return Array.from({length:count},(_,index)=>index);
+      }
+
+      function moleculeGeometry(molecule) {
+        const atoms = molecule.atoms || [];
+        const centerIndex = Math.max(0,atoms.findIndex(atom=>atom.central));
+        const center = atoms[centerIndex] || {};
+        const connections = (molecule.bonds || []).map(([a,b,order]) => ({
+          atomIndex:a===centerIndex?b:a,
+          order,
+          attached:a===centerIndex||b===centerIndex
+        })).filter(connection=>connection.attached);
+        const pairCount = center.lonePairs?.length ?? 0;
+        const domainCount = Math.max(2,Math.min(6,connections.length+pairCount));
+        const slots = vectorSlots(domainCount);
+        const pairSlots = lonePairIndices(domainCount,pairCount,molecule.shape);
+        const pairSet = new Set(pairSlots);
+        let lonePairs = slots.filter((_,index)=>pairSet.has(index));
+        let bonds = slots.filter((_,index)=>!pairSet.has(index)).slice(0,connections.length);
+
+        if ((molecule.shape || "").toLowerCase().includes("bent") && connections.length === 2) {
+          const angle = Number((molecule.angle || "").match(/\d+(?:\.\d+)?/)?.[0]) || 109.5;
+          const halfAngle = THREE.MathUtils.degToRad(angle/2);
+          bonds = [
+            new THREE.Vector3(-Math.sin(halfAngle),0,Math.cos(halfAngle)),
+            new THREE.Vector3(Math.sin(halfAngle),0,Math.cos(halfAngle))
+          ];
+          if (domainCount === 4 && pairCount === 2) {
+            const pairAngle = Math.acos(THREE.MathUtils.clamp(1/(3*Math.cos(halfAngle)),-1,1));
+            const pairZ = -Math.cos(pairAngle);
+            const pairSide = Math.sin(pairAngle);
+            lonePairs = [
+              new THREE.Vector3(0,pairSide,pairZ),
+              new THREE.Vector3(0,-pairSide,pairZ)
+            ];
+          }
+        }
+
+        const positions = atoms.map(()=>new THREE.Vector3());
+        const radii = atoms.map(atom=>atomRadii[atom.symbol] || 0.3);
+        connections.forEach((connection,index)=>{
+          const direction = bonds[index] || vectorSlots(6)[index];
+          const bondLength = connection.atomIndex >= 0 && atoms[connection.atomIndex]?.symbol === "H" ? 1.3 : 1.55;
+          positions[connection.atomIndex] = direction.clone().multiplyScalar(bondLength);
+        });
+        return {centerIndex,connections,positions,radii,lonePairs};
+      }
+
+      function makeTextSprite(text, color, size) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 256;
+        canvas.height = 128;
+        const context = canvas.getContext("2d");
+        context.font = "700 74px system-ui, sans-serif";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillStyle = color;
+        context.fillText(text,128,64);
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthWrite:false}));
+        sprite.scale.set(size*2,size,1);
+        return sprite;
+      }
+
+      function disposeGroup(group) {
+        for (const child of [...group.children]) {
+          group.remove(child);
+          child.traverse(object=>{
+            object.geometry?.dispose();
+            if (object.material) {
+              const materials = Array.isArray(object.material) ? object.material : [object.material];
+              materials.forEach(material=>{
+                material.map?.dispose();
+                material.dispose();
+              });
+            }
+          });
+        }
+      }
+
+      function createView(container) {
+        const renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1,2));
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.15;
+        renderer.domElement.setAttribute("role","img");
+        renderer.domElement.setAttribute("aria-label","Three-dimensional molecule");
+        container.replaceChildren(renderer.domElement);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(36,1,0.1,100);
+        camera.position.set(0,0,6);
+        scene.add(new THREE.AmbientLight(0xffffff,1.8));
+        const keyLight = new THREE.DirectionalLight(0xffffff,3.2);
+        keyLight.position.set(-3,4,6);
+        scene.add(keyLight);
+        const fillLight = new THREE.DirectionalLight(0x9ec9ff,1.3);
+        fillLight.position.set(4,-2,3);
+        scene.add(fillLight);
+        const root = new THREE.Group();
+        root.rotation.set(0.18,0.3,0);
+        scene.add(root);
+        let moleculeLabel = "Interactive three-dimensional molecule";
+        let dragging = null;
+
+        function draw() {
+          renderer.render(scene,camera);
+        }
+
+        function resize() {
+          const width = container.clientWidth;
+          const height = container.clientHeight;
+          if (!width || !height) return;
+          renderer.setSize(width,height,false);
+          camera.aspect = width/height;
+          camera.updateProjectionMatrix();
+          draw();
+        }
+
+        const resizeObserver = new ResizeObserver(resize);
+        resizeObserver.observe(container);
+        resize();
+
+        renderer.domElement.addEventListener("pointerdown",event=>{
+          dragging = {x:event.clientX,y:event.clientY};
+          renderer.domElement.setPointerCapture(event.pointerId);
+        });
+        renderer.domElement.addEventListener("pointermove",event=>{
+          if (!dragging) return;
+          root.rotation.y += (event.clientX-dragging.x)*0.008;
+          root.rotation.x = THREE.MathUtils.clamp(root.rotation.x+(event.clientY-dragging.y)*0.008,-1.5,1.5);
+          dragging = {x:event.clientX,y:event.clientY};
+          draw();
+        });
+        renderer.domElement.addEventListener("pointerup",()=>{dragging=null;});
+        renderer.domElement.addEventListener("pointercancel",()=>{dragging=null;});
+        renderer.domElement.addEventListener("wheel",event=>{
+          event.preventDefault();
+          camera.position.z = THREE.MathUtils.clamp(camera.position.z+Math.sign(event.deltaY)*0.35,3.2,9);
+          draw();
+        },{passive:false});
+
+        return {
+          update(state) {
+            const molecule = state.molecule;
+            if (!molecule) return;
+            disposeGroup(root);
+            const {centerIndex,connections,positions,radii,lonePairs} = moleculeGeometry(molecule);
+            const centerPosition = positions[centerIndex];
+            const moleculeName = `${molecule.name || "Molecule"} ${molecule.formula || ""}`.trim();
+            moleculeLabel = `${moleculeName}, ${molecule.shape || "molecular shape"}; drag to rotate, scroll to zoom`;
+            renderer.domElement.setAttribute("aria-label",moleculeLabel);
+            container.setAttribute("aria-label",moleculeLabel);
+
+            connections.forEach((connection,index)=>{
+              const atomIndex = connection.atomIndex;
+              const start = centerPosition.clone();
+              const end = positions[atomIndex].clone();
+              const direction = end.clone().sub(start).normalize();
+              const perpendicular = new THREE.Vector3().crossVectors(direction,new THREE.Vector3(0,0,1));
+              if (perpendicular.lengthSq()<0.01) perpendicular.set(0,1,0).cross(direction);
+              perpendicular.normalize();
+              const order = Math.max(1,Math.min(3,Number(connection.order)||1));
+              const offsets = order===1 ? [0] : order===2 ? [-0.075,0.075] : [-0.13,0,0.13];
+              offsets.forEach(offset=>{
+                const bondStart = start.clone().add(direction.clone().multiplyScalar(radii[centerIndex]*0.72)).add(perpendicular.clone().multiplyScalar(offset));
+                const bondEnd = end.clone().sub(direction.clone().multiplyScalar(radii[atomIndex]*0.72)).add(perpendicular.clone().multiplyScalar(offset));
+                const length = bondStart.distanceTo(bondEnd);
+                const bond = new THREE.Mesh(
+                  new THREE.CylinderGeometry(0.052,0.052,length,14),
+                  new THREE.MeshStandardMaterial({color:0xcbd3d0,roughness:0.4})
+                );
+                bond.position.copy(bondStart).add(bondEnd).multiplyScalar(0.5);
+                bond.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),bondEnd.sub(bondStart).normalize());
+                root.add(bond);
+              });
+            });
+
+            (molecule.atoms || []).forEach((atom,index)=>{
+              const color = atomColors[atom.symbol] || 0x9da5a2;
+              const radius = radii[index]*(index===centerIndex?1.08:1);
+              const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(radius,32,24),
+                new THREE.MeshStandardMaterial({color,roughness:0.31,metalness:0.02})
+              );
+              sphere.position.copy(positions[index]);
+              root.add(sphere);
+
+              const label = makeTextSprite(atom.symbol,"#ffffff",0.31);
+              label.position.copy(positions[index]).add(new THREE.Vector3(0,0,radius*0.85+0.12));
+              root.add(label);
+
+              if (state.showPartialCharges && atom.partial) {
+                const negative = atom.partial.includes("−");
+                const charge = makeTextSprite(atom.partial,negative?"#8dd9ff":"#f2bf87",0.23);
+                charge.position.copy(positions[index]).add(new THREE.Vector3(0,radius+0.28,radius*0.6));
+                root.add(charge);
+              }
+            });
+
+            if (state.showLonePairs) {
+              lonePairs.forEach(direction=>{
+                [0.64,0.86].forEach(distance=>{
+                  const dot = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.095,18,14),
+                    new THREE.MeshStandardMaterial({color:0xc7a6fa,emissive:0x5d398a,transparent:true,opacity:0.9})
+                  );
+                  dot.position.copy(centerPosition).addScaledVector(direction,distance);
+                  root.add(dot);
+                });
+              });
+            }
+
+            if (state.showDipole && molecule.dipole) {
+              const positive = [];
+              const negative = [];
+              (molecule.atoms || []).forEach((atom,index)=>{
+                if (atom.partial?.includes("+")) positive.push(positions[index]);
+                if (atom.partial?.includes("−")) negative.push(positions[index]);
+              });
+              if (positive.length && negative.length) {
+                const average = points=>points.reduce((sum,point)=>sum.add(point),new THREE.Vector3()).multiplyScalar(1/points.length);
+                const origin = average(positive);
+                const direction = average(negative).sub(origin);
+                const distance = direction.length();
+                if (distance>0.08) {
+                  direction.normalize();
+                  root.add(new THREE.ArrowHelper(direction,origin,Math.min(distance,1.15),0xffcf70,0.22,0.14));
+                  let crossDirection = new THREE.Vector3().crossVectors(direction,new THREE.Vector3(0,0,1));
+                  if (crossDirection.lengthSq()<0.01) crossDirection.set(0,1,0).cross(direction);
+                  crossDirection.normalize().multiplyScalar(0.1);
+                  const crossGeometry = new THREE.BufferGeometry().setFromPoints([
+                    origin.clone().sub(crossDirection),
+                    origin.clone().add(crossDirection)
+                  ]);
+                  root.add(new THREE.Line(crossGeometry,new THREE.LineBasicMaterial({color:0xffcf70})));
+                }
+              }
+            }
+            draw();
+          }
+        };
+      }
+
+      for (const container of modelContainers) {
+        try {
+          views.set(container.id,createView(container));
+        } catch (error) {
+          showLoadError(container,error);
+        }
+      }
+      window.addEventListener("molecule3d:update",event=>{
+        views.get(event.detail?.target)?.update(event.detail);
+      });
+      window.dispatchEvent(new Event("molecule3d:ready"));
+    } catch (error) {
+      modelContainers.forEach(container=>showLoadError(container,error));
+    }
   </script>
 </body>
 </html>
