@@ -104,6 +104,9 @@
     .topbar-right { display: flex; align-items: center; gap: 24px; }
     .top-note { color: var(--muted); font-size: 11px; letter-spacing: .035em; }
     .top-note b { color: var(--accent); font-weight: 650; }
+    .language-picker { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 9px; }
+    .language-picker span { white-space: nowrap; }
+    .language-select { max-width: 144px; height: 34px; padding: 0 25px 0 9px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: var(--surface); font-size: 10px; cursor: pointer; }
     .menu-button {
       width: 38px; height: 38px; display: none; place-items: center;
       border: 1px solid var(--line); border-radius: 50%; background: var(--surface);
@@ -594,7 +597,11 @@
     .learning-feedback[data-result="incorrect"] strong { color: #f0a29b; }
     .learning-feedback p { margin: 6px 0 0; color: #aeb6ab; font-size: 10px; line-height: 1.6; }
     .learning-quiz-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; }
+    .learning-quiz-tools { display: flex; align-items: center; gap: 10px; }
     .learning-quiz-score { color: #ffcf70; font-size: 10px; font-weight: 670; }
+    .learning-table-button { padding: 10px 12px; border: 1px solid rgba(201,239,119,.24); border-radius: 9px; color: var(--accent); background: rgba(201,239,119,.055); font-size: 10px; font-weight: 650; cursor: pointer; }
+    .learning-table-button:hover { border-color: rgba(201,239,119,.5); background: rgba(201,239,119,.1); }
+    .learning-table-button[hidden] { display: none; }
     .learning-submit { min-width: 130px; padding: 11px 16px; border: 0; border-radius: 10px; color: #20271a; background: var(--accent); font-size: 10px; font-weight: 740; cursor: pointer; }
     .learning-submit:hover:not(:disabled) { filter: brightness(1.08); }
     .learning-submit:disabled { color: #778071; background: #30372e; cursor: not-allowed; }
@@ -682,6 +689,34 @@
     .detail-panel::after { display: none; }
     .detail-dialog.equipment-dialog { width: min(840px,calc(100% - 24px)); height: fit-content; max-width: 840px; max-height: min(92vh,860px); overflow: auto; border-radius: 17px; background: transparent; }
     .detail-dialog.equipment-dialog .equipment-panel { display: block; width: 100%; height: auto; min-height: 0; padding: 0; overflow: hidden; border-radius: 17px; background: var(--surface-raised); }
+    .detail-dialog.periodic-reference-dialog { width: min(1120px,calc(100% - 24px)); height: auto; max-width: 1120px; max-height: min(92vh,900px); overflow: auto; border-radius: 17px; background: transparent; }
+    .detail-dialog.periodic-reference-dialog .periodic-reference-panel { display: block; width: 100%; height: auto; max-height: none; padding: 0; overflow: hidden; border-radius: 17px; background: var(--surface-raised); }
+    .periodic-reference-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 19px 21px 14px; border-bottom: 1px solid var(--line); }
+    .periodic-reference-kicker { color: var(--accent); font-size: 9px; font-weight: 720; letter-spacing: .13em; text-transform: uppercase; }
+    .periodic-reference-header h2 { margin: 4px 0 0; font-size: 20px; letter-spacing: -.04em; }
+    .periodic-reference-description { margin: 5px 0 0; color: #929b91; font-size: 10px; line-height: 1.5; }
+    .periodic-reference-body { padding: 14px 18px 18px; }
+    .periodic-reference-scroll { overflow-x: auto; padding: 2px 2px 8px; scrollbar-color: #3a4439 transparent; scrollbar-width: thin; }
+    .periodic-reference-inner { min-width: 760px; }
+    .periodic-reference-groups, .periodic-reference-grid { display: grid; grid-template-columns: repeat(18,minmax(0,1fr)); gap: 4px; }
+    .periodic-reference-groups { margin-bottom: 5px; }
+    .periodic-reference-groups span { color: #7c877b; font-size: 8px; text-align: center; }
+    .periodic-reference-grid { grid-template-rows: repeat(9,42px); }
+    .periodic-reference-cell { position: relative; display: grid; min-width: 0; place-items: center; padding: 3px 1px; border: 1px solid rgba(255,255,255,.12); border-radius: 6px; color: white; background: var(--tile-color); cursor: pointer; }
+    .periodic-reference-cell:hover, .periodic-reference-cell:focus-visible, .periodic-reference-cell[aria-pressed="true"] { z-index: 1; outline: 2px solid var(--accent); outline-offset: 1px; }
+    .periodic-reference-number { position: absolute; top: 2px; left: 3px; color: rgba(255,255,255,.72); font-size: 7px; line-height: 1; }
+    .periodic-reference-symbol { font-size: 13px; font-weight: 740; line-height: 1; }
+    .periodic-reference-key { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 8px; }
+    .periodic-reference-key span { display: inline-flex; align-items: center; gap: 5px; color: #a3aca1; font-size: 8px; }
+    .periodic-reference-key i { width: 7px; height: 7px; border-radius: 2px; background: var(--key-color); }
+    .periodic-reference-selection { min-height: 44px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; color: #aab4a8; background: rgba(255,255,255,.025); font-size: 10px; line-height: 1.55; }
+    .periodic-reference-selection strong { color: var(--ink); }
+    .periodic-reference-note { margin: 9px 2px 0; color: #7d887c; font-size: 8px; line-height: 1.5; }
+    @media (max-width: 560px) {
+      .learning-quiz-actions { align-items: flex-end; }
+      .learning-quiz-tools { align-items: flex-start; flex-direction: column; gap: 7px; }
+      .periodic-reference-body { padding: 11px; }
+    }
     .detail-side { min-height: 0; display: flex; flex-direction: column; border-right: 1px solid var(--line); background: #1b1d22; }
     .detail-top { flex: 0 0 102px; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--line); }
     .detail-identity { display: flex; align-items: center; gap: 12px; }
@@ -744,11 +779,19 @@
       .element { border-radius: 11px; }
     }
     @media (max-width: 760px) {
-      .page-tabs { top: 66px; bottom: 0; width: min(84vw, 320px); padding: 20px 14px; transform: translateX(-105%); visibility: hidden; box-shadow: 20px 0 60px rgba(0,0,0,.32); transition: transform .24s var(--motion-ease), visibility 0s linear .24s; }
+      .topbar { gap: 8px; padding-right: 12px; padding-left: 12px; }
+      .brand { gap: 7px; }
+      .brand-name { font-size: 13px; }
+      .brand-name span { display: none; }
+      .topbar-right { gap: 7px; }
+      .language-picker span { display: none; }
+      .language-select { width: 112px; max-width: 30vw; padding-right: 20px; font-size: 9px; }
+      .page-tabs { position: fixed; top: 66px; right: auto; bottom: 0; left: 0; width: min(84vw, 320px); height: auto; min-height: 0; max-height: calc(100vh - 66px); max-height: calc(100dvh - 66px); padding: 20px 14px calc(20px + env(safe-area-inset-bottom)); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; transform: translateX(-105%); visibility: hidden; box-shadow: 20px 0 60px rgba(0,0,0,.32); transition: transform .24s var(--motion-ease), visibility 0s linear .24s; }
+      body.nav-collapsed .page-tabs { width: min(84vw, 320px); padding-right: 14px; padding-left: 14px; }
       body.nav-open .page-tabs { transform: translateX(0); visibility: visible; transition-delay: 0s; }
-      .menu-scrim { position: fixed; z-index: 19; inset: 66px 0 0; display: block; border: 0; background: rgba(0,0,0,.58); opacity: 0; visibility: hidden; transition: opacity .24s var(--motion-ease), visibility .24s; }
+      .menu-scrim { position: fixed; z-index: 19; inset: 0; display: block; border: 0; background: rgba(0,0,0,.58); opacity: 0; visibility: hidden; transition: opacity .24s var(--motion-ease), visibility .24s; }
       body.nav-open .menu-scrim { opacity: 1; visibility: visible; }
-      .nav-toggle { display: grid; }
+      .nav-toggle { position: relative; z-index: 21; display: grid; }
       body.nav-collapsed .nav-section-label, body.nav-collapsed .page-tab-label { display: block; }
       body.nav-collapsed .page-tab { justify-content: flex-start; padding: 0 12px; }
       body.nav-collapsed .page-tab::before { flex-basis: 19px; font-size: 15px; }
@@ -860,6 +903,12 @@
     </a>
     <div class="topbar-right">
       <div class="top-note"><b>118 elements</b> · one curious universe</div>
+      <label class="language-picker"><span>Language</span><select id="languageSelect" class="language-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="zh-CN">简体中文</option>
+        <option value="zh-TW">繁體中文</option>
+      </select></label>
       <button class="menu-button" id="topReset" aria-label="Reset filters" title="Reset table">↺</button>
     </div>
   </header>
@@ -1656,7 +1705,7 @@
       <div>
         <p class="eyebrow">Small steps · big chemistry</p>
         <h1>Your <em>learning path.</em></h1>
-        <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, and thermochemistry. Each lesson has 10 questions, and your progress stays saved on this device.</p>
+        <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.</p>
       </div>
       <div class="intro-aside" aria-label="Learning path details">
         <div class="stat"><strong id="learningLessonCount">9</strong><span>short lessons</span></div>
@@ -1682,7 +1731,7 @@
           <div class="learning-path" id="learningPath" style="--path-progress:0%"></div>
         </article>
         <aside class="learning-aside">
-          <article class="molecule-card learning-aside-card"><h3>How it works</h3><p>Each unit has 10 multiple-choice questions. Choose an answer to see instant feedback and a short explanation, then move on.</p></article>
+          <article class="molecule-card learning-aside-card"><h3>How it works</h3><p>Each attempt draws 10 multiple-choice questions from a larger lesson bank. Replay to get a new mix. Choose an answer to see instant feedback and a short explanation, then move on.</p></article>
           <article class="molecule-card learning-aside-card"><h3>Points & progress</h3><p>Earn 10 points for each correct answer on your first completion of a lesson. Replay anytime to practice; completed lessons won’t award duplicate points.</p></article>
           <article class="molecule-card learning-aside-card"><h3>Pick up where you left off</h3><p>Your answers and lesson progress are saved in this browser on this device. They are not synced to an account.</p></article>
         </aside>
@@ -1706,7 +1755,10 @@
           <p id="learningFeedbackText"></p>
         </div>
         <div class="learning-quiz-actions">
-          <span class="learning-quiz-score" id="learningQuizScore">✦ 0 points</span>
+          <div class="learning-quiz-tools">
+            <span class="learning-quiz-score" id="learningQuizScore">✦ 0 points</span>
+            <button class="learning-table-button" id="learningPeriodicTableButton" type="button" aria-haspopup="dialog" aria-controls="learningPeriodicTableDialog" aria-expanded="false">Show periodic table</button>
+          </div>
           <button class="learning-submit" id="learningSubmit" type="button" disabled>Check answer</button>
         </div>
       </article>
@@ -1724,14 +1776,14 @@
       <div>
         <p class="eyebrow">Your chemistry study buddy</p>
         <h1>Meet <em>Chema AI.</em></h1>
-        <p class="intro-copy">Ask about elements, bonding, molecular shapes, thermochemistry, or lab safety. Chema uses this guide’s lessons and can jump you to the right page.</p>
+        <p class="intro-copy">Ask about elements, bonding, molecular shapes, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.</p>
       </div>
       <div class="intro-aside" aria-label="Assistant details"><div class="stat"><strong>24/7</strong><span>study help</span></div></div>
     </section>
     <section class="chema-layout" aria-label="Chema chemistry assistant">
       <article class="molecule-card chema-chat">
         <div class="chema-chat-head"><h2>Ask Chema</h2><button class="chema-reset" id="chemaClear" type="button">Clear chat</button></div>
-        <p class="chema-status" id="chemaStatus" role="status">Connecting to the chemistry tutor…</p>
+        <p class="chema-status" id="chemaStatus" role="status">Built-in guide mode · your questions stay in this browser.</p>
         <div class="chema-transcript" id="chemaTranscript" role="log" aria-live="polite" aria-relevant="additions text"></div>
         <form class="chema-form" id="chemaForm">
           <label for="chemaInput" class="sr-only">Ask a chemistry question</label>
@@ -1742,6 +1794,9 @@
       <aside class="chema-side">
         <article class="molecule-card"><h2>Try asking</h2><div class="chema-prompts">
           <button class="chema-prompt" type="button">How do I find neutrons?</button>
+          <button class="chema-prompt" type="button">Find the molar mass of Ca(OH)2</button>
+          <button class="chema-prompt" type="button">How many electrons are in Fe3+?</button>
+          <button class="chema-prompt" type="button">Why is water bent and polar?</button>
           <button class="chema-prompt" type="button">Show me a Bohr model of oxygen</button>
           <button class="chema-prompt" type="button">How do Lewis dots show bonding?</button>
           <button class="chema-prompt" type="button">Explain VSEPR and lone pairs</button>
@@ -1750,7 +1805,7 @@
           <button class="chema-prompt" type="button">How does calorimetry work?</button>
           <button class="chema-prompt" type="button">What should I do after a lab splash?</button>
         </div></article>
-        <article class="molecule-card"><h2>About Chema</h2><p id="chemaPrivacy">Chema uses its built-in guide. Don’t include personal or sensitive information.</p></article>
+        <article class="molecule-card"><h2>About Chema</h2><p id="chemaPrivacy">Chema uses its built-in chemistry guide. Your questions stay in this browser and are not sent to an AI service. Don’t include personal or sensitive information.</p></article>
       </aside>
     </section>
   </main>
@@ -1760,7 +1815,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><time datetime="2026-11-09">November 10, 2026</time><h2>Version 1.2.1 - Bug fixes to Menu and more science lab rules/equipment<span class="update-badge">NEW</span><span class="update-badge">MINOR UPDATE</span></h2><p>Fixed issues with the menu navigation and updated science lab rules and equipment information.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-10">November 10, 2026</time><h2>Version 1.3.0 - Two Supported Languages!<span class="update-badge">NEW</span><span class="update-badge">MAJOR UPDATE</span></h2><p>Site now supports two languages: Chinese (Traditional and Simplified) and Spanish. Fixed issues with the menu, where it gets cut off at the top and bottom, and improved Chema AI functionality. Included more questions and added a "Show Periodic Table" feature for questions that may require it.</p></article>
+      <article class="molecule-card update-entry"><time datetime="2026-11-10">November 10, 2026</time><h2>Version 1.2.1 - Bug fixes to Menu and more science lab rules/equipment<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed issues with the menu navigation and updated science lab rules and equipment information.</p></article>
       <article class="molecule-card update-entry"><time datetime="2026-11-09">November 9, 2026</time><h2>Version 1.2.0 - New Menu Layout and More Tools, Added 3D interactive models instead of 2D<span class="update-badge">MAJOR UPDATE</span></h2><p>Easily Navigate through the lessons. Also added new resources and new rules for science labs. Switched to Interactive 3D models instead of 2D.</p></article>
       <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Version 1.1.0 - Meet Chema AI <span class="update-badge">Beta</span></h2><p>Ask chemistry questions, get guided explanations, and jump straight to the matching lesson.</p></article>
       <article class="molecule-card update-entry"><time datetime="2026-11-08">November 8, 2026</time><h2>Version 1.0.0 <span class="update-badge">First Release</span></h2><p>Initial Release to Public</p></article>
@@ -1962,6 +2018,30 @@
         </div>
       </div>
       <p class="equipment-dialog-note">Follow the procedure, equipment label, and instructor’s directions. Check chemical compatibility and the relevant Safety Data Sheet; this illustration is a schematic, not an operating instruction.</p>
+    </article>
+  </dialog>
+
+  <dialog class="detail-dialog periodic-reference-dialog" id="learningPeriodicTableDialog" aria-labelledby="learningPeriodicTableTitle">
+    <article class="detail-panel periodic-reference-panel">
+      <header class="periodic-reference-header">
+        <div>
+          <div class="periodic-reference-kicker">Quiz reference</div>
+          <h2 id="learningPeriodicTableTitle">Periodic table</h2>
+          <p class="periodic-reference-description">Use the element positions and atomic numbers as a reference. Select an element for its mass and family.</p>
+        </div>
+        <button class="detail-close" id="learningPeriodicTableClose" type="button" aria-label="Close periodic table">×</button>
+      </header>
+      <div class="periodic-reference-body">
+        <div class="periodic-reference-scroll" tabindex="0" aria-label="Scrollable periodic table">
+          <div class="periodic-reference-inner">
+            <div class="periodic-reference-groups" id="learningPeriodicGroups" aria-hidden="true"></div>
+            <div class="periodic-reference-grid" id="learningPeriodicGrid" role="group" aria-label="Elements arranged by periodic table position"></div>
+          </div>
+        </div>
+        <div class="periodic-reference-key" id="learningPeriodicKey" aria-label="Element families"></div>
+        <div class="periodic-reference-selection" id="learningPeriodicSelection" role="status" aria-live="polite">Select an element to see its atomic number, standard atomic mass, and family.</div>
+        <p class="periodic-reference-note">Atomic mass is an abundance-weighted average for naturally occurring isotopes, so it is usually not a whole number. Lanthanides and actinides are shown in the two rows below the main table.</p>
+      </div>
     </article>
   </dialog>
 
@@ -2203,7 +2283,8 @@
       document.querySelectorAll(".element").forEach(tile => {
         const element = elements[Number(tile.dataset.number) - 1];
         const categoryMatch = activeCategory === "all" || element.category === activeCategory;
-        const queryMatch = !query || [element.name, element.symbol, String(element.number), element.category].some(value => value.toLowerCase().includes(query));
+        const localizedName = tile.querySelector(".element-name")?.textContent || element.name;
+        const queryMatch = !query || [element.name, localizedName, element.symbol, String(element.number), element.category].some(value => value.toLowerCase().includes(query));
         tile.classList.toggle("is-hidden", !categoryMatch);
         tile.classList.toggle("is-dim", categoryMatch && Boolean(query) && !queryMatch);
         tile.classList.toggle("is-match", categoryMatch && Boolean(query) && queryMatch);
@@ -4110,6 +4191,7 @@
       {
         id:"atoms",icon:"⚛",title:"Inside the atom",subtitle:"Meet protons, neutrons, electrons, and ions.",
         questions:[
+          ["Which of the following about subatomic particles is true?",["Protons are smaller than electrons","Neutrons have a positive charge","Electrons are heavier than protons","Protons and neutrons have similar mass"],3,"Protons and neutrons have similar mass, while electrons are much lighter."], 
           ["Which particle has a positive charge?",["Proton","Neutron","Electron","Photon"],0,"Protons carry a +1 charge; neutrons are neutral and electrons carry a −1 charge."],
           ["Where are protons and neutrons found?",["In the nucleus","In the electron cloud","Outside the atom","Only in ions"],0,"The nucleus contains protons and neutrons; electrons occupy regions around it."],
           ["What does an element’s atomic number tell you?",["Number of protons","Number of neutrons","Protons plus neutrons","Number of energy levels"],0,"An element is defined by its proton count, which is its atomic number."],
@@ -4443,6 +4525,19 @@
       lessonChallengeQuestions[lessonId].push(...questions);
     });
 
+    const learningQuestionCount = 10;
+    const learningQuestionPools = new Map(learningLessons.map(lesson=>[
+      lesson.id,(()=>{
+        const questions=[...lesson.questions,...(lessonChallengeQuestions[lesson.id]||[])];
+        const seen=new Set();
+        return questions.filter(([prompt])=>{
+          const key=prompt.trim().toLocaleLowerCase();
+          if(seen.has(key))return false;
+          seen.add(key);
+          return true;
+        });
+      })()
+    ]));
     const learningStorageKey = "chemica-learning-progress-v1";
     const lessonChallengeStorageKey = "chemica-lesson-challenges-v1";
     const lessonChallengeQuestionCount = 10;
@@ -4470,17 +4565,23 @@
         const completed={};
         learningLessons.forEach(lesson=>{
           const entry=parsed.completed?.[lesson.id];
-          if (entry?.completed===true&&Number.isInteger(entry.score)&&entry.score>=0&&entry.score<=lesson.questions.length) {
+          if (entry?.completed===true&&Number.isInteger(entry.score)&&entry.score>=0&&entry.score<=learningQuestionCount) {
             completed[lesson.id]={completed:true,score:entry.score};
           }
         });
         learningState={totalXp:Number.isFinite(parsed.totalXp)&&parsed.totalXp>=0?parsed.totalXp:0,completed,run:null};
         const run=parsed.run;
         const lesson=learningLessons.find(item=>item.id===run?.lessonId);
-        if (lesson&&Number.isInteger(run.questionIndex)&&run.questionIndex>=0&&run.questionIndex<lesson.questions.length&&Number.isInteger(run.correct)&&run.correct>=0&&run.correct<=run.questionIndex+(run.answered===true?1:0)&&(!run.answered||(Number.isInteger(run.selectedIndex)&&run.selectedIndex>=0&&run.selectedIndex<lesson.questions[run.questionIndex][1].length))) {
+        const pool=lesson?learningQuestionPools.get(lesson.id):null;
+        const questionIndexes=Array.isArray(run?.questionIndexes)
+          ?run.questionIndexes
+          :pool?Array.from({length:learningQuestionCount},(_,index)=>index):null;
+        const validQuestionIndexes=Boolean(pool&&questionIndexes&&questionIndexes.length===learningQuestionCount&&new Set(questionIndexes).size===learningQuestionCount&&questionIndexes.every(index=>Number.isInteger(index)&&index>=0&&index<pool.length));
+        if (validQuestionIndexes&&Number.isInteger(run.questionIndex)&&run.questionIndex>=0&&run.questionIndex<learningQuestionCount&&Number.isInteger(run.correct)&&run.correct>=0&&run.correct<=run.questionIndex+(run.answered===true?1:0)&&(!run.answered||(Number.isInteger(run.selectedIndex)&&run.selectedIndex>=0&&run.selectedIndex<pool[questionIndexes[run.questionIndex]][1].length))) {
           if (!completed[lesson.id]?.completed) {
             learningState.run={
               lessonId:lesson.id,questionIndex:run.questionIndex,correct:run.correct,
+              questionIndexes,
               selectedIndex:Number.isInteger(run.selectedIndex)?run.selectedIndex:null,
               answered:run.answered===true
             };
@@ -4538,14 +4639,24 @@
       return activeQuizMode==="lesson"?lessonChallengeState.run:learningState.run;
     }
 
-    function selectLessonChallengeQuestions(lesson) {
-      const pool=lessonChallengeQuestions[lesson.id];
-      const indexes=Array.from({length:pool.length},(_,index)=>index);
+    function selectRandomQuestionIndexes(poolLength,questionCount) {
+      const indexes=Array.from({length:poolLength},(_,index)=>index);
       for(let index=indexes.length-1;index>0;index--) {
         const swapIndex=Math.floor(Math.random()*(index+1));
         [indexes[index],indexes[swapIndex]]=[indexes[swapIndex],indexes[index]];
       }
-      return indexes.slice(0,lessonChallengeQuestionCount);
+      return indexes.slice(0,questionCount);
+    }
+
+    function selectLessonChallengeQuestions(lesson) {
+      const pool=lessonChallengeQuestions[lesson.id];
+      return selectRandomQuestionIndexes(pool.length,lessonChallengeQuestionCount);
+    }
+
+    function selectLearningQuestions(lesson) {
+      const pool=learningQuestionPools.get(lesson.id);
+      if(!pool||pool.length<learningQuestionCount)throw new Error(`Not enough learning questions are configured for ${lesson.id}.`);
+      return selectRandomQuestionIndexes(pool.length,learningQuestionCount);
     }
 
     function saveActiveQuizRun() {
@@ -4656,8 +4767,12 @@
         document.getElementById("learningCompleteButton").textContent="Back to the lessons";
       } else {
         const savedRun=learningState.run?.lessonId===lesson.id?learningState.run:null;
-        learningState.run=savedRun||{lessonId:lesson.id,questionIndex:0,correct:0,selectedIndex:null,answered:false};
-        activeQuizQuestions=lesson.questions;
+        learningState.run=savedRun||{
+          lessonId:lesson.id,questionIndex:0,correct:0,selectedIndex:null,answered:false,
+          questionIndexes:selectLearningQuestions(lesson)
+        };
+        const pool=learningQuestionPools.get(lesson.id);
+        activeQuizQuestions=learningState.run.questionIndexes.map(index=>pool[index]);
         document.getElementById("learningBack").textContent="← Path";
         document.getElementById("learningCompleteButton").textContent="Back to the path";
       }
@@ -4774,10 +4889,76 @@
       renderLearningPath();
     }
 
+    function initializeLearningPeriodicReference() {
+      const dialog=document.getElementById("learningPeriodicTableDialog");
+      const trigger=document.getElementById("learningPeriodicTableButton");
+      const close=document.getElementById("learningPeriodicTableClose");
+      const grid=document.getElementById("learningPeriodicGrid");
+      const selection=document.getElementById("learningPeriodicSelection");
+      const groupLabels=document.getElementById("learningPeriodicGroups");
+      const familyKey=document.getElementById("learningPeriodicKey");
+
+      for(let group=1;group<=18;group++) {
+        const label=document.createElement("span");
+        label.textContent=String(group);
+        groupLabels.append(label);
+      }
+
+      elements.forEach(element=>{
+        const cell=document.createElement("button");
+        cell.type="button";
+        cell.className="periodic-reference-cell";
+        cell.style.gridColumn=String(element.group);
+        cell.style.gridRow=String(element.period);
+        cell.style.setProperty("--tile-color",categoryColors[element.category]||categoryColors.Unknown);
+        cell.setAttribute("aria-label",`${element.name}, atomic number ${element.number}`);
+        cell.setAttribute("aria-pressed","false");
+        const number=document.createElement("span");
+        number.className="periodic-reference-number";
+        number.textContent=String(element.number);
+        const symbol=document.createElement("span");
+        symbol.className="periodic-reference-symbol";
+        symbol.textContent=element.symbol;
+        cell.append(number,symbol);
+        cell.addEventListener("click",()=>{
+          grid.querySelector('[aria-pressed="true"]')?.setAttribute("aria-pressed","false");
+          cell.setAttribute("aria-pressed","true");
+          selection.replaceChildren();
+          const name=document.createElement("strong");
+          name.textContent=`${element.name} (${element.symbol})`;
+          selection.append(name,document.createTextNode(` · Atomic number ${element.number} · Standard atomic mass ${element.mass} u · ${element.category} · Group ${element.group}, period ${element.period}`));
+        });
+        grid.append(cell);
+      });
+
+      categories.forEach(category=>{
+        const item=document.createElement("span");
+        const swatch=document.createElement("i");
+        swatch.style.setProperty("--key-color",categoryColors[category]||categoryColors.Unknown);
+        item.append(swatch,document.createTextNode(category));
+        familyKey.append(item);
+      });
+
+      trigger.addEventListener("click",()=>{
+        if(!dialog.open)dialog.showModal();
+        trigger.setAttribute("aria-expanded","true");
+        close.focus();
+      });
+      close.addEventListener("click",()=>dialog.close());
+      dialog.addEventListener("click",event=>{
+        if(event.target===dialog)dialog.close();
+      });
+      dialog.addEventListener("close",()=>{
+        trigger.setAttribute("aria-expanded","false");
+        if(!trigger.hidden)trigger.focus();
+      });
+    }
+
     function initializeLearningPath() {
       loadLearningState();
       loadLessonChallengeState();
       renderLearningPath();
+      initializeLearningPeriodicReference();
       document.getElementById("learningPath").addEventListener("click",event=>{
         const button=event.target.closest("[data-lesson-id]");
         const lesson=learningLessons.find(item=>item.id===button?.dataset.lessonId);
@@ -4986,7 +5167,6 @@
     initializeElectronModelPages();
     initializeLearningPath();
 
-    let chemaAiAvailable = location.protocol==="http:"||location.protocol==="https:";
     const chemaTranscript = document.getElementById("chemaTranscript");
 
     function appendChemaMessage(role,text,tab=null) {
@@ -5024,67 +5204,203 @@
     }
 
     function answerChemaOffline(question) {
-      const text=question.toLowerCase();
+      const text=question.toLowerCase().replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,digit=>"⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(digit)).trim();
+      const chargeText=question.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,digit=>"⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(digit)).replace(/[⁺]/g,"+").replace(/[⁻]/g,"-");
+      const normalizeSubscripts=value=>value.replace(/[₀-₉]/g,digit=>"₀₁₂₃₄₅₆₇₈₉".indexOf(digit));
+      const compactFormula=value=>normalizeSubscripts(value).replace(/\s+/g,"");
+      const formulaText=normalizeSubscripts(question);
+      const formatMass=value=>Number(value.toFixed(3)).toString();
+      const parseFormula=formula=>{
+        const normalized=compactFormula(formula);
+        const tokens=normalized.match(/[A-Z][a-z]?|\d+|[()]/g)||[];
+        if(!normalized||tokens.join("")!==normalized)return null;
+        let index=0;
+        const readGroup=nested=>{
+          const counts=new Map();
+          while(index<tokens.length&&tokens[index]!==")") {
+            if(tokens[index]==="(") {
+              index++;
+              const inner=readGroup(true);
+              if(!inner||tokens[index]!==")")return null;
+              index++;
+              const multiplier=/^\d+$/.test(tokens[index]||"")?Number(tokens[index++]):1;
+              inner.forEach((count,symbol)=>counts.set(symbol,(counts.get(symbol)||0)+count*multiplier));
+            } else {
+              const element=elements.find(item=>item.symbol===tokens[index]);
+              if(!element)return null;
+              index++;
+              const amount=/^\d+$/.test(tokens[index]||"")?Number(tokens[index++]):1;
+              if(amount<1||amount>1000)return null;
+              counts.set(element.symbol,(counts.get(element.symbol)||0)+amount);
+            }
+          }
+          if(nested&&index>=tokens.length)return null;
+          return counts;
+        };
+        const counts=readGroup(false);
+        if(!counts||index!==tokens.length||!counts.size)return null;
+        return counts;
+      };
+      const findElement=()=>{
+        const named=elements.find(element=>new RegExp(`\\b${element.name}\\b`,"i").test(question));
+        if(named)return named;
+        const symbolMatch=question.match(/(?:\b(?:element|atom|isotope|ion)\s+|\b(?:in|of|for)\s+)([A-Z][a-z]?)(?=\b|\d|[+-])/);
+        return symbolMatch?elements.find(element=>element.symbol===symbolMatch[1]):null;
+      };
+      const findElementCharge=element=>{
+        const match=chargeText.match(/([A-Z][a-z]?)(?:\^?(\d+))?([+-])/);
+        if(match&&match[1]===element.symbol)return Number(match[2]||1)*(match[3]==="+"?1:-1);
+        const namedCharge=chargeText.match(new RegExp(`\\b${element.name}\\b[^.?!]{0,20}?\\b(\\d*)\\s*([+-])\\b`,"i"));
+        return namedCharge?Number(namedCharge[1]||1)*(namedCharge[2]==="+"?1:-1):0;
+      };
+
       if(/lab|safety|spill|splash|eyewash|chemical.*(eye|skin)|eye.*chemical/.test(text))
-        return "Lab safety first: stop work, alert your instructor immediately, and follow your lab’s emergency directions. For a chemical splash on skin or in eyes, use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t clean an unknown spill yourself.";
-      if(/bohr|shell model|electron shell/.test(text))
-        return "A Bohr diagram groups an atom’s electrons by principal energy level. For a neutral atom, the electron count equals its atomic number; the nucleus contains that many protons. The shell picture is a simplified model, while modern chemistry describes electrons with orbitals. Open the Bohr model page to explore an element.";
-      if(/lewis|dot structure|valence electron/.test(text))
-        return "Lewis structures show valence electrons: a line is one shared electron pair, and a pair of dots is a lone pair. Count the atoms’ valence electrons, account for any charge, and check the electron total after drawing bonds and lone pairs. Open Lewis diagrams to inspect examples.";
-      if(/vsepr|molecular shape|axe|lone pair/.test(text))
-        return "VSEPR predicts shape by counting electron groups around a central atom: bonds and lone pairs each count as one group. In AXE notation, A is the center, X atoms are bonded neighbors, and E lone pairs. Lone pairs repel more strongly and can change bond angles and the molecular shape.";
+        return "Safety first: stop work, alert your instructor, and follow your lab’s emergency procedure. For a chemical splash on skin or in eyes, immediately use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t try to clean an unknown spill yourself.";
+
+      if(/average atomic mass|weighted average|isotop(?:e|es).*abundance/.test(text)) {
+        const pairs=[...question.matchAll(/(\d+(?:\.\d+)?)\s*(?:u|amu)?\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\)/gi)];
+        const total=pairs.reduce((sum,pair)=>sum+Number(pair[2]),0);
+        if(pairs.length>1&&Math.abs(total-100)<0.1) {
+          const terms=pairs.map(pair=>`${pair[1]} × ${Number(pair[2])/100}`);
+          const average=pairs.reduce((sum,pair)=>sum+Number(pair[1])*Number(pair[2])/100,0);
+          return `Average atomic mass\n${terms.join(" + ")} = ${formatMass(average)} u.\n\nEach isotope’s mass is multiplied by its fractional abundance, then the contributions are added. The abundances in your question total ${formatMass(total)}%.`;
+        }
+        return "To find average atomic mass, multiply each isotope’s mass by its fractional abundance (percent ÷ 100), then add the results. Include each isotope’s mass and percent abundance and I can work it out.";
+      }
+
+      const element=findElement();
+      const formulaCandidates=[...formulaText.matchAll(/(?:[A-Z][a-z]?\d*|\([^()]+\)\d*)+/g)]
+        .map(match=>({formula:match[0],counts:parseFormula(match[0])}))
+        .filter(match=>match.counts);
+      const asksMolarMass=/molar mass|formula mass|mass of (?:the )?(?:compound|molecule|formula)|grams? per mole/.test(text)||
+        (/\bmol(?:e|es)?\b/.test(text)&&/\bgrams?\b|\bmass\b|\bconvert\b/.test(text));
+      if(asksMolarMass&&formulaCandidates.length) {
+        const chosen=formulaCandidates.find(match=>/[0-9()]/.test(match.formula))||formulaCandidates.at(-1);
+        const mass=formula=>[...formula.keys()].reduce((sum,symbol)=>sum+elements.find(item=>item.symbol===symbol).mass*formula.get(symbol),0);
+        const totalMass=mass(chosen.counts);
+        const breakdown=[...chosen.counts].map(([symbol,count])=>{
+          const item=elements.find(candidate=>candidate.symbol===symbol);
+          return `${symbol}: ${count} × ${item.mass} = ${formatMass(count*item.mass)} u`;
+        });
+        const moleMatch=question.match(/(\d+(?:\.\d+)?)\s*mol\b/i);
+        const gramMatch=question.match(/(\d+(?:\.\d+)?)\s*g\b/i);
+        if(moleMatch&&/\bgrams?\b|\bmass\b/.test(text))
+          return `Molar mass of ${chosen.formula}: ${formatMass(totalMass)} g/mol\n${breakdown.join("\n")}\nTotal: ${formatMass(totalMass)} g/mol\n\nFor ${moleMatch[1]} mol: mass = n × M = ${moleMatch[1]} × ${formatMass(totalMass)} = ${formatMass(Number(moleMatch[1])*totalMass)} g.`;
+        if(gramMatch&&/convert|how many|number of/.test(text)&&/\bmol(?:es)?\b/.test(text))
+          return `Molar mass of ${chosen.formula}: ${formatMass(totalMass)} g/mol\n${breakdown.join("\n")}\n\nMoles = mass ÷ molar mass = ${gramMatch[1]} g ÷ ${formatMass(totalMass)} g/mol = ${formatMass(Number(gramMatch[1])/totalMass)} mol.`;
+        return `Molar mass of ${chosen.formula}: ${formatMass(totalMass)} g/mol\n${breakdown.join("\n")}\nTotal: ${formatMass(totalMass)} g/mol.\n\nMethod: multiply each element’s atomic mass by its subscript, then add. Parentheses multiply every atom inside by the outside subscript.`;
+      }
+
+      if(/q\s*=\s*mc|calorimetry|specific heat|heat transferred|\bheat\b/.test(text)) {
+        const massMatch=question.match(/(\d+(?:\.\d+)?)\s*g\b/i);
+        const temps=[...question.matchAll(/(-?\d+(?:\.\d+)?)\s*\xB0?\s*c\b/gi)].map(match=>Number(match[1]));
+        const heatCapacity=question.match(/(?:specific heat|c)\s*(?:=|of)?\s*(\d+(?:\.\d+)?)/i);
+        const c=heatCapacity?Number(heatCapacity[1]):/water/.test(text)?4.184:null;
+        if(massMatch&&temps.length>=2&&c!==null) {
+          const mass=Number(massMatch[1]);
+          const change=temps.at(-1)-temps[0];
+          return `Heat transfer (q = mcΔT)\nΔT = ${temps.at(-1)} − ${temps[0]} = ${change} °C\nq = ${mass} g × ${c} J/(g·°C) × ${change} °C = ${formatMass(mass*c*change)} J.\n\nA positive q means the stated sample absorbed heat; a negative q means it released heat. This assumes the mass, specific heat, and temperatures refer to the same sample.`;
+        }
+        return "Use q = mcΔT: q is heat in joules, m is mass in grams, c is specific heat in J/(g·°C), and ΔT = final temperature − initial temperature. Share those values (and the substance) and I can calculate it.";
+      }
+
+      if(/proton|neutron|electron|atomic number|mass number|isotope|\bion\b|electron configuration|bohr/.test(text)&&element) {
+        const isotopeMatch=question.match(new RegExp(`(?:\\b${element.name}\\b|\\b${element.symbol}\\b)\\s*[-– ]\\s*(\\d{1,3})\\b`,"i"));
+        const massNumberMatch=question.match(/mass number\s*(?:of|is|=)?\s*(\d{1,3})\b/i);
+        const massNumber=isotopeMatch?Number(isotopeMatch[1]):massNumberMatch?Number(massNumberMatch[1]):null;
+        const charge=isotopeMatch?0:findElementCharge(element);
+        const electrons=element.number-charge;
+        if(/\bneutron/.test(text)&&massNumber!==null)
+          return `${element.name}-${massNumber}\nNeutrons = mass number − atomic number = ${massNumber} − ${element.number} = ${massNumber-element.number}.\nIt also has ${element.number} protons. ${charge?`With charge ${charge>0?"+":""}${charge}, it has ${electrons} electrons.`:"As a neutral atom, it has "+element.number+" electrons."}`;
+        if(/\bneutron/.test(text)&&massNumber===null)
+          return `${element.name} has atomic number ${element.number}, so it has ${element.number} protons. To find neutrons, use neutrons = mass number − ${element.number}. Give me the isotope (for example, ${element.symbol}-14) or mass number for an exact count.`;
+        if(/\belectron/.test(text)&&(/ion|charge|[+-]/.test(text)||charge!==0))
+          return `${element.symbol}${charge?Math.abs(charge)===1?"":Math.abs(charge)+(charge>0?"+":"−"):""} has ${element.number} protons and ${electrons} electrons.\nFor an ion, electrons = protons − signed charge. A ${charge>0?"positive ion has lost":"negative ion has gained"} ${Math.abs(charge)} electron${Math.abs(charge)===1?"":"s"} compared with the neutral atom.`;
+        if(/\bproton/.test(text)||/atomic number/.test(text))
+          return `${element.name} (${element.symbol}) has atomic number ${element.number}, so every ${element.name.toLowerCase()} atom has ${element.number} protons. A neutral atom also has ${element.number} electrons; isotopes differ in neutron count, not proton count.`;
+        if(/configuration|bohr|shell/.test(text)) {
+          const shells=shellElectrons(element);
+          return `${element.name} (${element.symbol})\nAtomic number: ${element.number} · Protons: ${element.number} · Neutral electrons: ${element.number}\nBohr shell counts: ${shells.join("–")} · Valence electrons in this shell model: ${shells.at(-1)||0}\nElectron configuration: ${element.configuration}\n\nBohr shells are a useful introductory picture; orbitals are the more accurate quantum-mechanical model.`;
+        }
+      }
+
+      const formulaQuestion=formulaCandidates.find(match=>/[0-9()]/.test(match.formula));
+      const molecule=molecules.find(item=>
+        new RegExp(`\\b${item.name.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}\\b`,"i").test(question)||
+        (formulaQuestion&&compactFormula(item.formula)===compactFormula(formulaQuestion.formula))
+      );
+      if(molecule&&/shape|vsepr|axe|polar|dipole|molecule|geometry|intermolecular|hydrogen bond|dispersion/.test(text))
+        return `${molecule.name} (${molecule.formula})\nShape: ${molecule.shape} · AXE: ${molecule.axe} · Electron geometry: ${molecule.electronGeometry} · Bond angle: ${molecule.angle}\nPolarity: ${molecule.polarity}. ${molecule.dipoleText}\nWhy: ${molecule.summary}\nIntermolecular forces: ${molecule.imf.join(", ")}.\n\nOpen the Molecular shapes page to explore its 3D model and Lewis diagram.`;
+
+      if(/trend|atomic radius|atomic size|ionization|electronegativity|metallic character/.test(text)) {
+        if(/radius|atomic size/.test(text))
+          return "Atomic radius generally increases down a group because each step adds an occupied shell, and decreases from left to right across a period as stronger nuclear attraction pulls electrons inward. These are broad trends; definitions and exceptions matter.";
+        if(/ionization/.test(text))
+          return "First ionization energy generally increases from left to right across a period and decreases down a group. Across a period, effective nuclear attraction usually grows; down a group, outer electrons are farther from the nucleus and more shielded.";
+        if(/electronegativity/.test(text))
+          return "Electronegativity generally increases toward the upper right of the periodic table (fluorine is highest) and decreases down a group. It describes an atom’s pull on shared electrons in a bond; it is a trend, not a direct measurement of charge.";
+        return "Metallic character generally increases down a group and toward the left side of the periodic table. The periodic-table page lets you compare element families and properties.";
+      }
+
       if(/intermolecular|hydrogen bond|dispersion|\bimf\b/.test(text))
-        return "Intermolecular forces act between particles. London dispersion forces occur in all particles; dipole–dipole attractions occur between polar molecules; hydrogen bonding is a stronger special attraction when H is bonded to N, O, or F. These are attractions between molecules, not the bonds within them.";
+        return "Intermolecular forces act between particles, not within a molecule’s covalent bonds.\n• London dispersion: present in every atom and molecule; often stronger for larger, more polarizable electron clouds.\n• Dipole–dipole: attraction between permanent dipoles of polar molecules.\n• Hydrogen bonding: a particularly strong dipole attraction when H bonded to N, O, or F interacts with a lone pair on N, O, or F.\n\nWhen comparing boiling points, consider all forces and molecular size/shape.";
+      if(/vsepr|molecular shape|axe|lone pair/.test(text))
+        return "Use VSEPR in three steps:\n1. Draw a Lewis structure and identify the central atom.\n2. Count electron domains around it: each single, double, or triple bond is one domain, and each lone pair is one domain.\n3. Name the molecular shape from atom positions only (lone pairs are not atoms).\n\nIn AXE notation, A is the center, X counts bonded atoms, and E counts central lone pairs. Lone pairs repel more strongly and usually compress bond angles. Try H₂O (AX₂E₂), NH₃ (AX₃E), or CO₂ (AX₂).";
+      if(/lewis|dot structure|valence electron/.test(text))
+        return "A reliable Lewis-structure workflow:\n1. Add the atoms’ valence electrons; adjust for the overall charge (add for a negative charge, subtract for a positive charge).\n2. Choose a central atom (usually not H) and connect atoms with single bonds.\n3. Complete outer-atom octets, then place remaining electrons on the center.\n4. If the center lacks an octet, consider multiple bonds; check the total electron count and formal charges.\n\nOne line is one shared pair; each pair of dots is a lone pair. H follows a duet, and common exceptions such as BF₃ exist.";
       if(/polar|dipole|partial charge/.test(text))
-        return "A polar bond shares electrons unevenly, giving the more electronegative atom δ− and the other atom δ+. Molecular polarity depends on both bond dipoles and shape: their vector sum can cancel in a symmetric molecule such as CO₂.";
+        return "A bond is polar when its atoms share electron density unequally. To decide whether a whole molecule is polar, first consider the bond dipoles, then add them as vectors using the molecule’s 3D shape. Symmetry can cancel the dipoles (CO₂ is nonpolar overall); an asymmetric shape often leaves a net dipole (H₂O is polar).";
       if(/ionic|covalent|metallic|bond/.test(text))
-        return "Ionic bonding involves electrostatic attraction between oppositely charged ions; covalent bonding shares electron pairs; metallic bonding involves delocalized electrons among metal atoms. Real bonding can have mixed character. Open Types of bonds for the interactive comparison.";
+        return "Bonding comparison:\n• Ionic: attraction among positive and negative ions in an extended lattice; many ionic substances conduct when molten or dissolved because their ions can move.\n• Covalent: atoms share electron density, forming molecules or networks.\n• Metallic: metal atoms are held together with delocalized valence electrons, helping explain conductivity and malleability.\n\nThese are useful models; real bonds can have mixed character. Hydrogen bonding is an intermolecular force, not a primary bond category.";
       if(/calorimetry|thermochem|enthalpy|entropy|gibbs|heat|energy/.test(text))
-        return "Calorimetry estimates heat transfer from q = mcΔT, where m is mass, c is specific heat capacity, and ΔT is temperature change. At constant pressure, heat transfer is related to enthalpy change. Use the Thermochemistry page’s calculators and keep track of the system, surroundings, and sign.";
-      if(/isotope|neutron|proton|electron|ion|atomic number/.test(text))
-        return "Atomic number equals the number of protons. Mass number equals protons plus neutrons, so neutrons = mass number − atomic number. A neutral atom has equal numbers of protons and electrons; gaining or losing electrons makes an ion. Isotopes are the same element with different neutron counts.";
+        return "For a temperature change, calorimetry uses q = mcΔT:\n• q: heat transferred (J); m: mass (g); c: specific heat (J/(g·°C)); ΔT = Tfinal − Tinitial.\n• A positive q means the chosen sample absorbed heat; a negative q means it released heat.\nAt constant pressure, heat is related to enthalpy change (qₚ = ΔH for the process). Gibbs energy indicates thermodynamic favorability under stated conditions, not reaction speed.";
       if(/orbital|electron configuration|spectrum/.test(text))
-        return "Orbitals are probability regions described by quantum mechanics, not fixed planetary paths. The periodic table reflects electron configurations and recurring properties. Open an element’s details in the periodic table to explore its atom, orbitals, and spectrum.";
-      const words=question.match(/\b[A-Z][a-z]?\b/g)||[];
-      const mentionedElement=elements.find(element=>question.toLowerCase().includes(element.name.toLowerCase()))||elements.find(element=>words.includes(element.symbol));
-      if(mentionedElement)
-        return `${mentionedElement.name} (${mentionedElement.symbol}) is element ${mentionedElement.number}, a ${mentionedElement.category.toLowerCase()}. Its listed standard atomic mass is ${mentionedElement.mass} u. Select it in the periodic table for its electron configuration, isotopes, ions, atom model, and spectrum.`;
-      if(/period|group|family|periodic table/.test(text))
-        return "Rows in the periodic table are periods and columns are groups. Elements in a group often share valence-electron patterns and chemical properties. Use the table’s search and category filters, or select an element to see its details.";
-      return "I’m in built-in guide mode right now. I can help with atoms and elements, Bohr shells, Lewis diagrams, ions and isotopes, bonding, VSEPR and polarity, intermolecular forces, thermochemistry, orbitals, and lab safety. Try asking about one of those topics or open the matching lesson.";
+        return "An orbital is a quantum-mechanical description of where an electron is likely to be found—not a fixed planetary path. Electron configurations show how electrons occupy orbitals; the periodic table reflects repeating configurations and properties. Choose an element in the Periodic table page to inspect its configuration, atom model, and spectrum.";
+
+      if(element) {
+        const shells=shellElectrons(element);
+        return `${element.name} (${element.symbol}) is element ${element.number}, a ${element.category.toLowerCase()}.\nStandard atomic mass: ${element.mass} u · Bohr shell counts: ${shells.join("–")} · Electron configuration: ${element.configuration}\n\nAtomic number is the proton count. A neutral atom has the same number of electrons. Open its entry in the periodic table for more details.`;
+      }
+
+      const stopWords=new Set(["what","which","where","when","why","how","does","do","did","is","are","was","were","the","a","an","and","or","to","of","in","on","for","with","from","me","my","you","your","can","could","would","please","explain","tell","about","help","show","find","calculate","work","out","give","does","mean"]);
+      const tokens=value=>new Set(value.toLowerCase().match(/[a-z0-9]+/g)?.filter(token=>token.length>1&&!stopWords.has(token))||[]);
+      const wanted=tokens(question);
+      let bestMatch=null;
+      for(const lesson of learningLessons)for(const item of lesson.questions) {
+        const candidate=tokens(item[0]);
+        const overlap=[...wanted].filter(token=>candidate.has(token)).length;
+        const coverage=wanted.size?overlap/wanted.size:0;
+        if(overlap>=2&&coverage>=0.55&&(!bestMatch||coverage>bestMatch.coverage))
+          bestMatch={lesson,question:item[0],answer:item[1][item[2]],explanation:item[3],coverage};
+      }
+      if(bestMatch)
+        return `From the ${bestMatch.lesson.title} lesson\n${bestMatch.question}\nAnswer: ${bestMatch.answer}.\nWhy: ${bestMatch.explanation}\n\nOpen the Learning path to practice more questions.`;
+
+      return "I can tutor from this site’s chemistry guide and work through common calculations. Try a specific question such as “How many neutrons are in carbon-14?”, “Find the molar mass of Ca(OH)2”, “How many electrons are in Fe3+?”, “Why is water polar?”, or “Explain atomic radius trends.”";
     }
 
     async function askChema(question) {
       const input=document.getElementById("chemaInput");
       const send=document.getElementById("chemaSend");
+      const clear=document.getElementById("chemaClear");
       const status=document.getElementById("chemaStatus");
+      if(send.disabled)return;
       appendChemaMessage("user",question);
       send.disabled=true;
-      status.textContent=chemaAiAvailable?"Thinking…":"Built-in guide mode · answers stay in this browser.";
-      let answer;
-      if(chemaAiAvailable) {
-        try {
-          const response=await fetch("/.netlify/functions/chema",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question}),signal:AbortSignal.timeout(15000)});
-          if(!response.ok)throw new Error(`AI service returned ${response.status}`);
-          const result=await response.json();
-          if(typeof result.answer!=="string"||!result.answer.trim())throw new Error("AI service returned an empty answer");
-          answer=result.answer.trim();
-          status.textContent="Chema AI is connected. Don’t include personal or sensitive information.";
-        } catch(error) {
-          chemaAiAvailable=false;
-          console.warn("Chema AI is unavailable; using the built-in chemistry guide.",error);
-          status.textContent="AI reply unavailable. Built-in guide mode is active; if AI mode was configured, this question may have reached OpenAI.";
-          answer=answerChemaOffline(question);
-        }
-      } else {
-        answer=answerChemaOffline(question);
+      clear.disabled=true;
+      status.textContent="Working it through · your question stays in this browser.";
+      try {
+        const answer=answerChemaOffline(question);
+        appendChemaMessage("assistant",answer,chemaSuggestedPage(question));
+        status.textContent="Built-in tutor · your questions stay in this browser.";
+      } finally {
+        send.disabled=false;
+        clear.disabled=false;
+        input.focus();
       }
-      appendChemaMessage("assistant",answer,chemaSuggestedPage(question));
-      send.disabled=false;
-      input.focus();
     }
 
-    appendChemaMessage("assistant","Hi! I’m Chema, your chemistry study buddy. Ask me about a topic from this site, or choose a suggested question. I’ll let you know if I’m using the built-in guide or connected AI.");
+    appendChemaMessage("assistant","Hi! I’m Chema, your chemistry study buddy. I use a built-in guide, so your questions stay in this browser. Ask me about a topic from this site, or choose a suggested question.");
     document.getElementById("chemaForm").addEventListener("submit",event=>{
       event.preventDefault();
       const input=document.getElementById("chemaInput");
@@ -5098,7 +5414,6 @@
       chemaTranscript.replaceChildren();
       appendChemaMessage("assistant","Chat cleared. What chemistry question can I help with?");
     });
-    document.getElementById("chemaStatus").textContent=chemaAiAvailable?"AI mode needs an OPENAI_API_KEY Netlify environment variable. The built-in guide is ready too.":"Local guide mode · built-in chemistry answers work without a connection.";
 
     document.getElementById("search").addEventListener("input", updateFilters);
     document.getElementById("categoryFilter").addEventListener("change", event => setCategory(event.target.value));
@@ -5134,6 +5449,381 @@
     renderElements();
     renderLegend();
     updateFilters();
+
+    const uiTranslations = {
+      "Chemica — A Full-On Chemistry Site":["Chemica — una guía completa de química","Chemica — 完整化學指南","Chemica — 完整化學指南"],
+      "Collapse navigation":["Contraer navegación","收合導覽","收合導覽"],
+      "Expand navigation":["Expandir navegación","展開導覽","展開導覽"],
+      "Chemica home":["Inicio de Chemica","Chemica 首頁","Chemica 首頁"],
+      "118 elements":["118 elementos","118 種元素","118 種元素"],
+      "Language":["Idioma","語言","語言"],
+      "Reset filters":["Restablecer filtros","重設篩選條件","重設篩選條件"],
+      "Reset table":["Restablecer tabla","重設元素週期表","重設元素週期表"],
+      "Chemica topics":["Temas de Chemica","Chemica 主題","Chemica 主題"],
+      "Explore":["Explorar","探索","探索"],
+      "Study":["Estudiar","學習","學習"],
+      "More":["Más","更多","更多"],
+      "Periodic table":["Tabla periódica","元素週期表","元素週期表"],
+      "Bohr model":["Modelo de Bohr","波耳模型","波耳模型"],
+      "Lewis diagrams":["Diagramas de Lewis","路易斯結構","路易斯結構"],
+      "Molecular shapes":["Geometría molecular","分子形狀","分子形狀"],
+      "Build an AXE molecule":["Construye una molécula AXE","建立 AXE 分子","建立 AXE 分子"],
+      "Thermochemistry":["Termoquímica","熱化學","熱化學"],
+      "Science lab":["Laboratorio de ciencias","科學實驗室","科學實驗室"],
+      "Types of bonds":["Tipos de enlace","鍵結類型","鍵結類型"],
+      "Properties & reactions":["Propiedades y reacciones","性質與反應","性質與反應"],
+      "Learning path (Beta)":["Ruta de aprendizaje (beta)","學習路徑（測試版）","學習路徑（測試版）"],
+      "Practice Quizzes":["Cuestionarios de práctica","練習測驗","練習測驗"],
+      "Chema AI (Beta)":["Chema AI（beta）","Chema AI（測試版）","Chema AI（測試版）"],
+      "Update log":["Registro de cambios","更新記錄","更新記錄"],
+      "Feedback":["Comentarios","意見回饋","意見回饋"],
+      "Settings":["Configuración","設定","設定"],
+      "All categories":["Todas las categorías","所有類別","所有類別"],
+      "Explore by":["Explorar por","依此探索","依此探索"],
+      "Explore by family":["Explorar por familia","依元素族探索","依元素族探索"],
+      "Choose a color to filter":["Elige un color para filtrar","選擇顏色以篩選","選擇顏色以篩選"],
+      "Explore electrons by energy level":["Explora los electrones por nivel de energía","依能階探索電子","依能階探索電子"],
+      "Build a":["Construye un","建立","建立"],
+      "Bohr model.":["modelo de Bohr.","波耳模型。","波耳模型。"],
+      "Element":["Elemento","元素","元素"],
+      "Electron shells":["Capas electrónicas","電子層","電子層"],
+      "Shell model — schematic, not to scale":["Modelo de capas — esquema, no a escala","電子層模型示意圖，非按比例","電子層模型示意圖，非按比例"],
+      "Valence shell":["Capa de valencia","價電子層","價電子層"],
+      "Dots, pairs, and bonds":["Puntos, pares y enlaces","點、電子對與鍵結","點、電子對與鍵結"],
+      "Read":["Explora","認識","認識"],
+      "Lewis diagrams.":["los diagramas de Lewis.","路易斯結構。","路易斯結構。"],
+      "Molecule":["Molécula","分子","分子"],
+      "Lewis structure":["Estructura de Lewis","路易斯結構","路易斯結構"],
+      "Lone pair":["Par solitario","孤電子對","孤電子對"],
+      "From electron pairs to matter":["De los pares de electrones a la materia","從電子對到物質","從電子對到物質"],
+      "Meet the":["Conoce la","認識","認識"],
+      "molecular shape.":["geometría molecular.","分子形狀。","分子形狀。"],
+      "Real molecule":["Molécula real","真實分子","真實分子"],
+      "Electron geometry":["Geometría electrónica","電子域幾何","電子域幾何"],
+      "Molecular shape":["Geometría molecular","分子形狀","分子形狀"],
+      "What the shape tells you":["Qué revela la forma","形狀透露的資訊","形狀透露的資訊"],
+      "Molecular polarity":["Polaridad molecular","分子極性","分子極性"],
+      "Intermolecular forces":["Fuerzas intermoleculares","分子間作用力","分子間作用力"],
+      "VSEPR electron domains":["Dominios electrónicos VSEPR","VSEPR 電子域","VSEPR 電子域"],
+      "Repulsion sets the arrangement":["La repulsión determina la disposición","排斥作用決定排列方式","排斥作用決定排列方式"],
+      "Your atoms, your arrangement":["Tus átomos, tu disposición","排列你的原子","排列你的原子"],
+      "Choose your domains":["Elige los dominios","選擇電子域","選擇電子域"],
+      "Central atom (A)":["Átomo central (A)","中心原子 (A)","中心原子 (A)"],
+      "Bonded atom type (X)":["Tipo de átomo enlazado (X)","鍵結原子類型 (X)","鍵結原子類型 (X)"],
+      "Bonded atoms (X)":["Átomos enlazados (X)","鍵結原子 (X)","鍵結原子 (X)"],
+      "Central lone pairs (E)":["Pares solitarios centrales (E)","中心原子的孤電子對 (E)","中心原子的孤電子對 (E)"],
+      "3D bond arrangement":["Disposición tridimensional de enlaces","3D 鍵結排列","3D 鍵結排列"],
+      "Lewis sketch":["Esquema de Lewis","路易斯結構圖","路易斯結構圖"],
+      "Bonds and central lone pairs":["Enlaces y pares solitarios centrales","鍵結與中心孤電子對","鍵結與中心孤電子對"],
+      "Energy in every change":["Energía en cada cambio","變化中的能量","變化中的能量"],
+      "Coffee-cup calorimetry":["Calorimetría con vaso de café","咖啡杯量熱法","咖啡杯量熱法"],
+      "Heat at constant pressure":["Calor a presión constante","定壓下的熱","定壓下的熱"],
+      "Gibbs free energy":["Energía libre de Gibbs","吉布斯自由能","吉布斯自由能"],
+      "System & surroundings":["Sistema y alrededores","系統與周圍環境","系統與周圍環境"],
+      "Follow the energy boundary":["Sigue el límite de energía","追蹤能量的界線","追蹤能量的界線"],
+      "Enthalpy":["Entalpía","焓","焓"],
+      "Hess’s law":["Ley de Hess","赫斯定律","赫斯定律"],
+      "Entropy & spontaneity":["Entropía y espontaneidad","熵與自發性","熵與自發性"],
+      "Prepare · protect · observe":["Prepárate · protégete · observa","做好準備 · 注意防護 · 仔細觀察","做好準備 · 注意防護 · 仔細觀察"],
+      "Before":["Antes","實驗前","實驗前"],
+      "During":["Durante","實驗中","實驗中"],
+      "After":["Después","實驗後","實驗後"],
+      "Student safety contract rules":["Reglas del contrato de seguridad del estudiante","學生安全合約規則","學生安全合約規則"],
+      "General rules":["Reglas generales","一般規則","一般規則"],
+      "Clothing & personal protection":["Ropa y protección personal","衣著與個人防護","衣著與個人防護"],
+      "Conducting experiments":["Realización de experimentos","進行實驗","進行實驗"],
+      "Handling chemicals":["Manipulación de sustancias químicas","處理化學品","處理化學品"],
+      "Glassware & equipment":["Material de vidrio y equipo","玻璃器材與設備","玻璃器材與設備"],
+      "Heating substances":["Calentamiento de sustancias","加熱物質","加熱物質"],
+      "Clean up & questions":["Limpieza y preguntas","清理與提問","清理與提問"],
+      "Pre-lab contract check & incidents":["Revisión del contrato e incidentes antes del laboratorio","實驗前安全合約檢查與意外事件","實驗前安全合約檢查與意外事件"],
+      "Pre-lab readiness":["Preparación previa al laboratorio","實驗前準備","實驗前準備"],
+      "Any accident":["Cualquier accidente","任何意外","任何意外"],
+      "Chemical on skin":["Sustancia química en la piel","化學品接觸皮膚","化學品接觸皮膚"],
+      "Chemical in eyes":["Sustancia química en los ojos","化學品進入眼睛","化學品進入眼睛"],
+      "Broken glass":["Vidrio roto","破損玻璃","破損玻璃"],
+      "All equipment":["Todo el equipo","所有設備","所有設備"],
+      "Protection":["Protección","防護用品","防護用品"],
+      "Glassware":["Material de vidrio","玻璃器材","玻璃器材"],
+      "Measuring":["Medición","測量器材","測量器材"],
+      "Handling & heating":["Manipulación y calentamiento","處理與加熱","處理與加熱"],
+      "0 materials":["0 materiales","0 項器材","0 項器材"],
+      "Safety goggles":["Gafas de seguridad","護目鏡","護目鏡"],
+      "Lab coat or apron":["Bata o delantal de laboratorio","實驗衣或圍裙","實驗衣或圍裙"],
+      "Protective gloves":["Guantes de protección","防護手套","防護手套"],
+      "Why atoms stay together":["Por qué se mantienen unidos los átomos","原子為何結合在一起","原子為何結合在一起"],
+      "What is a chemical bond?":["¿Qué es un enlace químico?","什麼是化學鍵？","什麼是化學鍵？"],
+      "Important distinction":["Una distinción importante","重要區別","重要區別"],
+      "Ionic bonding":["Enlace iónico","離子鍵","離子鍵"],
+      "Covalent bonding":["Enlace covalente","共價鍵","共價鍵"],
+      "Metallic bonding":["Enlace metálico","金屬鍵","金屬鍵"],
+      "Build a covalent bond":["Construye un enlace covalente","建立共價鍵","建立共價鍵"],
+      "First atom":["Primer átomo","第一個原子","第一個原子"],
+      "Second atom":["Segundo átomo","第二個原子","第二個原子"],
+      "Shared electron pairs":["Pares de electrones compartidos","共用電子對","共用電子對"],
+      "Bond polarity":["Polaridad del enlace","鍵結極性","鍵結極性"],
+      "Molecular polarity":["Polaridad molecular","分子極性","分子極性"],
+      "Bond strength":["Fuerza del enlace","鍵結強度","鍵結強度"],
+      "Chemistry, one concept at a time":["Química, un concepto a la vez","一次掌握一個化學概念","一次掌握一個化學概念"],
+      "Review the":["Repasa los","複習","複習"],
+      "topics.":["temas.","主題。","主題。"],
+      "Inside the atom":["Dentro del átomo","原子內部","原子內部"],
+      "The periodic table":["La tabla periódica","元素週期表","元素週期表"],
+      "Electron shells":["Capas electrónicas","電子層","電子層"],
+      "Valence electrons":["Electrones de valencia","價電子","價電子"],
+      "Bonding basics":["Fundamentos de los enlaces","鍵結基礎","鍵結基礎"],
+      "Heat & energy":["Calor y energía","熱與能量","熱與能量"],
+      "Lab-ready habits":["Hábitos para el laboratorio","實驗室安全習慣","實驗室安全習慣"],
+      "Matter & change":["Materia y cambio","物質與變化","物質與變化"],
+      "Start quiz":["Comenzar cuestionario","開始測驗","開始測驗"],
+      "Explore elements":["Explorar elementos","探索元素","探索元素"],
+      "Explore the table":["Explorar la tabla","探索元素週期表","探索元素週期表"],
+      "Explore Bohr models":["Explorar modelos de Bohr","探索波耳模型","探索波耳模型"],
+      "Explore Lewis diagrams":["Explorar diagramas de Lewis","探索路易斯結構","探索路易斯結構"],
+      "Explore bonds":["Explorar enlaces","探索鍵結","探索鍵結"],
+      "Explore shapes":["Explorar geometrías","探索分子形狀","探索分子形狀"],
+      "Explore thermochemistry":["Explorar la termoquímica","探索熱化學","探索熱化學"],
+      "Explore lab safety":["Explorar la seguridad del laboratorio","探索實驗室安全","探索實驗室安全"],
+      "Close navigation":["Cerrar navegación","關閉導覽","關閉導覽"],
+      "A map of matter":["Un mapa de la materia","物質地圖","物質地圖"],
+      "Everything is":["Todo está hecho de","萬物皆由元素","萬物皆由元素"],
+      "elemental.":["elementos.","構成。","構成。"],
+      "A different way to explore the building blocks of our universe. Pick an element, follow a hunch, see where it takes you.":["Una forma distinta de explorar los componentes básicos del universo. Elige un elemento, sigue tu curiosidad y descubre adónde te lleva.","用不同的方式探索宇宙的基本組成。選擇一種元素，跟隨好奇心，看看會有什麼發現。","用不同的方式探索宇宙的基本組成。選擇一種元素，跟隨好奇心，看看會有什麼發現。"],
+      "Periodic table facts":["Datos de la tabla periódica","元素週期表資訊","元素週期表資訊"],
+      "known elements":["elementos conocidos","已知元素","已知元素"],
+      "periods":["períodos","週期","週期"],
+      "groups":["grupos","族","族"],
+      "Table controls":["Controles de la tabla","表格控制項","表格控制項"],
+      "Find an element…":["Buscar un elemento…","尋找元素…","尋找元素…"],
+      "Search elements":["Buscar elementos","搜尋元素","搜尋元素"],
+      "Category":["Categoría","類別","類別"],
+      "All elements":["Todos los elementos","所有元素","所有元素"],
+      "Clear filters":["Borrar filtros","清除篩選條件","清除篩選條件"],
+      "No elements match your search.":["Ningún elemento coincide con tu búsqueda.","找不到符合搜尋條件的元素。","找不到符合搜尋條件的元素。"],
+      "Atomic number":["Número atómico","原子序","原子序"],
+      "Atomic mass":["Masa atómica","原子量","原子量"],
+      "Group":["Grupo","族","族"],
+      "Period":["Período","週期","週期"],
+      "Family":["Familia","元素族","元素族"],
+      "State at room temperature":["Estado a temperatura ambiente","室溫下的狀態","室溫下的狀態"],
+      "Electron configuration":["Configuración electrónica","電子組態","電子組態"],
+      "Electrons per shell":["Electrones por capa","各電子層電子數","各電子層電子數"],
+      "Protons":["Protones","質子","質子"],
+      "Neutrons":["Neutrones","中子","中子"],
+      "Electrons":["Electrones","電子","電子"],
+      "Melting point":["Punto de fusión","熔點","熔點"],
+      "Boiling point":["Punto de ebullición","沸點","沸點"],
+      "Density":["Densidad","密度","密度"],
+      "Element details":["Detalles del elemento","元素詳細資訊","元素詳細資訊"],
+      "Close":["Cerrar","關閉","關閉"],
+      "Cancel":["Cancelar","取消","取消"],
+      "Save":["Guardar","儲存","儲存"],
+      "Start":["Comenzar","開始","開始"],
+      "Continue":["Continuar","繼續","繼續"],
+      "Next":["Siguiente","下一步","下一步"],
+      "Previous":["Anterior","上一步","上一步"],
+      "Back":["Volver","返回","返回"],
+      "Submit":["Enviar","提交","提交"],
+      "Check answer":["Comprobar respuesta","檢查答案","檢查答案"],
+      "Try again":["Intentar de nuevo","再試一次","再試一次"],
+      "Show answer":["Mostrar respuesta","顯示答案","顯示答案"],
+      "Show periodic table":["Mostrar tabla periódica","顯示元素週期表","顯示元素週期表"],
+      "Hide periodic table":["Ocultar tabla periódica","隱藏元素週期表","隱藏元素週期表"],
+      "Question":["Pregunta","問題","問題"],
+      "Explanation":["Explicación","說明","說明"],
+      "Correct!":["¡Correcto!","答對了！","答對了！"],
+      "Not quite.":["No exactamente.","不太對。","不太對。"],
+      "Your answer":["Tu respuesta","你的答案","你的答案"],
+      "Select an answer":["Selecciona una respuesta","選擇答案","選擇答案"],
+      "Question bank":["Banco de preguntas","題庫","題庫"],
+      "Randomized questions":["Preguntas aleatorias","隨機題目","隨機題目"],
+      "Learning path":["Ruta de aprendizaje","學習路徑","學習路徑"],
+      "Practice quiz":["Cuestionario de práctica","練習測驗","練習測驗"],
+      "Lessons":["Lecciones","課程","課程"],
+      "Progress":["Progreso","進度","進度"],
+      "Completed":["Completado","已完成","已完成"],
+      "Restart":["Reiniciar","重新開始","重新開始"],
+      "Search":["Buscar","搜尋","搜尋"],
+      "Clear":["Borrar","清除","清除"],
+      "Send":["Enviar","送出","送出"],
+      "Ask Chema":["Pregúntale a Chema","詢問 Chema","詢問 Chema"],
+      "Clear chat":["Borrar chat","清除對話","清除對話"],
+      "Your question stays in this browser.":["Tu pregunta permanece en este navegador.","你的問題會留在此瀏覽器中。","你的問題會留在此瀏覽器中。"],
+      "Built-in tutor · your questions stay in this browser.":["Tutor integrado · tus preguntas permanecen en este navegador.","內建家教 · 你的問題會留在此瀏覽器中。","內建家教 · 你的問題會留在此瀏覽器中。"],
+      "Working it through · your question stays in this browser.":["Analizando · tu pregunta permanece en este navegador.","正在解題 · 你的問題會留在此瀏覽器中。","正在解題 · 你的問題會留在此瀏覽器中。"],
+      "Chat cleared. What chemistry question can I help with?":["Chat borrado. ¿Qué pregunta de química puedo ayudarte a resolver?","對話已清除。想問我什麼化學問題？","對話已清除。想問我什麼化學問題？"],
+      "You":["Tú","你","你"],
+      "guide":["guía","指南","指南"],
+      "Open":["Abrir","開啟","開啟"],
+      "Open periodic table":["Abrir tabla periódica","開啟元素週期表","開啟元素週期表"],
+      "Open Bohr model":["Abrir modelo de Bohr","開啟波耳模型","開啟波耳模型"],
+      "Open Lewis diagrams":["Abrir diagramas de Lewis","開啟路易斯結構","開啟路易斯結構"],
+      "Open Molecular shapes":["Abrir geometría molecular","開啟分子形狀","開啟分子形狀"],
+      "Open AXE builder":["Abrir constructor AXE","開啟 AXE 建立器","開啟 AXE 建立器"],
+      "Open Thermochemistry":["Abrir termoquímica","開啟熱化學","開啟熱化學"],
+      "Open Science lab":["Abrir laboratorio de ciencias","開啟科學實驗室","開啟科學實驗室"],
+      "Open Types of bonds":["Abrir tipos de enlace","開啟鍵結類型","開啟鍵結類型"],
+      "Open Learning path":["Abrir ruta de aprendizaje","開啟學習路徑","開啟學習路徑"],
+      "This content is available offline.":["Este contenido está disponible sin conexión.","此內容可離線使用。","此內容可離線使用。"],
+      "Language saved on this device.":["Idioma guardado en este dispositivo.","語言已儲存至此裝置。","語言已儲存至此裝置。"],
+      "The 3D model could not load. Check your connection and reload the page.":["No se pudo cargar el modelo 3D. Comprueba tu conexión y vuelve a cargar la página.","無法載入 3D 模型。請檢查網路連線並重新載入頁面。","無法載入 3D 模型。請檢查網路連線並重新載入頁面。"],
+      "Elements":["Elementos","元素","元素"],
+      "Metals":["Metales","金屬","金屬"],
+      "Nonmetals":["No metales","非金屬","非金屬"],
+      "Metalloids":["Metaloides","類金屬","類金屬"],
+      "Alkali metals":["Metales alcalinos","鹼金屬","鹼金屬"],
+      "Alkaline earth metals":["Metales alcalinotérreos","鹼土金屬","鹼土金屬"],
+      "Transition metals":["Metales de transición","過渡金屬","過渡金屬"],
+      "Lanthanides":["Lantánidos","鑭系元素","鑭系元素"],
+      "Actinides":["Actínidos","錒系元素","錒系元素"],
+      "Halogens":["Halógenos","鹵素","鹵素"],
+      "Noble gases":["Gases nobles","惰性氣體","惰性氣體"],
+      "Lanthanide":["Lantánido","鑭系元素","鑭系元素"],
+      "Actinide":["Actínido","錒系元素","錒系元素"],
+      "Halogen":["Halógeno","鹵素","鹵素"],
+      "Noble gas":["Gas noble","惰性氣體","惰性氣體"],
+      "Unknown":["Desconocido","未知","未知"],
+      "Reactive nonmetal":["No metal reactivo","活性非金屬","活性非金屬"],
+      "Post-transition metal":["Metal postransicional","後過渡金屬","後過渡金屬"],
+      "Transition metal":["Metal de transición","過渡金屬","過渡金屬"],
+      "Alkali metal":["Metal alcalino","鹼金屬","鹼金屬"],
+      "Alkaline earth metal":["Metal alcalinotérreo","鹼土金屬","鹼土金屬"],
+      "Metalloid":["Metaloide","類金屬","類金屬"],
+      "Solid":["Sólido","固體","固體"],
+      "Liquid":["Líquido","液體","液體"],
+      "Gas":["Gas","氣體","氣體"],
+      "No data":["Sin datos","無資料","無資料"],
+      "About":["Acerca de","關於","關於"],
+      "Read more":["Leer más","閱讀更多","閱讀更多"],
+      "Show more":["Mostrar más","顯示更多","顯示更多"],
+      "Show less":["Mostrar menos","顯示較少","顯示較少"],
+      "Chemical formula":["Fórmula química","化學式","化學式"],
+      "Molar mass":["Masa molar","莫耳質量","莫耳質量"],
+      "Moles":["Moles","莫耳數","莫耳數"],
+      "Grams":["Gramos","公克","公克"],
+      "Temperature":["Temperatura","溫度","溫度"],
+      "Heat":["Calor","熱","熱"],
+      "Energy":["Energía","能量","能量"],
+      "Calculate":["Calcular","計算","計算"],
+      "Result":["Resultado","結果","結果"],
+      "Reset":["Restablecer","重設","重設"],
+      "Feedback form":["Formulario de comentarios","意見回饋表單","意見回饋表單"],
+      "Send feedback":["Enviar comentarios","送出意見","送出意見"],
+      "Update notes":["Notas de actualización","更新說明","更新說明"]
+    };
+    const elementNameTranslations = [
+      ["hidrógeno","氢","氫"],["helio","氦","氦"],["litio","锂","鋰"],["berilio","铍","鈹"],["boro","硼","硼"],["carbono","碳","碳"],["nitrógeno","氮","氮"],["oxígeno","氧","氧"],["flúor","氟","氟"],["neón","氖","氖"],
+      ["sodio","钠","鈉"],["magnesio","镁","鎂"],["aluminio","铝","鋁"],["silicio","硅","矽"],["fósforo","磷","磷"],["azufre","硫","硫"],["cloro","氯","氯"],["argón","氩","氬"],["potasio","钾","鉀"],["calcio","钙","鈣"],
+      ["escandio","钪","鈧"],["titanio","钛","鈦"],["vanadio","钒","釩"],["cromo","铬","鉻"],["manganeso","锰","錳"],["hierro","铁","鐵"],["cobalto","钴","鈷"],["níquel","镍","鎳"],["cobre","铜","銅"],["zinc","锌","鋅"],
+      ["galio","镓","鎵"],["germanio","锗","鍺"],["arsénico","砷","砷"],["selenio","硒","硒"],["bromo","溴","溴"],["kriptón","氪","氪"],["rubidio","铷","銣"],["estroncio","锶","鍶"],["itrio","钇","釔"],["circonio","锆","鋯"],
+      ["niobio","铌","鈮"],["molibdeno","钼","鉬"],["tecnecio","锝","鎝"],["rutenio","钌","釕"],["rodio","铑","銠"],["paladio","钯","鈀"],["plata","银","銀"],["cadmio","镉","鎘"],["indio","铟","銦"],["estaño","锡","錫"],
+      ["antimonio","锑","銻"],["telurio","碲","碲"],["yodo","碘","碘"],["xenón","氙","氙"],["cesio","铯","銫"],["bario","钡","鋇"],["lantano","镧","鑭"],["cerio","铈","鈰"],["praseodimio","镨","鐠"],["neodimio","钕","釹"],
+      ["prometio","钷","鉕"],["samario","钐","釤"],["europio","铕","銪"],["gadolinio","钆","釓"],["terbio","铽","鋱"],["disprosio","镝","鏑"],["holmio","钬","鈥"],["erbio","铒","鉺"],["tulio","铥","銩"],["iterbio","镱","鐿"],
+      ["lutecio","镥","鑥"],["hafnio","铪","鉿"],["tantalio","钽","鉭"],["wolframio","钨","鎢"],["renio","铼","錸"],["osmio","锇","鋨"],["iridio","铱","銥"],["platino","铂","鉑"],["oro","金","金"],["mercurio","汞","汞"],
+      ["talio","铊","鉈"],["plomo","铅","鉛"],["bismuto","铋","鉍"],["polonio","钋","釙"],["astato","砹","砈"],["radón","氡","氡"],["francio","钫","鍅"],["radio","镭","鐳"],["actinio","锕","錒"],["torio","钍","釷"],
+      ["protactinio","镤","鏷"],["uranio","铀","鈾"],["neptunio","镎","錼"],["plutonio","钚","鈽"],["americio","镅","鋂"],["curio","锔","鋦"],["berkelio","锫","鉳"],["californio","锎","鉲"],["einsteinio","锿","鑀"],["fermio","镄","鐨"],
+      ["mendelevio","钔","鍆"],["nobelio","锘","鍩"],["lawrencio","铹","鐒"],["rutherfordio","𬬻","鑪"],["dubnio","𬭊","𨧀"],["seaborgio","𬭳","𨭎"],["bohrio","𬭛","𨨏"],["hasio","𬭶","𨭆"],["meitnerio","鿏","䥑"],["darmstatio","𫟼","鐽"],
+      ["roentgenio","𬬭","錀"],["copernicio","𬭬","鎶"],["nihonio","鉨","鉨"],["flerovio","𫓧","鈇"],["moscovio","镆","鏌"],["livermorio","𫟷","鉝"],["teneso","石田","石田"],["oganesón","气奥","氣奧"]
+    ];
+    if (elementNameTranslations.length !== rawElements.length) {
+      throw new Error("Element translations must match the periodic table data.");
+    }
+    rawElements.forEach(([, ,name],index)=>{uiTranslations[name]=elementNameTranslations[index];});
+    const localeIndexes = {es:0,"zh-CN":1,"zh-TW":2};
+    const localizedValues = new Map();
+    Object.entries(uiTranslations).forEach(([source,values])=>values.forEach(value=>localizedValues.set(value,source)));
+    const originalTextNodes = new WeakMap();
+    const originalAttributes = new WeakMap();
+    const localeStorageKey = "chemica-language";
+    const languageSelect = document.getElementById("languageSelect");
+    let activeLocale = "en";
+
+    function translateCount(source,index) {
+      const count = source.match(/^(\d+)\s+(elements?|materials?)$/i);
+      if (!count) return null;
+      const [,number,kind] = count;
+      const translations = kind.toLowerCase().startsWith("element")
+        ? [["elemento","elementos"],["個元素","個元素"],["個元素","個元素"]]
+        : [["material","materiales"],["項器材","項器材"],["項器材","項器材"]];
+      return `${number} ${translations[index][number === "1" ? 0 : 1]}`;
+    }
+
+    function translateText(value,locale=activeLocale) {
+      const source = localizedValues.get(value) || value;
+      const index = localeIndexes[locale];
+      if (index === undefined) return source;
+      const translatedCount=translateCount(source,index);
+      if (translatedCount) return translatedCount;
+      const elementLabel=source.match(/^(\d+),\s*([^,]+),\s*(.+)$/);
+      if (elementLabel) {
+        const element=elements[Number(elementLabel[1])-1];
+        if (element && element.name===elementLabel[2]) {
+          return `${element.number}, ${uiTranslations[element.name]?.[index]||element.name}, ${uiTranslations[element.category]?.[index]||element.category}`;
+        }
+      }
+      return uiTranslations[source]?.[index] || source;
+    }
+
+    function isCurrentTranslation(value,source) {
+      return value===source || Object.keys(localeIndexes).some(locale=>value===translateText(source,locale));
+    }
+
+    function localizePage() {
+      document.documentElement.lang = activeLocale === "zh-CN" ? "zh-Hans" : activeLocale === "zh-TW" ? "zh-Hant" : activeLocale;
+      const walker = document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node=walker.nextNode())) {
+        if (["SCRIPT","STYLE"].includes(node.parentElement?.tagName) || node.parentElement?.closest(".language-select")) continue;
+        const current=node.nodeValue;
+        const known=originalTextNodes.get(node);
+        const source=known && isCurrentTranslation(current,known) ? known : (localizedValues.get(current) || current);
+        originalTextNodes.set(node,source);
+        const leading=source.match(/^\s*/)?.[0] || "";
+        const trailing=source.match(/\s*$/)?.[0] || "";
+        const content=source.slice(leading.length,source.length-trailing.length);
+        const translated=translateText(content);
+        const next=leading+translated+trailing;
+        if (current!==next) node.nodeValue=next;
+      }
+      document.querySelectorAll("body *").forEach(element=>{
+        ["aria-label","placeholder","title","alt"].forEach(attribute=>{
+          if (!element.hasAttribute(attribute)) return;
+          let originals=originalAttributes.get(element);
+          if (!originals) { originals=new Map(); originalAttributes.set(element,originals); }
+          const current=element.getAttribute(attribute);
+          const known=originals.get(attribute);
+          const source=known && isCurrentTranslation(current,known) ? known : (localizedValues.get(current) || current);
+          originals.set(attribute,source);
+          const translated=translateText(source);
+          if (current!==translated) element.setAttribute(attribute,translated);
+        });
+      });
+      document.title=translateText("Chemica — A Full-On Chemistry Site");
+    }
+
+    function setLanguage(locale, persist=true) {
+      activeLocale=Object.hasOwn(localeIndexes,locale) ? locale : "en";
+      languageSelect.value=activeLocale;
+      localizePage();
+      updateFilters();
+      if (persist) {
+        try {
+          localStorage.setItem(localeStorageKey,activeLocale);
+        } catch (error) {
+          console.error("Could not save the selected language:",error);
+        }
+      }
+    }
+
+    languageSelect.addEventListener("change",()=>setLanguage(languageSelect.value));
+    let savedLocale="en";
+    try {
+      savedLocale=localStorage.getItem(localeStorageKey) || "en";
+    } catch (error) {
+      console.error("Could not read the saved language:",error);
+    }
+    setLanguage(savedLocale,false);
+    new MutationObserver(()=>localizePage()).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["aria-label","placeholder","title","alt"]});
   </script>
   <script type="module">
     const modelContainers = [...document.querySelectorAll(".molecule-model")];
