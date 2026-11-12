@@ -265,6 +265,17 @@
     .molecule-badge b { color: #c9ef77; font-weight: 700; }
     .molecule-workbench { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(300px,.85fr); gap: 14px; }
     .molecule-card { min-width: 0; border: 1px solid var(--line); border-radius: 16px; background: rgba(23,27,24,.78); overflow: hidden; }
+    .about-layout { display: grid; grid-template-columns: minmax(220px,.8fr) minmax(0,1.4fr); gap: 16px; align-items: stretch; }
+    .about-photo-placeholder, .about-photo { display: grid; width: 100%; aspect-ratio: 4 / 5; max-height: 560px; place-items: center; overflow: hidden; border: 1px dashed rgba(201,239,119,.28); border-radius: 15px; color: #9da795; background: radial-gradient(ellipse at 50% 35%,rgba(201,239,119,.12),transparent 55%),linear-gradient(145deg,#222923,#171b18); object-fit: cover; }
+    .about-photo-frame { min-width: 0; margin: 0; }
+    .about-photo-frame .about-photo { display: block; border: 0; }
+    .about-photo-frame figcaption { padding: 11px 3px 0; color: #a4ada5; font-size: 11px; line-height: 1.5; }
+    .about-photo-placeholder { gap: 12px; align-content: center; text-align: center; }
+    .about-photo-placeholder span:first-child { display: grid; width: 54px; height: 54px; place-items: center; border: 1px solid rgba(201,239,119,.22); border-radius: 16px; color: var(--accent); background: rgba(201,239,119,.07); font-size: 24px; }
+    .about-photo-placeholder span:last-child { font-size: 11px; }
+    .about-story { display: flex; flex-direction: column; justify-content: center; padding: clamp(22px,4vw,44px); }
+    .about-story h2 { margin: 0; font-size: clamp(22px,3vw,34px); font-weight: 610; letter-spacing: -.055em; }
+    .about-story p { margin: 14px 0 0; color: #a4ada5; font-size: 13px; line-height: 1.8; }
     .molecule-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 17px; border-bottom: 1px solid var(--line); }
     .molecule-card-head h3 { margin: 0; font-size: 12px; font-weight: 680; }
     .molecule-card-head span { color: #838d84; font-size: 9px; }
@@ -915,6 +926,9 @@
       .menu-button { display: grid; }
       .intro { display: block; }
       .intro-aside { margin-top: 22px; }
+      .about-layout { grid-template-columns: minmax(0,1fr); }
+      .about-photo-placeholder, .about-photo-frame { width: min(100%,360px); max-height: 440px; margin: 0 auto; }
+      .about-photo-frame .about-photo { width: 100%; margin: 0; }
       .toolbar { align-items: stretch; flex-direction: column; }
       .toolbar-left, .toolbar-right { justify-content: space-between; }
       .search-wrap { flex: 1; }
@@ -1070,6 +1084,7 @@
       <span class="nav-section-label" aria-hidden="true">More</span>
       <button class="page-tab" id="updatesTab" type="button" role="tab" aria-label="Update log" data-icon="◷" aria-selected="false" aria-controls="updatesPage" tabindex="-1"><span class="page-tab-label">Update log</span></button>
       <button class="page-tab" id="feedbackTab" type="button" role="tab" aria-label="Feedback" data-icon="✉" aria-selected="false" aria-controls="feedbackPage" tabindex="-1"><span class="page-tab-label">Feedback</span></button>
+      <button class="page-tab" id="aboutTab" type="button" role="tab" aria-label="About me" data-icon="◎" aria-selected="false" aria-controls="aboutPage" tabindex="-1"><span class="page-tab-label">About me</span></button>
       <button class="page-tab" id="settingsTab" type="button" role="tab" aria-label="Settings" data-icon="⚙" aria-selected="false" aria-controls="settingsPage" tabindex="-1"><span class="page-tab-label">Settings</span></button>
     </div>
   </nav>
@@ -2107,6 +2122,30 @@
       <h2 id="feedbackContactHeading">Get in touch</h2>
       <p>Your default email app will open with a message addressed to the site owner. Add your feedback and send it when you’re ready.</p>
       <a class="feedback-contact" href="mailto:luparker567@gmail.com">Contact the owner</a>
+    </section>
+  </main>
+
+  <main id="aboutPage" role="tabpanel" aria-labelledby="aboutTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">A little introduction</p>
+        <h1>About me.</h1>
+        <p class="intro-copy">Hello!</p>
+      </div>
+    </section>
+    <section class="about-layout" aria-label="About me">
+      <figure class="about-photo-frame">
+        <img class="about-photo" src="IMG_5863.png" alt="Me and the snow">
+        <figcaption>Me and the snow</figcaption>
+      </figure>
+      <article class="molecule-card about-story">
+        <h2>About Me</h2>
+        <p>Hello! The site that you are on right now is made by me. I am Parker Lu, and I am currently a high school student. I have been developing for about 2 years, mastering in Python, HTML, and CSS, but weak in C++.</p>
+        <p>At the age of 8, I was introduced to computer programming, specifically in Python. Then I learned about all kinds of other programming languages, like C++, HTML and CSS, and JavaScript. I have alway been fond of starting my own website, so in June of 2026, I began my journey of making my first website. It was a portfolio of a roblox game studio that I started with my friends. More info here: https://aerodexofficial.netlify.app/</p>
+        <p>The reason for this website's creation is because I got annoyed of other sites where it mentions having "Chemistry related topics" but ending up either having to share your personal info, or a paywall, or the questions aren't even related. That's where Chemica - the site you are currently on - comes in. It offers free accurate interactive chemistry content with NO COST, NO INFO, NADA. So you can cram up for your following chemistry test without having to deal with annoying popups and paywalls.</p>
+        <p> And also, if you have a suggestion, bug, or just want to say hi, just head over to feedback, or email me by clicking this button. Don't worry, it's not going to scare you.</p>
+        <a class="feedback-contact" href="mailto:luparker567@gmail.com">Click here!</a>
+      </article>
     </section>
   </main>
 
@@ -5759,7 +5798,7 @@
     function setPageTab(tab) {
       const currentTab=document.querySelector(".page-tab[aria-selected=\"true\"]");
       const pageChanged=currentTab?.id!==`${tab}Tab`;
-      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","settings","reactions"].forEach(name=>{
+      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","about","settings","reactions"].forEach(name=>{
         const selected = name===tab;
         document.getElementById(`${name}Tab`).setAttribute("aria-selected",String(selected));
         document.getElementById(`${name}Tab`).tabIndex = selected ? 0 : -1;
@@ -5792,6 +5831,7 @@
     document.getElementById("chemaiTab").addEventListener("click",()=>setPageTab("chemai"));
     document.getElementById("updatesTab").addEventListener("click",()=>setPageTab("updates"));
     document.getElementById("feedbackTab").addEventListener("click",()=>setPageTab("feedback"));
+    document.getElementById("aboutTab").addEventListener("click",()=>setPageTab("about"));
     document.getElementById("settingsTab").addEventListener("click",()=>setPageTab("settings"));
     document.getElementById("reactionsTab").addEventListener("click",()=>setPageTab("reactions"));
     document.getElementById("updatesFooterLink").addEventListener("click",event=>{event.preventDefault();setPageTab("updates");document.getElementById("updatesTab").focus();});
@@ -6501,11 +6541,21 @@
       "Chema AI (Beta)":"Chema AI (beta)",
       "Update log":"Registro de cambios",
       "Feedback":"Comentarios",
+      "About me":"Acerca de mí",
+      "About me.":"Acerca de mí.",
       "Settings":"Configuración",
       "Collapse navigation":"Contraer navegación",
       "Expand navigation":"Expandir navegación",
       "Close navigation":"Cerrar navegación",
       "A map of matter":"Un mapa de la materia",
+      "A little introduction":"Una pequeña presentación",
+      "About":"Acerca de",
+      "me.":"mí.",
+      "This page is ready for your story. Replace the sample text and photo placeholder to make it your own.":"Esta página está lista para tu historia. Sustituye el texto de ejemplo y el espacio para la foto para hacerla tuya.",
+      "Add your photo here":"Añade tu foto aquí",
+      "Photo placeholder":"Espacio para la foto",
+      "Your story":"Tu historia",
+      "Add your introduction here. Share a little about yourself, your interests, or what inspired you to create Chemica.":"Añade aquí tu presentación. Comparte algo sobre ti, tus intereses o qué te inspiró a crear Chemica.",
       "Everything is":"Todo está hecho de",
       "elemental.":"elementos.",
       "A different way to explore the building blocks of our universe. Pick an element, follow a hunch, see where it takes you.":"Una forma distinta de explorar los componentes básicos del universo. Elige un elemento, sigue tu curiosidad y descubre adónde te lleva.",
@@ -6981,11 +7031,21 @@
       "Chema AI (Beta)":"Chema AI（测试版）",
       "Update log":"更新日志",
       "Feedback":"意见反馈",
+      "About me":"关于我",
+      "About me.":"关于我。",
       "Settings":"设置",
       "Collapse navigation":"收起导航",
       "Expand navigation":"展开导航",
       "Close navigation":"关闭导航",
       "A map of matter":"物质图谱",
+      "A little introduction":"简单介绍",
+      "About":"关于",
+      "me.":"我。",
+      "This page is ready for your story. Replace the sample text and photo placeholder to make it your own.":"此页面已准备好展示你的故事。替换示例文字和照片占位内容，让页面成为你的个人介绍。",
+      "Add your photo here":"在此添加照片",
+      "Photo placeholder":"照片占位区域",
+      "Your story":"你的故事",
+      "Add your introduction here. Share a little about yourself, your interests, or what inspired you to create Chemica.":"在此添加你的介绍。分享一些关于你、你的兴趣，或启发你创建 Chemica 的想法。",
       "Everything is":"万物皆由",
       "elemental.":"元素构成。",
       "A different way to explore the building blocks of our universe. Pick an element, follow a hunch, see where it takes you.":"用不同的方式探索构成宇宙的基本元素。选择一种元素，跟随好奇心，发现新的知识。",
