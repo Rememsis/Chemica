@@ -1769,6 +1769,36 @@
         </article>
         <div class="bond-polarity"><strong id="bondDirection">Unequal sharing</strong><p id="bondPolarityNote"></p></div>
       </div>
+      <script>
+        const atomA = document.getElementById('bondAtomA');
+        const atomB = document.getElementById('bondAtomB');
+        const bondOrder = document.getElementById('bondOrder');
+
+        function checkHydrogen() {
+          // Check if Hydrogen ('H') is selected in either dropdown
+          const hasHydrogen = (atomA.value === 'H' || atomB.value === 'H');
+
+          // Disable double ('2') and triple ('3') bonds if Hydrogen is selected
+          Array.from(bondOrder.options).forEach(option => {
+            if (option.value === '2' || option.value === '3') {
+              option.disabled = hasHydrogen;
+            }
+          });
+
+          // If a double or triple bond was already chosen, switch it back to single ('1')
+          if (hasHydrogen && bondOrder.value !== '1') {
+            bondOrder.value = '1';
+          }
+        }
+
+        // Listen for changes on both atom dropdowns
+        atomA.addEventListener('change', checkHydrogen);
+        atomB.addEventListener('change', checkHydrogen);
+
+        // Run once on page load to set the initial state
+        checkHydrogen();
+      </script>
+
     </section>
 
     <section class="molecule-card bond-continuum" aria-label="Bond character and polarity">
@@ -2101,7 +2131,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.4.0</p><h2>New Learning Path and Flashcard Mode and more Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MAJOR UPDATE</span></h2><p>Introducing a Learning Path to help you learn the concepts, or review if you forget, and a Flashcard Mode to review key concepts. Chema AI is now in beta 2, introducing more features. Multiple bug fixes regarding translation in questions, AI, and descriptions, and Element taking up entire screen with the spectrum not showing data. Fixed the Guide so that it doesnt take up the entire screen. Language selection is also added on the welcome screen for first time users. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE`</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen in presented, and translation issues. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.0</p><h2>New Learning Path and Flashcard Mode and more Bug Fixes<span class="update-badge">MAJOR UPDATE</span></h2><p>Introducing a Learning Path to help you learn the concepts, or review if you forget, and a Flashcard Mode to review key concepts. Chema AI is now in beta 2, introducing more features. Multiple bug fixes regarding translation in questions, AI, and descriptions, and Element taking up entire screen with the spectrum not showing data. Fixed the Guide so that it doesnt take up the entire screen. Language selection is also added on the welcome screen for first time users. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.3.0</p><h2>Four Supported Languages! Plus a Welcome Popup<span class="update-badge">MAJOR UPDATE</span></h2><p>Site now supports English, Spanish, Simplified Chinese, and Traditional Chinese. Added a new Welcome Sign for first-time users with a guide. Fixed issues with the menu, where it gets cut off at the top and bottom, and improved Chema AI functionality. Included more questions and added a "Show Periodic Table" feature for questions that may require it.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.2.1</p><h2>Bug fixes to Menu and more science lab rules/equipment<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed issues with the menu navigation and updated science lab rules and equipment information.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.2.0</p><h2>New Menu Layout and More Tools, Added 3D interactive models instead of 2D<span class="update-badge">MAJOR UPDATE</span></h2><p>Easily Navigate through the lessons. Also added new resources and new rules for science labs. Switched to Interactive 3D models instead of 2D.</p></article>
@@ -2141,7 +2172,7 @@
       <article class="molecule-card about-story">
         <h2>About Me</h2>
         <p>Hello! The site that you are on right now is made by me. I am Parker Lu, and I am currently a high school student. I have been developing for about 2 years, mastering in Python, HTML, and CSS, but weak in C++.</p>
-        <p>At the age of 8, I was introduced to computer programming, specifically in Python. Then I learned about all kinds of other programming languages, like C++, HTML and CSS, and JavaScript. I have alway been fond of starting my own website, so in June of 2026, I began my journey of making my first website. It was a portfolio of a roblox game studio that I started with my friends. More info here: https://aerodexofficial.netlify.app/</p>
+        <p>At the age of 8, I was introduced to computer programming, specifically in Python. Then I learned about all kinds of other programming languages, like C++, HTML and CSS, and JavaScript. I have always been fond of starting my own website, so in June of 2026, I began my journey of making my first website. It was a portfolio of a roblox game studio that I started with my friends. More info here: https://aerodexofficial.netlify.app/</p>
         <p>The reason for this website's creation is because I got annoyed of other sites where it mentions having "Chemistry related topics" but ending up either having to share your personal info, or a paywall, or the questions aren't even related. That's where Chemica - the site you are currently on - comes in. It offers free accurate interactive chemistry content with NO COST, NO INFO, NADA. So you can cram up for your following chemistry test without having to deal with annoying popups and paywalls.</p>
         <p> And also, if you have a suggestion, bug, or just want to say hi, just head over to feedback, or email me by clicking this button. Don't worry, it's not going to scare you.</p>
         <a class="feedback-contact" href="mailto:luparker567@gmail.com">Click here!</a>
