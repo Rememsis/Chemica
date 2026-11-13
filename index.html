@@ -493,6 +493,33 @@
     .bond-type-tag { display: inline-block; margin-top: 8px; padding: 5px 8px; border: 1px solid rgba(201,239,119,.14); border-radius: 999px; color: #b7d885; background: rgba(201,239,119,.045); font-size: 8px; }
     .bond-type-card p { margin: 11px 0 0; color: #9da69b; font-size: 10px; line-height: 1.65; }
     .bond-example { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); color: #c9ef77; font-family: ui-monospace,SFMono-Regular,Consolas,monospace; font-size: 11px; }
+    .chem-interactive { margin-top: 15px; padding: 18px; border: 1px solid rgba(201,239,119,.14); border-radius: 14px; background: linear-gradient(135deg,rgba(33,43,38,.78),rgba(24,28,34,.78)); }
+    .chem-interactive h3 { margin: 0; font-size: 15px; }
+    .chem-interactive-copy { margin: 7px 0 14px; color: #9aa498; font-size: 10px; line-height: 1.65; }
+    .chem-interactive-prompt { margin: 0 0 12px; color: #e4e9df; font-size: 13px; line-height: 1.6; }
+    .chem-interactive-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chem-interactive-options button, .chem-interactive-action { min-height: 37px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 9px; color: #d3dacd; background: rgba(255,255,255,.035); font-size: 10px; font-weight: 650; cursor: pointer; }
+    .chem-interactive-options button:hover, .chem-interactive-action:hover { border-color: rgba(201,239,119,.4); color: var(--accent); }
+    .chem-interactive-feedback { min-height: 20px; margin: 11px 0 0; color: #aab4a8; font-size: 10px; line-height: 1.6; }
+    .chem-interactive-feedback[data-state="correct"] { color: #c9ef77; }
+    .chem-interactive-feedback[data-state="incorrect"], .chem-interactive-feedback[data-state="error"] { color: #ffb274; }
+    .equation-balancer { margin-top: 16px; }
+    .equation-balancer-form { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: end; gap: 9px; }
+    .equation-balancer-form .builder-field { margin: 0; }
+    .equation-balancer-form .chem-interactive-action { border-color: transparent; color: var(--accent-ink); background: var(--accent); }
+    .equation-balancer-result { min-height: 28px; margin: 12px 0 0; color: var(--accent); font-family: ui-monospace,SFMono-Regular,Consolas,monospace; font-size: clamp(13px,2vw,17px); line-height: 1.65; overflow-wrap: anywhere; }
+    .equation-balancer-result[data-state="error"] { color: #ffb274; font-family: inherit; font-size: 10px; }
+    .equation-balancer-examples { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .equation-balancer-examples button { padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; color: #aeb8ac; background: rgba(255,255,255,.025); font: 9px ui-monospace,SFMono-Regular,Consolas,monospace; cursor: pointer; }
+    .equation-balancer-examples button:hover { border-color: rgba(201,239,119,.35); color: var(--accent); }
+    .balancing-rules { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+    .balancing-rule { padding: 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+    .balancing-rule strong { color: var(--accent); font-size: 10px; }
+    .balancing-rule p { margin: 6px 0 0; color: #9da69b; font-size: 9px; line-height: 1.6; }
+    .property-examples { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+    .property-example { padding: 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+    .property-example strong { color: #c9ef77; font-size: 10px; }
+    .property-example p { margin: 6px 0 0; color: #9da69b; font-size: 9px; line-height: 1.6; }
     .bond-explorer { display: grid; grid-template-columns: minmax(230px,.62fr) minmax(0,1.38fr); gap: 14px; margin-top: 14px; }
     .bond-controls { padding: 18px; }
     .bond-controls h2 { margin: 0 0 7px; font-size: 15px; }
@@ -704,7 +731,17 @@
     .guide-dialog[open] { position: fixed; inset: auto; z-index: 80; width: min(360px,calc(100vw - 24px)); max-height: min(70vh,520px); margin: 0; overflow-y: auto; border-color: rgba(201,239,119,.35); box-shadow: 0 14px 48px rgba(0,0,0,.44),0 0 0 1px rgba(201,239,119,.08); }
     .guide-dialog[open]::backdrop { background: transparent; backdrop-filter: none; }
     .guide-dialog .welcome-content { padding: 22px; }
-    .tour-highlight { position: relative; z-index: 1; outline: 2px solid rgba(201,239,119,.8); outline-offset: 5px; box-shadow: 0 0 0 7px rgba(201,239,119,.08); border-radius: 12px; }
+    .guide-progress-track { height: 4px; margin: 0 0 16px; overflow: hidden; border-radius: 999px; background: rgba(235,239,224,.1); }
+    .guide-progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 45%,white)); box-shadow: 0 0 12px color-mix(in srgb,var(--accent) 45%,transparent); transition: width .32s var(--motion-ease); }
+    .guide-hint { margin: 12px 0 0; color: #788378; font-size: 9px; line-height: 1.5; }
+    .tour-highlight { position: relative; z-index: 1; outline: 2px solid rgba(201,239,119,.8); outline-offset: 5px; box-shadow: 0 0 0 7px rgba(201,239,119,.08); border-radius: 12px; transition: outline-color .2s, box-shadow .2s; }
+    @media (prefers-reduced-motion: no-preference) {
+      .tour-highlight { animation: guide-highlight-pulse 1.8s ease-in-out infinite alternate; }
+      @keyframes guide-highlight-pulse {
+        from { outline-color: rgba(201,239,119,.56); box-shadow: 0 0 0 5px rgba(201,239,119,.045); }
+        to { outline-color: rgba(201,239,119,1); box-shadow: 0 0 0 10px rgba(201,239,119,.13),0 0 28px rgba(201,239,119,.12); }
+      }
+    }
     .welcome-content { padding: clamp(24px,6vw,38px); }
     .welcome-kicker { margin: 0 0 11px; color: var(--accent); font-size: 9px; font-weight: 740; letter-spacing: .16em; text-transform: uppercase; }
     .welcome-content h2 { margin: 0; font-size: clamp(27px,6vw,38px); font-weight: 590; letter-spacing: -.065em; line-height: 1.05; }
@@ -964,6 +1001,8 @@
       .learning-aside { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
       .learning-aside-card + .learning-aside-card { margin-top: 0; }
       .bond-type-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .balancing-rules { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .property-examples { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .thermo-tools { grid-template-columns: 1fr; }
       .thermo-lesson-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .lab-prep-layout { grid-template-columns: 1fr; }
@@ -1010,6 +1049,8 @@
       .thermo-lesson-grid { grid-template-columns: 1fr; }
       .lab-rule-grid, .lab-material-grid { grid-template-columns: 1fr; }
       .bond-type-grid { grid-template-columns: 1fr; }
+      .balancing-rules, .property-examples { grid-template-columns: 1fr; }
+      .equation-balancer-form { grid-template-columns: 1fr; }
       .bond-result .molecule-overview { grid-template-columns: 1fr; }
       .settings-layout { grid-template-columns: 1fr; }
       .learning-summary { grid-template-columns: 1fr; gap: 9px; }
@@ -1020,6 +1061,54 @@
       .thermo-reaction { grid-template-columns: minmax(0,1fr) 54px 78px; }
       .thermo-reaction-head { grid-template-columns: minmax(0,1fr) 54px 78px; }
       footer { padding-right: 14px; padding-left: 14px; }
+    }
+    .intro {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(24px, 3.2vw, 40px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: radial-gradient(ellipse at 92% 10%, var(--ambient-glow), transparent 34rem), linear-gradient(135deg, rgba(28,33,29,.92), rgba(20,24,21,.78));
+      box-shadow: 0 18px 48px rgba(0,0,0,.13), inset 0 1px rgba(255,255,255,.025);
+    }
+    .intro > * { position: relative; z-index: 1; }
+    .intro::after {
+      position: absolute;
+      top: -98px;
+      right: clamp(18px, 8vw, 132px);
+      width: 194px;
+      aspect-ratio: 1;
+      border: 1px solid color-mix(in srgb, var(--accent) 23%, transparent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 22px color-mix(in srgb, var(--accent) 4%, transparent), 0 0 0 58px color-mix(in srgb, var(--accent) 3%, transparent);
+      content: "";
+      pointer-events: none;
+    }
+    .molecule-card, .study-lesson-card, .lesson-card, .property-example, .balancing-rule {
+      transition: transform .24s var(--motion-ease), border-color .24s var(--motion-ease), box-shadow .24s var(--motion-ease), background-color .24s var(--motion-ease);
+    }
+    .molecule-card:hover, .study-lesson-card:hover, .lesson-card:hover, .property-example:hover, .balancing-rule:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--accent) 27%, var(--line));
+      box-shadow: 0 14px 30px rgba(0,0,0,.16);
+    }
+    .page-tab[aria-selected="true"] { box-shadow: inset 2px 0 var(--accent), 0 5px 18px rgba(0,0,0,.1); }
+    @media (prefers-reduced-motion: no-preference) {
+      .intro::after { animation: guide-orbit-drift 16s ease-in-out infinite alternate; }
+      main:not([hidden]) > section { animation: guide-section-enter .48s var(--motion-ease) both; }
+      main:not([hidden]) > section:nth-of-type(2) { animation-delay: .045s; }
+      main:not([hidden]) > section:nth-of-type(3) { animation-delay: .09s; }
+      main:not([hidden]) > section:nth-of-type(4) { animation-delay: .135s; }
+      main:not([hidden]) > section:nth-of-type(5) { animation-delay: .18s; }
+      @keyframes guide-orbit-drift {
+        from { transform: translate3d(0,0,0) rotate(-8deg); }
+        to { transform: translate3d(-12px,18px,0) rotate(12deg); }
+      }
+      @keyframes guide-section-enter {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
     }
     button {
       transition: transform .16s var(--motion-ease), box-shadow .18s var(--motion-ease), filter .18s var(--motion-ease);
@@ -1036,7 +1125,7 @@
     input[type="checkbox"]:active { transform: scale(.92); }
     input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
   </style>
 </head>
@@ -2153,7 +2242,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE`</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen was selected, and translation issues. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen was selected, and translation issues. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.0</p><h2>New Learning Path and Flashcard Mode and more Bug Fixes<span class="update-badge">MAJOR UPDATE</span></h2><p>Introducing a Learning Path to help you learn the concepts, or review if you forget, and a Flashcard Mode to review key concepts. Chema AI is now in beta 2, introducing more features. Multiple bug fixes regarding translation in questions, AI, and descriptions, and Element taking up entire screen with the spectrum not showing data. Fixed the Guide so that it doesnt take up the entire screen. Language selection is also added on the welcome screen for first time users. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.3.0</p><h2>Four Supported Languages! Plus a Welcome Popup<span class="update-badge">MAJOR UPDATE</span></h2><p>Site now supports English, Spanish, Simplified Chinese, and Traditional Chinese. Added a new Welcome Sign for first-time users with a guide. Fixed issues with the menu, where it gets cut off at the top and bottom, and improved Chema AI functionality. Included more questions and added a "Show Periodic Table" feature for questions that may require it.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.2.1</p><h2>Bug fixes to Menu and more science lab rules/equipment<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed issues with the menu navigation and updated science lab rules and equipment information.</p></article>
@@ -2310,6 +2400,28 @@
         </article>
       </div>
     </section>
+    <section aria-labelledby="propertyExamplesHeading">
+      <div class="reaction-section-heading">
+        <h2 id="propertyExamplesHeading">Properties in everyday materials</h2>
+        <p>A property is useful when it helps identify, compare, or choose a material for a purpose.</p>
+      </div>
+      <div class="property-examples">
+        <article class="property-example"><strong>Density</strong><p>A copper sample is much denser than an equal-volume sample of cork. Density = mass ÷ volume.</p></article>
+        <article class="property-example"><strong>Conductivity</strong><p>Copper carries electric current well; rubber is an electrical insulator in ordinary conditions.</p></article>
+        <article class="property-example"><strong>Solubility</strong><p>Table salt dissolves readily in water, while sand does not dissolve appreciably.</p></article>
+        <article class="property-example"><strong>Melting point</strong><p>Pure ice melts near 0 °C at standard pressure; melting is a physical change.</p></article>
+        <article class="property-example"><strong>Magnetism</strong><p>Iron is attracted to a magnet; this observation does not change iron into a new substance.</p></article>
+        <article class="property-example"><strong>Reactivity</strong><p>Iron can react with oxygen and moisture to form rust, so rusting behavior is a chemical property.</p></article>
+      </div>
+    </section>
+    <section class="chem-interactive" aria-labelledby="propertyInteractiveTitle">
+      <h3 id="propertyInteractiveTitle">Interactive · identify the property or change</h3>
+      <p class="chem-interactive-copy">Choose the best description. Consider whether the observation is a property of a material or a change in it.</p>
+      <p class="chem-interactive-prompt" id="propertyInteractivePrompt"></p>
+      <div class="chem-interactive-options" id="propertyInteractiveOptions"></div>
+      <p class="chem-interactive-feedback" id="propertyInteractiveFeedback" role="status" aria-live="polite"></p>
+      <button class="chem-interactive-action" id="propertyInteractiveNext" type="button" disabled>Next example</button>
+    </section>
   </main>
 
   <main id="reactionsPage" role="tabpanel" aria-labelledby="reactionsTab" hidden>
@@ -2335,6 +2447,37 @@
         <p>In ordinary chemical reactions, atoms are not created or destroyed. A balanced equation has the same number of each kind of atom on both sides.</p>
         <div class="reaction-example">Balance equations with coefficients, never by changing formulas.</div>
       </article>
+    </section>
+    <section aria-labelledby="balancingRulesHeading">
+      <div class="reaction-section-heading">
+        <h2 id="balancingRulesHeading">Rules for balancing equations</h2>
+        <p>Balancing changes how many particles take part, not which substances they are.</p>
+      </div>
+      <div class="balancing-rules">
+        <article class="balancing-rule"><strong>1 · Write correct formulas</strong><p>Start with the unbalanced equation. Never change a formula’s subscripts to make atom counts match.</p></article>
+        <article class="balancing-rule"><strong>2 · Count each element</strong><p>Make an atom inventory for reactants and products. Multiply subscripts by any coefficient already in front.</p></article>
+        <article class="balancing-rule"><strong>3 · Add coefficients</strong><p>Adjust whole-number coefficients in front of formulas. Balance elements that appear in fewer compounds first; often leave H and O until later.</p></article>
+        <article class="balancing-rule"><strong>4 · Reduce and check</strong><p>Reduce coefficients to the smallest whole-number ratio, then recount every element on both sides.</p></article>
+      </div>
+    </section>
+    <section class="chem-interactive equation-balancer" aria-labelledby="equationBalancerTitle">
+      <h3 id="equationBalancerTitle">Interactive · chemical equation balancer</h3>
+      <p class="chem-interactive-copy">Enter formulas separated by + and use → or -&gt; between sides. Parentheses are supported. The balancer returns the smallest whole-number coefficients.</p>
+      <form class="equation-balancer-form" id="equationBalancerForm">
+        <div class="builder-field">
+          <label for="equationBalancerInput">Unbalanced equation</label>
+          <input class="thermo-input" id="equationBalancerInput" type="text" value="Fe + O2 -&gt; Fe2O3" autocomplete="off" spellcheck="false" aria-describedby="equationBalancerHint">
+          <span class="thermo-field-hint" id="equationBalancerHint">Examples: H2 + O2 -&gt; H2O · Al2(SO4)3 + Ca(OH)2 -&gt; Al(OH)3 + CaSO4</span>
+        </div>
+        <button class="chem-interactive-action" type="submit">Balance equation</button>
+      </form>
+      <p class="equation-balancer-result" id="equationBalancerResult" role="status" aria-live="polite"></p>
+      <div class="equation-balancer-examples" aria-label="Equation examples">
+        <button type="button" data-equation-example="H2 + O2 -&gt; H2O">Water formation</button>
+        <button type="button" data-equation-example="C3H8 + O2 -&gt; CO2 + H2O">Propane combustion</button>
+        <button type="button" data-equation-example="Al2(SO4)3 + Ca(OH)2 -&gt; Al(OH)3 + CaSO4">Parentheses</button>
+        <button type="button" data-equation-example="Fe + O2 -&gt; Fe2O3">Iron oxide</button>
+      </div>
     </section>
     <section aria-labelledby="reactionPatternsHeading">
       <div class="reaction-section-heading">
@@ -2379,6 +2522,28 @@
           <div class="reaction-example">HCl + NaOH → NaCl + H₂O</div>
         </article>
       </div>
+    </section>
+    <section aria-labelledby="reactionExamplesHeading">
+      <div class="reaction-section-heading">
+        <h2 id="reactionExamplesHeading">More reaction examples</h2>
+        <p>These equations illustrate atom rearrangement; equations are not instructions to perform reactions.</p>
+      </div>
+      <div class="property-examples">
+        <article class="property-example"><strong>Precipitation</strong><p>BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)</p></article>
+        <article class="property-example"><strong>Acid + carbonate</strong><p>2HCl(aq) + CaCO₃(s) → CaCl₂(aq) + H₂O(l) + CO₂(g)</p></article>
+        <article class="property-example"><strong>Metal oxidation</strong><p>4Al(s) + 3O₂(g) → 2Al₂O₃(s)</p></article>
+        <article class="property-example"><strong>Decomposition</strong><p>CaCO₃(s) → CaO(s) + CO₂(g)</p></article>
+        <article class="property-example"><strong>Single replacement</strong><p>Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)</p></article>
+        <article class="property-example"><strong>Neutralization</strong><p>H₂SO₄(aq) + 2KOH(aq) → K₂SO₄(aq) + 2H₂O(l)</p></article>
+      </div>
+    </section>
+    <section class="chem-interactive" aria-labelledby="reactionInteractiveTitle">
+      <h3 id="reactionInteractiveTitle">Interactive · classify the reaction pattern</h3>
+      <p class="chem-interactive-copy">Classify the equation by its overall pattern. A reaction may have more than one useful description in advanced chemistry.</p>
+      <p class="chem-interactive-prompt" id="reactionInteractivePrompt"></p>
+      <div class="chem-interactive-options" id="reactionInteractiveOptions"></div>
+      <p class="chem-interactive-feedback" id="reactionInteractiveFeedback" role="status" aria-live="polite"></p>
+      <button class="chem-interactive-action" id="reactionInteractiveNext" type="button" disabled>Next equation</button>
     </section>
 
     <aside class="reaction-note">
@@ -2464,14 +2629,20 @@
 
   <dialog class="guide-dialog" id="guideDialog" aria-labelledby="guideTitle" aria-describedby="guideDescription">
     <div class="welcome-content">
+      <div id="guideContent">
       <p class="welcome-kicker" id="guideKicker">Getting started</p>
       <p class="guide-progress" id="guideProgress" aria-live="polite"></p>
+      <div class="guide-progress-track" role="progressbar" aria-label="Tour progress" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1">
+        <div class="guide-progress-fill" id="guideProgressFill"></div>
+      </div>
       <h2 id="guideTitle"></h2>
       <p class="guide-description" id="guideDescription"></p>
+      <p class="guide-hint" id="guideHint">Use ← and → to move between steps. Press Esc to close the tour.</p>
       <div class="welcome-actions guide-actions">
         <button type="button" class="welcome-skip" id="guideSkip">Skip guide</button>
         <button type="button" id="guideBack">Back</button>
         <button type="button" class="guide-next" id="guideNext">Next</button>
+      </div>
       </div>
     </div>
   </dialog>
@@ -4237,6 +4408,222 @@
       badge.classList.toggle("endothermic",isEndothermic);
     }
 
+    function balanceChemicalEquation(equation) {
+      const arrowMatches=[...equation.matchAll(/→|->|=>|=/g)];
+      if(arrowMatches.length!==1)throw new Error("Enter exactly one reaction arrow between the reactants and products.");
+      const arrow=arrowMatches[0];
+      const leftText=equation.slice(0,arrow.index);
+      const rightText=equation.slice(arrow.index+arrow[0].length);
+      const subscriptDigits={"₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9"};
+      const normalizeFormula=formula=>formula.replace(/[₀₁₂₃₄₅₆₇₈₉]/g,digit=>subscriptDigits[digit]).replace(/\s/g,"");
+      const parseFormula=formulaText=>{
+        const formula=normalizeFormula(formulaText);
+        let index=0;
+        const readCount=()=>{
+          const start=index;
+          while(index<formula.length&&/\d/.test(formula[index]))index++;
+          const count=start===index?1:Number(formula.slice(start,index));
+          if(!Number.isSafeInteger(count)||count<=0||count>100000)throw new Error(`Invalid subscript in ${formulaText}.`);
+          return count;
+        };
+        const readGroup=expectedClose=>{
+          const counts={};
+          while(index<formula.length) {
+            const character=formula[index];
+            if(character===")"||character==="]") {
+              if(character!==expectedClose)throw new Error(`Mismatched parentheses in ${formulaText}.`);
+              index++;
+              return counts;
+            }
+            if(character==="("||character==="[") {
+              const close=character==="("?")":"]";
+              index++;
+              const nested=readGroup(close);
+              const multiplier=readCount();
+              Object.entries(nested).forEach(([element,count])=>{counts[element]=(counts[element]||0)+count*multiplier;});
+              continue;
+            }
+            if(!/[A-Z]/.test(character))throw new Error(`Could not read ${formulaText}. Use element symbols, subscripts, and parentheses only.`);
+            const start=index;
+            index++;
+            while(index<formula.length&&/[a-z]/.test(formula[index]))index++;
+            const symbol=formula.slice(start,index);
+            const count=readCount();
+            counts[symbol]=(counts[symbol]||0)+count;
+          }
+          if(expectedClose)throw new Error(`Missing closing parenthesis in ${formulaText}.`);
+          return counts;
+        };
+        const counts=readGroup(null);
+        if(index!==formula.length||Object.keys(counts).length===0)throw new Error(`Enter a valid chemical formula instead of "${formulaText}".`);
+        return counts;
+      };
+      const parseSide=side=>{
+        const terms=side.split("+").map(term=>term.trim());
+        if(!terms.length||terms.some(term=>!term))throw new Error("Each side of the equation needs at least one formula.");
+        return terms.map(term=>{
+          const formula=term.replace(/^\d+\s*/,"");
+          return {formula,atoms:parseFormula(formula)};
+        });
+      };
+      const reactants=parseSide(leftText);
+      const products=parseSide(rightText);
+      const terms=[...reactants,...products];
+      const elementSymbols=[...new Set(terms.flatMap(term=>Object.keys(term.atoms)))].sort();
+      const zero=()=>({numerator:0n,denominator:1n});
+      const gcd=(first,second)=>{
+        let a=first<0n?-first:first;
+        let b=second<0n?-second:second;
+        while(b!==0n)[a,b]=[b,a%b];
+        return a;
+      };
+      const fraction=(numerator,denominator=1n)=>{
+        if(denominator===0n)throw new Error("Could not solve this equation.");
+        if(numerator===0n)return zero();
+        const sign=denominator<0n?-1n:1n;
+        const divisor=gcd(numerator,denominator);
+        return {numerator:numerator/divisor*sign,denominator:denominator/divisor*sign};
+      };
+      const add=(a,b)=>fraction(a.numerator*b.denominator+b.numerator*a.denominator,a.denominator*b.denominator);
+      const subtract=(a,b)=>fraction(a.numerator*b.denominator-b.numerator*a.denominator,a.denominator*b.denominator);
+      const multiply=(a,b)=>fraction(a.numerator*b.numerator,a.denominator*b.denominator);
+      const divide=(a,b)=>fraction(a.numerator*b.denominator,a.denominator*b.numerator);
+      const matrix=elementSymbols.map(symbol=>terms.map((term,index)=>{
+        const count=BigInt(term.atoms[symbol]||0);
+        return fraction(index<reactants.length?count:-count);
+      }));
+      let pivotRow=0;
+      const pivotColumns=[];
+      for(let column=0;column<terms.length&&pivotRow<matrix.length;column++) {
+        const found=matrix.findIndex((row,rowIndex)=>rowIndex>=pivotRow&&row[column].numerator!==0n);
+        if(found<0)continue;
+        [matrix[pivotRow],matrix[found]]=[matrix[found],matrix[pivotRow]];
+        const pivot=matrix[pivotRow][column];
+        matrix[pivotRow]=matrix[pivotRow].map(value=>divide(value,pivot));
+        for(let row=0;row<matrix.length;row++) {
+          if(row===pivotRow||matrix[row][column].numerator===0n)continue;
+          const factor=matrix[row][column];
+          matrix[row]=matrix[row].map((value,index)=>subtract(value,multiply(factor,matrix[pivotRow][index])));
+        }
+        pivotColumns.push(column);
+        pivotRow++;
+      }
+      const freeColumns=terms.map((_,index)=>index).filter(index=>!pivotColumns.includes(index));
+      if(freeColumns.length===0)throw new Error("No nonzero coefficient solution exists for these formulas.");
+      if(freeColumns.length>1)throw new Error("This equation has multiple independent solutions. Check the formulas or add known products/reactants.");
+      const coefficients=terms.map(()=>zero());
+      coefficients[freeColumns[0]]=fraction(1n);
+      pivotColumns.forEach((column,row)=>{coefficients[column]=fraction(-matrix[row][freeColumns[0]].numerator,matrix[row][freeColumns[0]].denominator);});
+      const lcm=(first,second)=>first/gcd(first,second)*second;
+      const commonDenominator=coefficients.reduce((value,item)=>lcm(value,item.denominator),1n);
+      let wholeNumbers=coefficients.map(item=>item.numerator*(commonDenominator/item.denominator));
+      if(wholeNumbers.every(value=>value<0n))wholeNumbers=wholeNumbers.map(value=>-value);
+      if(wholeNumbers.some(value=>value<=0n))throw new Error("These formulas do not have a positive coefficient balance.");
+      const commonDivisor=wholeNumbers.reduce((value,item)=>gcd(value,item));
+      wholeNumbers=wholeNumbers.map(value=>value/commonDivisor);
+      const formatSide=(side,offset)=>side.map((term,index)=>{
+        const coefficient=wholeNumbers[offset+index];
+        return `${coefficient===1n?"":coefficient}${term.formula}`;
+      }).join(" + ");
+      return `${formatSide(reactants,0)} → ${formatSide(products,reactants.length)}`;
+    }
+
+    const propertyInteractiveExamples=[
+      {prompt:"A copper wire lets electric current pass through it.",answer:"Physical property",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"Electrical conductivity can be measured without changing copper into another substance."},
+      {prompt:"A steel nail reacts with oxygen and moisture and develops rust.",answer:"Chemical property",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"The tendency to react and form rust describes iron’s chemical property."},
+      {prompt:"An ice cube melts into liquid water.",answer:"Physical change",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"The state changes, but the particles remain H₂O."},
+      {prompt:"A strip of magnesium burns and forms a white solid.",answer:"Chemical change",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"A new substance, magnesium oxide, forms during the reaction."},
+      {prompt:"A sample has a mass of 12 g and a volume of 4 mL.",answer:"Physical property",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"Its density is 3 g/mL, a physical property that does not change the sample’s identity."},
+      {prompt:"A liquid fuel can ignite in oxygen.",answer:"Chemical property",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"Flammability describes a substance’s ability to form new substances by reacting."},
+      {prompt:"A piece of chalk is crushed into powder.",answer:"Physical change",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"The size and shape change, but the chalk’s chemical identity is unchanged."},
+      {prompt:"Two clear solutions form a solid precipitate when mixed.",answer:"Chemical change",options:["Physical property","Chemical property","Physical change","Chemical change"],explanation:"A precipitate is a new solid product, which is evidence of a chemical reaction."}
+    ];
+    const reactionInteractiveExamples=[
+      {prompt:"2H₂ + O₂ → 2H₂O",answer:"Synthesis",options:["Synthesis","Decomposition","Single replacement","Combustion"],explanation:"Two reactants combine to make one compound."},
+      {prompt:"CaCO₃ → CaO + CO₂",answer:"Decomposition",options:["Synthesis","Decomposition","Double replacement","Neutralization"],explanation:"One compound breaks into two simpler products."},
+      {prompt:"Zn + 2HCl → ZnCl₂ + H₂",answer:"Single replacement",options:["Synthesis","Single replacement","Combustion","Decomposition"],explanation:"Zinc replaces hydrogen in the compound."},
+      {prompt:"AgNO₃ + NaCl → AgCl + NaNO₃",answer:"Double replacement",options:["Combustion","Synthesis","Double replacement","Decomposition"],explanation:"The ions exchange partners; insoluble AgCl forms."},
+      {prompt:"CH₄ + 2O₂ → CO₂ + 2H₂O",answer:"Combustion",options:["Combustion","Decomposition","Single replacement","Neutralization"],explanation:"A hydrocarbon reacts with oxygen to form carbon dioxide and water in complete combustion."},
+      {prompt:"HCl + NaOH → NaCl + H₂O",answer:"Neutralization",options:["Synthesis","Decomposition","Neutralization","Combustion"],explanation:"An acid and a base react to form water and a salt."},
+      {prompt:"2KClO₃ → 2KCl + 3O₂",answer:"Decomposition",options:["Single replacement","Decomposition","Synthesis","Double replacement"],explanation:"One reactant forms multiple products."},
+      {prompt:"2Al + 3Cl₂ → 2AlCl₃",answer:"Synthesis",options:["Synthesis","Combustion","Neutralization","Double replacement"],explanation:"Two elements combine to form one compound."}
+    ];
+
+    function initializeClassificationActivity(prefix,examples,nextLabel) {
+      const prompt=document.getElementById(`${prefix}Prompt`);
+      const options=document.getElementById(`${prefix}Options`);
+      const feedback=document.getElementById(`${prefix}Feedback`);
+      const next=document.getElementById(`${prefix}Next`);
+      let exampleIndex=0;
+      const render=()=>{
+        const example=examples[exampleIndex];
+        prompt.textContent=translateValue(example.prompt);
+        feedback.textContent="";
+        feedback.dataset.state="";
+        next.textContent=translateValue(nextLabel);
+        next.disabled=true;
+        options.replaceChildren();
+        example.options.forEach(optionText=>{
+          const button=document.createElement("button");
+          button.type="button";
+          button.textContent=translateValue(optionText);
+          button.addEventListener("click",()=>{
+            if(next.disabled===false)return;
+            const correct=optionText===example.answer;
+            feedback.textContent=`${correct?translateValue("Correct."):translateValue("Not quite.")} ${translateValue(example.explanation)}`;
+            feedback.dataset.state=correct?"correct":"incorrect";
+            options.querySelectorAll("button").forEach(option=>{option.disabled=true;});
+            next.disabled=false;
+          });
+          options.append(button);
+        });
+      };
+      next.addEventListener("click",()=>{
+        exampleIndex=(exampleIndex+1)%examples.length;
+        render();
+      });
+      render();
+    }
+
+    function initializeChemistryInteractives() {
+      initializeClassificationActivity("propertyInteractive",propertyInteractiveExamples,"Next example");
+      initializeClassificationActivity("reactionInteractive",reactionInteractiveExamples,"Next equation");
+      const translateEquationError=message=>{
+        const sentenceEnd=activeLanguage.startsWith("zh-")?"。":".";
+        const parameterized=[
+          [/^Invalid subscript in (.+)\.$/,formula=>`${translateValue("Invalid subscript in")} ${formula}${sentenceEnd}`],
+          [/^Mismatched parentheses in (.+)\.$/,formula=>`${translateValue("Mismatched parentheses in")} ${formula}${sentenceEnd}`],
+          [/^Could not read (.+)\. Use element symbols, subscripts, and parentheses only\.$/,formula=>`${translateValue("Could not read")} ${formula}${sentenceEnd} ${translateValue("Use element symbols, subscripts, and parentheses only.")}`],
+          [/^Missing closing parenthesis in (.+)\.$/,formula=>`${translateValue("Missing closing parenthesis in")} ${formula}${sentenceEnd}`],
+          [/^Enter a valid chemical formula instead of "(.+)"\.$/,formula=>`${translateValue("Enter a valid chemical formula instead of")} "${formula}"${sentenceEnd}`]
+        ];
+        for(const [pattern,translate] of parameterized) {
+          const match=message.match(pattern);
+          if(match)return translate(match[1]);
+        }
+        return translateValue(message);
+      };
+      const form=document.getElementById("equationBalancerForm");
+      const input=document.getElementById("equationBalancerInput");
+      const result=document.getElementById("equationBalancerResult");
+      const balance=()=>{
+        try {
+          result.textContent=balanceChemicalEquation(input.value);
+          result.dataset.state="success";
+        } catch(error) {
+          result.textContent=translateEquationError(error instanceof Error?error.message:"Could not balance this equation.");
+          result.dataset.state="error";
+        }
+      };
+      form.addEventListener("submit",event=>{event.preventDefault();balance();});
+      document.querySelectorAll("[data-equation-example]").forEach(button=>button.addEventListener("click",()=>{
+        input.value=button.dataset.equationExample;
+        balance();
+        input.focus();
+      }));
+      balance();
+    }
+
     function updateCalorimetry() {
       const mass = document.getElementById("calMass").valueAsNumber;
       const specificHeat = document.getElementById("calSpecificHeat").valueAsNumber;
@@ -4966,7 +5353,12 @@
         ["Which is an extensive property that depends on the amount of sample?",["Mass","Density","Melting point","Color"],0,"Mass depends on how much substance is present, while density, melting point, and color do not scale with sample size."],
         ["A solid keeps its composition while being crushed into powder. Which changed?",["Its size and shape, which are physical properties","Its chemical identity","Its ability to react with oxygen","Its element composition"],0,"Crushing changes form and size without changing the substance's chemical identity."],
         ["A sample has a density of 2 g/mL. What is the density of a larger uniform sample of the same material?",["2 g/mL","It must double","It must be halved","It cannot be measured"],0,"Density is an intensive property, so it remains the same for a larger uniform sample."],
-        ["Which observation is a chemical property rather than a physical property?",["A material's ability to tarnish in air","Its measured mass","Its melting point","Its electrical conductivity"],0,"Tarnishing involves a chemical reaction that forms a different substance."]
+        ["Which observation is a chemical property rather than a physical property?",["A material's ability to tarnish in air","Its measured mass","Its melting point","Its electrical conductivity"],0,"Tarnishing involves a chemical reaction that forms a different substance."],
+        ["Which pair lists two physical properties of aluminum?",["Silvery color and electrical conductivity","Flammability and rusting","Reaction with acid and burning","Corrosion and tarnishing"],0,"Color and conductivity can be observed without changing aluminum’s chemical identity."],
+        ["A liquid evaporates from an open dish. What kind of change is this?",["Physical change; the liquid becomes gas","Chemical change; a new substance must form","Nuclear change","Chemical property"],0,"Evaporation changes state, not chemical identity."],
+        ["Why is flammability classified as a chemical property?",["Testing it involves reacting with oxygen and forming products","It depends only on sample shape","It can be measured without any chemical change","It is the same as density"],0,"Flammability describes a material’s capacity to undergo a combustion reaction."],
+        ["Which is an intensive property?",["Boiling point","Mass","Volume","Total amount of heat"],0,"Boiling point is characteristic of a substance and does not scale with sample size."],
+        ["A metal is shiny and can be drawn into wire. Which description is correct?",["Luster and ductility are physical properties","Both are chemical changes","Ductility means it reacts with oxygen","Luster is an extensive property"],0,"Luster and ductility describe observable behavior without changing the metal’s composition."]
       ],
       "chemical-reactions":[
         ["Balance: __ Fe + __ O₂ → __ Fe₂O₃. Which coefficients are smallest whole numbers?",["4, 3, 2","2, 1, 1","2, 3, 2","3, 2, 1"],0,"Four Fe atoms and three O₂ molecules give 4 Fe and 6 O atoms, matching 2 Fe₂O₃."],
@@ -4976,7 +5368,13 @@
         ["A solid product forms after two clear solutions are mixed. What is that solid called?",["A precipitate","A catalyst","A solvent","A vapor"],0,"An insoluble solid that forms from solution during a reaction is a precipitate."],
         ["Which is a chemical property rather than a physical property?",["Copper's tendency to react with nitric acid","Copper's electrical conductivity","Copper's melting point","Copper's reddish color"],0,"Reaction with acid describes how copper can form new substances; the others can be observed without changing its identity."],
         ["For 2Al + 3Cl₂ → 2AlCl₃, how many chlorine atoms are represented on each side?",["6","3","2","9"],0,"Three Cl₂ molecules contain 3 × 2 = 6 chlorine atoms; two AlCl₃ units also contain 6."],
-        ["A candle wax sample melts, then the vapor burns. Which classification is most accurate?",["Melting is physical; combustion is chemical","Both are physical","Melting is chemical; combustion is physical","Both are chemical"],0,"Melting changes wax's state; combustion reacts wax vapor with oxygen to form new substances."]
+        ["A candle wax sample melts, then the vapor burns. Which classification is most accurate?",["Melting is physical; combustion is chemical","Both are physical","Melting is chemical; combustion is physical","Both are chemical"],0,"Melting changes wax's state; combustion reacts wax vapor with oxygen to form new substances."],
+        ["When balancing an equation, what may be changed?",["Coefficients in front of formulas","Subscripts inside formulas","Element symbols","The number of protons in each atom"],0,"Coefficients change the number of particles while keeping each chemical formula unchanged."],
+        ["Balance: N₂ + H₂ → NH₃. What is the smallest whole-number coefficient set?",["1, 3, 2","1, 1, 1","2, 3, 1","1, 2, 3"],0,"N₂ supplies 2 nitrogen atoms, so make 2NH₃; that gives 6 hydrogen atoms, requiring 3H₂."],
+        ["In 3Ca(OH)₂, how many oxygen atoms are present?",["6","2","3","9"],0,"Each formula unit has two oxygen atoms; the coefficient 3 gives 3 × 2 = 6."],
+        ["What does a catalyst do to a chemical equation’s balanced coefficients?",["It does not change the atom-balance coefficients","It removes atoms from the products","It must appear as a reactant with coefficient 1","It changes formula subscripts"],0,"A catalyst can affect reaction rate but does not alter the balanced stoichiometric equation."],
+        ["Why are diatomic elements such as O₂ written with a subscript 2?",["The subscript is part of the element’s chemical formula and must not be changed while balancing","It is a coefficient that may be deleted","It means there are two oxygen compounds","It is optional in every equation"],0,"The subscript defines the molecule; balancing changes only coefficients placed in front."],
+        ["A balanced equation has 4 hydrogen atoms on the left. How many hydrogen atoms must it have on the right?",["4","2","8","It depends on the reaction speed"],0,"Balancing conserves the number of atoms of each element on both sides."]
       ],
       "bohr-model":[
         ["Which shell arrangement matches a neutral potassium atom with 19 electrons?",["2–8–8–1","2–8–9","2–8–7–2","2–9–8"],0,"Potassium’s configuration ends in 4s¹; its shell populations are 2, 8, 8, and 1."],
@@ -5948,6 +6346,7 @@
     });
     initializeThermochemistry();
     initializeLabPage();
+    initializeChemistryInteractives();
     initializeBondExplorer();
     initializeElectronModelPages();
     initializeLearningPath();
@@ -6507,10 +6906,14 @@
       {tab:"molecule",target:"#moleculePage .intro",title:"See how molecules take shape",description:"Explore interactive molecular models, Lewis structures, VSEPR shapes, polarity, and intermolecular forces."},
       {tab:"learning",target:"#learningPage .intro",title:"Build your chemistry skills",description:"Follow the learning path one topic at a time, or open practice quizzes to test what you know."},
       {tab:"lab",target:"#labPage .lab-alert",title:"Get familiar with the science lab",description:"Review safety reminders and browse common equipment before starting a lab activity. Always follow your instructor’s directions."},
-      {tab:"chemai",target:"#chemaiPage .chema-layout",title:"Meet your study buddy",description:"Ask Chema about chemistry topics from this guide and get a helpful starting explanation right in your browser."}
+      {tab:"properties",target:"#propertiesPage .chem-interactive",title:"Explore material properties",description:"Compare physical and chemical properties, then try the quick activity to practice identifying properties and changes."},
+      {tab:"reactions",target:"#reactionsPage .equation-balancer",title:"Balance a chemical equation",description:"Enter formulas with + between substances and an arrow between sides. Try an example, then balance it to see the smallest whole-number coefficients."},
+      {tab:"studyLessons",target:"#studyLessonsPage .study-lesson-grid",title:"Learn at your own pace",description:"Browse the topic lessons for key rules and examples. Choose Practice this topic when you’re ready to check your understanding."},
+      {tab:"chemai",target:"#chemaiPage .chema-layout",title:"Meet your study buddy",description:"Ask Chema a chemistry question or choose a suggested prompt for an explanation based on this guide."}
     ];
     let activeGuideStep=0;
     let highlightedGuideTarget=null;
+    let guideClosing=false;
 
     function positionGuideDialog() {
       const dialog=document.getElementById("guideDialog");
@@ -6544,8 +6947,22 @@
 
     function closeFirstTimeGuide() {
       const dialog=document.getElementById("guideDialog");
-      dialog.close();
-      resetGuideDialog();
+      if(!dialog.open||guideClosing)return;
+      guideClosing=true;
+      const finish=()=>{
+        if(dialog.open)dialog.close();
+        resetGuideDialog();
+        guideClosing=false;
+      };
+      if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        finish();
+      } else {
+        const animation=dialog.animate(
+          [{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(.97) translateY(6px)"}],
+          {duration:160,easing:"ease-in",fill:"forwards"}
+        );
+        animation.onfinish=finish;
+      }
     }
 
     function markFirstTimeGuideSeen() {
@@ -6558,17 +6975,29 @@
 
     function renderFirstTimeGuideStep() {
       const step=firstTimeGuideSteps[activeGuideStep];
-      document.getElementById("guideProgress").textContent=`Step ${activeGuideStep+1} of ${firstTimeGuideSteps.length}`;
+      const progressLabel=translateValue(`Step ${activeGuideStep+1} of ${firstTimeGuideSteps.length}`);
+      document.getElementById("guideProgress").textContent=progressLabel;
+      const progressTrack=document.querySelector(".guide-progress-track");
+      progressTrack.setAttribute("aria-valuemax",String(firstTimeGuideSteps.length));
+      progressTrack.setAttribute("aria-valuenow",String(activeGuideStep+1));
+      progressTrack.setAttribute("aria-label",translateValue("Tour progress"));
+      document.getElementById("guideProgressFill").style.width=`${((activeGuideStep+1)/firstTimeGuideSteps.length)*100}%`;
       document.getElementById("guideTitle").textContent=step.title;
       document.getElementById("guideDescription").textContent=step.description;
       document.getElementById("guideBack").disabled=activeGuideStep===0;
-      document.getElementById("guideNext").textContent=activeGuideStep===firstTimeGuideSteps.length-1?"Finish guide":"Next";
+      document.getElementById("guideNext").textContent=translateValue(activeGuideStep===firstTimeGuideSteps.length-1?"Finish guide":"Next");
       setPageTab(step.tab);
       clearGuideHighlight();
       highlightedGuideTarget=document.querySelector(step.target);
       if(!highlightedGuideTarget)throw new Error(`Could not find guided tour target: ${step.target}`);
       highlightedGuideTarget.classList.add("tour-highlight");
       highlightedGuideTarget.scrollIntoView({block:"center",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+      if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.getElementById("guideContent").animate(
+          [{opacity:.45,transform:"translateY(8px) scale(.99)"},{opacity:1,transform:"translateY(0) scale(1)"}],
+          {duration:230,easing:"cubic-bezier(.22,.75,.22,1)"}
+        );
+      }
       requestAnimationFrame(positionGuideDialog);
     }
 
@@ -6576,7 +7005,14 @@
       const dialog=document.getElementById("guideDialog");
       activeGuideStep=0;
       renderFirstTimeGuideStep();
+      guideClosing=false;
       dialog.show();
+      if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        dialog.animate(
+          [{opacity:0,transform:"scale(.96) translateY(10px)"},{opacity:1,transform:"scale(1) translateY(0)"}],
+          {duration:240,easing:"cubic-bezier(.22,.75,.22,1)"}
+        );
+      }
       positionGuideDialog();
       document.getElementById("guideNext").focus();
     }
@@ -6599,6 +7035,22 @@
         activeGuideStep++;
         renderFirstTimeGuideStep();
       });
+      dialog.addEventListener("keydown",event=>{
+        if(event.altKey||event.ctrlKey||event.metaKey)return;
+        if(event.key==="ArrowRight"&&activeGuideStep<firstTimeGuideSteps.length-1) {
+          event.preventDefault();
+          activeGuideStep++;
+          renderFirstTimeGuideStep();
+        } else if(event.key==="ArrowLeft"&&activeGuideStep>0) {
+          event.preventDefault();
+          activeGuideStep--;
+          renderFirstTimeGuideStep();
+        }
+      });
+      dialog.addEventListener("cancel",event=>{
+        event.preventDefault();
+        closeFirstTimeGuide();
+      });
       dialog.addEventListener("close",()=>{
         resetGuideDialog();
         markFirstTimeGuideSeen();
@@ -6608,7 +7060,7 @@
 
     initializeFirstTimeGuide();
     initializeWelcomeDialog();
-
+    // English to Spanish
     const spanishText = {
       "Chemica — A Full-On Chemistry Site":"Chemica — una guía completa de química",
       "the Earth Chemistry Guide":"la guía de química de la Tierra",
@@ -6785,7 +7237,6 @@
       "matter.":"la materia.",
       "properties.":"propiedades.",
       "Chemical":"Reacciones",
-      "reactions.":"químicas.",
       "Observe and describe matter":"Observa y describe la materia",
       "From reactants to products":"De los reactivos a los productos",
       "Physical change or chemical reaction?":"¿Cambio físico o reacción química?",
@@ -6984,6 +7435,136 @@
       "Violet":"Violeta",
       "Page background":"Fondo de página",
       "Reset display settings":"Restablecer ajustes de pantalla",
+      "Material properties":"Propiedades de los materiales",
+      "Rules for balancing equations":"Reglas para balancear ecuaciones",
+      "Interactive · identify the property or change":"Interactivo · identifica la propiedad o el cambio",
+      "Interactive · chemical equation balancer":"Interactivo · balanceador de ecuaciones químicas",
+      "Interactive · classify the reaction pattern":"Interactivo · clasifica el patrón de reacción",
+      "Physical change or chemical change?":"¿Cambio físico o cambio químico?",
+      "Conservation of atoms":"Conservación de los átomos",
+      "Physical property":"Propiedad física",
+      "Chemical property":"Propiedad química",
+      "Correct.":"Correcto.",
+      "Next example":"Siguiente ejemplo",
+      "Next equation":"Siguiente ecuación",
+      "Balance equation":"Balancear ecuación",
+      "More reaction examples":"Más ejemplos de reacciones",
+      "Properties in everyday materials":"Propiedades en materiales cotidianos",
+      "Conductivity":"Conductividad",
+      "Solubility":"Solubilidad",
+      "Magnetism":"Magnetismo",
+      "Reactivity":"Reactividad",
+      "Neutralization":"Neutralización",
+      "Precipitation":"Precipitación",
+      "Acid + carbonate":"Ácido + carbonato",
+      "Metal oxidation":"Oxidación de metal",
+      "Learn how physical and chemical properties describe a substance, and how to distinguish a physical change from a chemical one.":"Aprende cómo las propiedades físicas y químicas describen una sustancia y cómo distinguir un cambio físico de uno químico.",
+      "kinds of properties":"tipos de propiedades",
+      "kinds of change":"tipos de cambio",
+      "Physical and chemical properties":"Propiedades físicas y químicas",
+      "Observed or measured without changing a substance’s chemical identity. Examples include color, density, melting point, electrical conductivity, and whether a sample is solid, liquid, or gas at a stated temperature and pressure.":"Se observan o miden sin cambiar la identidad química de una sustancia. Algunos ejemplos son el color, la densidad, el punto de fusión, la conductividad eléctrica y si una muestra es sólida, líquida o gaseosa a cierta temperatura y presión.",
+      "Example · liquid water freezes → solid water (H₂O remains H₂O)":"Ejemplo · el agua líquida se congela → agua sólida (H₂O sigue siendo H₂O)",
+      "Describe a substance’s ability to form different substances through chemical change. Examples include flammability, tendency to react with acids or oxygen, and resistance to corrosion.":"Describen la capacidad de una sustancia para formar otras sustancias mediante un cambio químico. Algunos ejemplos son la inflamabilidad, la tendencia a reaccionar con ácidos u oxígeno y la resistencia a la corrosión.",
+      "Example · iron can react with oxygen and water to form rust":"Ejemplo · el hierro puede reaccionar con oxígeno y agua para formar óxido",
+      "A change in appearance or state alone does not mean a new substance formed. Look for changes in chemical composition.":"Un cambio de aspecto o estado por sí solo no significa que se haya formado una sustancia nueva. Busca cambios en la composición química.",
+      "Composition stays the same":"La composición no cambia",
+      "Form, size, or state changes, but the particles remain the same substance. Many physical changes can be reversed by another physical process.":"Cambia la forma, el tamaño o el estado, pero las partículas siguen siendo la misma sustancia. Muchos cambios físicos pueden revertirse mediante otro proceso físico.",
+      "Examples · ice melting · cutting copper · salt dissolving in water":"Ejemplos · hielo al derretirse · cobre al cortarlo · sal al disolverse en agua",
+      "New substances form":"Se forman sustancias nuevas",
+      "Atoms are rearranged as bonds break and form. The products have different chemical compositions and properties from the reactants.":"Los átomos se reorganizan al romperse y formarse enlaces. Los productos tienen composiciones y propiedades químicas distintas de las de los reactivos.",
+      "Examples · iron rusting · food digesting · fuel burning":"Ejemplos · hierro al oxidarse · alimentos al digerirse · combustible al arder",
+      "Evidence is contextual":"La evidencia depende del contexto",
+      "A persistent color change, gas formation, a precipitate, or energy transfer may be evidence of a reaction. None proves a chemical reaction by itself: boiling makes bubbles, and mixing can change temperature without forming a new substance.":"Un cambio de color persistente, la formación de un gas o precipitado, o una transferencia de energía pueden indicar una reacción. Ninguno la demuestra por sí solo: al hervir se forman burbujas y al mezclar puede cambiar la temperatura sin que se forme una sustancia nueva.",
+      "Ask · did the substances’ chemical identities change?":"Pregunta · ¿cambió la identidad química de las sustancias?",
+      "A property is useful when it helps identify, compare, or choose a material for a purpose.":"Una propiedad es útil cuando ayuda a identificar, comparar o elegir un material para un propósito.",
+      "A copper sample is much denser than an equal-volume sample of cork. Density = mass ÷ volume.":"Una muestra de cobre es mucho más densa que una muestra de corcho del mismo volumen. Densidad = masa ÷ volumen.",
+      "Copper carries electric current well; rubber is an electrical insulator in ordinary conditions.":"El cobre conduce bien la corriente eléctrica; en condiciones normales, el caucho es un aislante eléctrico.",
+      "Table salt dissolves readily in water, while sand does not dissolve appreciably.":"La sal de mesa se disuelve con facilidad en agua, mientras que la arena apenas se disuelve.",
+      "Pure ice melts near 0 °C at standard pressure; melting is a physical change.":"El hielo puro se funde cerca de 0 °C a presión estándar; la fusión es un cambio físico.",
+      "Iron is attracted to a magnet; this observation does not change iron into a new substance.":"El hierro es atraído por un imán; esta observación no lo convierte en una sustancia nueva.",
+      "Iron can react with oxygen and moisture to form rust, so rusting behavior is a chemical property.":"El hierro puede reaccionar con oxígeno y humedad para formar óxido, por lo que su tendencia a oxidarse es una propiedad química.",
+      "Choose the best description. Consider whether the observation is a property of a material or a change in it.":"Elige la mejor descripción. Considera si la observación es una propiedad del material o un cambio en él.",
+      "A copper wire lets electric current pass through it.":"Un cable de cobre permite el paso de la corriente eléctrica.",
+      "Electrical conductivity can be measured without changing copper into another substance.":"La conductividad eléctrica puede medirse sin convertir el cobre en otra sustancia.",
+      "A steel nail reacts with oxygen and moisture and develops rust.":"Un clavo de acero reacciona con el oxígeno y la humedad y se oxida.",
+      "The tendency to react and form rust describes iron’s chemical property.":"La tendencia a reaccionar y formar óxido describe una propiedad química del hierro.",
+      "An ice cube melts into liquid water.":"Un cubo de hielo se derrite y se convierte en agua líquida.",
+      "The state changes, but the particles remain H₂O.":"El estado cambia, pero las partículas siguen siendo H₂O.",
+      "A strip of magnesium burns and forms a white solid.":"Una tira de magnesio arde y forma un sólido blanco.",
+      "A new substance, magnesium oxide, forms during the reaction.":"Durante la reacción se forma una sustancia nueva: óxido de magnesio.",
+      "A sample has a mass of 12 g and a volume of 4 mL.":"Una muestra tiene una masa de 12 g y un volumen de 4 mL.",
+      "Its density is 3 g/mL, a physical property that does not change the sample’s identity.":"Su densidad es 3 g/mL, una propiedad física que no cambia la identidad de la muestra.",
+      "A liquid fuel can ignite in oxygen.":"Un combustible líquido puede inflamarse en presencia de oxígeno.",
+      "Flammability describes a substance’s ability to form new substances by reacting.":"La inflamabilidad describe la capacidad de una sustancia para formar sustancias nuevas al reaccionar.",
+      "A piece of chalk is crushed into powder.":"Un trozo de tiza se tritura hasta convertirlo en polvo.",
+      "The size and shape change, but the chalk’s chemical identity is unchanged.":"El tamaño y la forma cambian, pero la identidad química de la tiza no.",
+      "Two clear solutions form a solid precipitate when mixed.":"Al mezclar dos disoluciones transparentes se forma un precipitado sólido.",
+      "A precipitate is a new solid product, which is evidence of a chemical reaction.":"Un precipitado es un producto sólido nuevo y constituye una evidencia de una reacción química.",
+      "Two reactants combine to make one compound.":"Dos reactivos se combinan para formar un compuesto.",
+      "One compound breaks into two simpler products.":"Un compuesto se descompone en dos productos más simples.",
+      "Zinc replaces hydrogen in the compound.":"El zinc sustituye al hidrógeno en el compuesto.",
+      "The ions exchange partners; insoluble AgCl forms.":"Los iones intercambian parejas y se forma AgCl insoluble.",
+      "A hydrocarbon reacts with oxygen to form carbon dioxide and water in complete combustion.":"Un hidrocarburo reacciona con oxígeno y, en una combustión completa, forma dióxido de carbono y agua.",
+      "An acid and a base react to form water and a salt.":"Un ácido y una base reaccionan para formar agua y una sal.",
+      "One reactant forms multiple products.":"Un reactivo forma varios productos.",
+      "Two elements combine to form one compound.":"Dos elementos se combinan para formar un compuesto.",
+      "Topics on this page":"Temas de esta página",
+      "Comparing physical and chemical changes":"Comparación de cambios físicos y químicos",
+      "Examples of common chemical reaction patterns":"Ejemplos de patrones de reacciones químicas comunes",
+      "Explore how reactions rearrange atoms, how to read and balance equations, and how common reaction patterns are organized.":"Explora cómo las reacciones reorganizan los átomos, cómo leer y balancear ecuaciones y cómo se clasifican los patrones de reacción comunes.",
+      "reaction patterns":"patrones de reacción",
+      "conserved atom count":"cantidad de átomos conservada",
+      "How chemical reactions work":"Cómo funcionan las reacciones químicas",
+      "Reactants are the starting substances in a chemical reaction. Atoms rearrange as bonds break and form, producing substances with different chemical compositions.":"Los reactivos son las sustancias iniciales de una reacción química. Los átomos se reorganizan al romperse y formarse enlaces, y producen sustancias con composiciones químicas distintas.",
+      "Reactants → products":"Reactivos → productos",
+      "In ordinary chemical reactions, atoms are not created or destroyed. A balanced equation has the same number of each kind of atom on both sides.":"En las reacciones químicas ordinarias, los átomos no se crean ni se destruyen. Una ecuación balanceada tiene el mismo número de cada tipo de átomo a ambos lados.",
+      "Balance equations with coefficients, never by changing formulas.":"Balancea las ecuaciones con coeficientes, nunca cambiando las fórmulas.",
+      "Balancing changes how many particles take part, not which substances they are.":"Balancear cambia cuántas partículas participan, no qué sustancias son.",
+      "1 · Write correct formulas":"1 · Escribe las fórmulas correctas",
+      "Start with the unbalanced equation. Never change a formula’s subscripts to make atom counts match.":"Empieza con la ecuación sin balancear. Nunca cambies los subíndices de una fórmula para igualar el número de átomos.",
+      "2 · Count each element":"2 · Cuenta cada elemento",
+      "Make an atom inventory for reactants and products. Multiply subscripts by any coefficient already in front.":"Cuenta los átomos de los reactivos y los productos. Multiplica los subíndices por cualquier coeficiente que ya esté delante.",
+      "3 · Add coefficients":"3 · Añade coeficientes",
+      "Adjust whole-number coefficients in front of formulas. Balance elements that appear in fewer compounds first; often leave H and O until later.":"Ajusta los coeficientes enteros delante de las fórmulas. Balancea primero los elementos que aparecen en menos compuestos; a menudo se dejan H y O para el final.",
+      "4 · Reduce and check":"4 · Reduce y comprueba",
+      "Reduce coefficients to the smallest whole-number ratio, then recount every element on both sides.":"Reduce los coeficientes a la proporción de enteros más pequeña y vuelve a contar cada elemento a ambos lados.",
+      "Enter formulas separated by + and use → or -> between sides. Parentheses are supported. The balancer returns the smallest whole-number coefficients.":"Escribe las fórmulas separadas por + y usa → o -> entre los lados. Se admiten paréntesis. El balanceador devuelve los coeficientes enteros más pequeños.",
+      "Unbalanced equation":"Ecuación sin balancear",
+      "Enter exactly one reaction arrow between the reactants and products.":"Introduce exactamente una flecha de reacción entre los reactivos y los productos.",
+      "Invalid subscript in":"Subíndice no válido en",
+      "Mismatched parentheses in":"Paréntesis no coincidentes en",
+      "Could not read":"No se pudo interpretar",
+      "Use element symbols, subscripts, and parentheses only.":"Usa únicamente símbolos de elementos, subíndices y paréntesis.",
+      "Missing closing parenthesis in":"Falta el paréntesis de cierre en",
+      "Enter a valid chemical formula instead of":"Introduce una fórmula química válida en lugar de",
+      "Could not solve this equation.":"No se pudo resolver esta ecuación.",
+      "Each side of the equation needs at least one formula.":"Cada lado de la ecuación debe tener al menos una fórmula.",
+      "No nonzero coefficient solution exists for these formulas.":"Estas fórmulas no tienen una solución de coeficientes distinta de cero.",
+      "This equation has multiple independent solutions. Check the formulas or add known products/reactants.":"Esta ecuación tiene varias soluciones independientes. Comprueba las fórmulas o añade productos o reactivos conocidos.",
+      "These formulas do not have a positive coefficient balance.":"Estas fórmulas no tienen un balance con coeficientes positivos.",
+      "Could not balance this equation.":"No se pudo balancear esta ecuación.",
+      "Examples: H2 + O2 -> H2O · Al2(SO4)3 + Ca(OH)2 -> Al(OH)3 + CaSO4":"Ejemplos: H2 + O2 -> H2O · Al2(SO4)3 + Ca(OH)2 -> Al(OH)3 + CaSO4",
+      "Equation examples":"Ejemplos de ecuaciones",
+      "Water formation":"Formación de agua",
+      "Propane combustion":"Combustión del propano",
+      "Parentheses":"Paréntesis",
+      "Iron oxide":"Óxido de hierro",
+      "These patterns help organize reactions, but not every reaction fits one introductory category perfectly.":"Estos patrones ayudan a organizar las reacciones, pero no todas encajan perfectamente en una categoría introductoria.",
+      "Several reactants form a product":"Varios reactivos forman un producto",
+      "Two or more reactants combine to make a compound.":"Dos o más reactivos se combinan para formar un compuesto.",
+      "One reactant forms simpler products":"Un reactivo forma productos más simples",
+      "A compound breaks down, sometimes with heat, light, electricity, or a catalyst.":"Un compuesto se descompone, a veces con calor, luz, electricidad o un catalizador.",
+      "An element replaces another":"Un elemento sustituye a otro",
+      "An element reacts with a compound to form a new compound and a different element, when the reaction is favorable.":"Un elemento reacciona con un compuesto para formar un compuesto nuevo y otro elemento, si la reacción es favorable.",
+      "Ions exchange partners":"Los iones intercambian parejas",
+      "Two ionic compounds exchange ions in solution; a reaction proceeds when a product such as a precipitate, water, or gas forms.":"Dos compuestos iónicos intercambian iones en disolución; la reacción avanza cuando se forma un producto como un precipitado, agua o gas.",
+      "Reaction with an oxidizer":"Reacción con un oxidante",
+      "In complete combustion of a hydrocarbon in sufficient oxygen, the products are carbon dioxide and water. Other conditions can produce different products.":"En la combustión completa de un hidrocarburo con suficiente oxígeno, se producen dióxido de carbono y agua. En otras condiciones pueden formarse productos distintos.",
+      "Acid and base react":"Reaccionan un ácido y una base",
+      "A common aqueous neutralization produces water and a dissolved ionic compound called a salt.":"Una neutralización acuosa común produce agua y un compuesto iónico disuelto llamado sal.",
+      "These equations illustrate atom rearrangement; equations are not instructions to perform reactions.":"Estas ecuaciones ilustran la reorganización de átomos; no son instrucciones para realizar reacciones.",
+      "Classify the equation by its overall pattern. A reaction may have more than one useful description in advanced chemistry.":"Clasifica la ecuación según su patrón general. En química avanzada, una reacción puede tener más de una descripción útil.",
+      "Reactants are written to the left of the arrow and products to the right. A balanced equation has the same number of each kind of atom on both sides; balance by changing coefficients, never the chemical formulas. Follow your instructor’s safety procedures—reaction examples are not instructions to perform them.":"Los reactivos se escriben a la izquierda de la flecha y los productos a la derecha. Una ecuación balanceada tiene el mismo número de cada tipo de átomo a ambos lados; balancea cambiando los coeficientes, nunca las fórmulas químicas. Sigue los procedimientos de seguridad de tu docente: los ejemplos de reacciones no son instrucciones para realizarlas.",
       "Observe matter · explain change":"Observa la materia · explica el cambio",
       "Properties &":"Propiedades y",
       "reactions.":"reacciones.",
@@ -7082,6 +7663,8 @@
       "Getting started":"Primeros pasos",
       "Explore the periodic table":"Explora la tabla periódica",
       "Search or filter the 118 elements, then select one to explore its properties, isotopes, and atomic model.":"Busca o filtra los 118 elementos y selecciona uno para explorar sus propiedades, isótopos y modelo atómico.",
+      "Tour progress":"Progreso de la visita guiada",
+      "Use ← and → to move between steps. Press Esc to close the tour.":"Usa ← y → para avanzar o retroceder. Pulsa Esc para cerrar la visita.",
       "See how molecules take shape":"Descubre las formas de las moléculas",
       "Explore interactive molecular models, Lewis structures, VSEPR shapes, polarity, and intermolecular forces.":"Explora modelos moleculares interactivos, estructuras de Lewis, geometrías VSEPR, polaridad y fuerzas intermoleculares.",
       "Build your chemistry skills":"Desarrolla tus conocimientos de química",
@@ -7090,12 +7673,25 @@
       "Review safety reminders and browse common equipment before starting a lab activity. Always follow your instructor’s directions.":"Repasa las indicaciones de seguridad y consulta el equipo habitual antes de empezar una actividad. Sigue siempre las instrucciones de tu docente.",
       "Meet your study buddy":"Conoce a tu compañero de estudio",
       "Ask Chema about chemistry topics from this guide and get a helpful starting explanation right in your browser.":"Pregúntale a Chema sobre los temas de esta guía y recibe una explicación inicial directamente en tu navegador.",
+      "Explore material properties":"Explora las propiedades de los materiales",
+      "Compare physical and chemical properties, then try the quick activity to practice identifying properties and changes.":"Compara las propiedades físicas y químicas y prueba la actividad para practicar cómo identificarlas y distinguir los cambios.",
+      "Balance a chemical equation":"Balancea una ecuación química",
+      "Enter formulas with + between substances and an arrow between sides. Try an example, then balance it to see the smallest whole-number coefficients.":"Escribe las fórmulas separadas por + y coloca una flecha entre ambos lados. Prueba un ejemplo y balancéalo para ver los coeficientes enteros más pequeños.",
+      "Learn at your own pace":"Aprende a tu ritmo",
+      "Browse the topic lessons for key rules and examples. Choose Practice this topic when you’re ready to check your understanding.":"Consulta las reglas y ejemplos de las lecciones. Cuando quieras comprobar lo que has aprendido, elige «Practicar este tema».",
+      "Ask Chema a chemistry question or choose a suggested prompt for an explanation based on this guide.":"Hazle una pregunta de química a Chema o elige una sugerencia para obtener una explicación basada en esta guía.",
+      "Step 6 of 8":"Paso 6 de 8",
+      "Step 7 of 8":"Paso 7 de 8",
+      "Step 8 of 8":"Paso 8 de 8",
       "Finish guide":"Terminar la guía",
-      "Step 1 of 5":"Paso 1 de 5",
-      "Step 2 of 5":"Paso 2 de 5",
-      "Step 3 of 5":"Paso 3 de 5",
-      "Step 4 of 5":"Paso 4 de 5",
-      "Step 5 of 5":"Paso 5 de 5",
+      "Step 1 of 8":"Paso 1 de 8",
+      "Step 2 of 8":"Paso 2 de 8",
+      "Step 3 of 8":"Paso 3 de 8",
+      "Step 4 of 8":"Paso 4 de 8",
+      "Step 5 of 8":"Paso 5 de 8",
+      "Step 6 of 8":"Paso 6 de 8",
+      "Step 7 of 8":"Paso 7 de 8",
+      "Step 8 of 8":"Paso 8 de 8",
       "Chemica updates":"Novedades de Chemica",
       "What’s new in Chemica?":"¿Qué hay de nuevo en Chemica?",
       "View update log":"Ver registro de actualizaciones",
@@ -7111,6 +7707,7 @@
       "No data":"Sin datos",
       "English":"English"
     };
+    // English to Chinese (Simplified) translation dictionary
     const simplifiedChineseText = {
       "Chemica — A Full-On Chemistry Site":"Chemica — 全方位化学指南",
       "the Earth Chemistry Guide":"地球化学指南",
@@ -7286,12 +7883,140 @@
       "matter.":"性质。",
       "properties.":"性质。",
       "Chemical":"化学",
-      "reactions.":"反应。",
       "Observe and describe matter":"观察并描述物质",
       "From reactants to products":"从反应物到生成物",
       "Physical change or chemical reaction?":"物理变化还是化学反应？",
       "Reactants and products":"反应物和生成物",
       "Chemical change":"化学变化",
+      "Rules for balancing equations":"配平方程式的规则",
+      "Interactive · identify the property or change":"互动：判断物质性质或变化",
+      "Interactive · chemical equation balancer":"互动：化学方程式配平器",
+      "Interactive · classify the reaction pattern":"互动：判断反应类型",
+      "Physical change or chemical change?":"物理变化还是化学变化？",
+      "Conservation of atoms":"原子守恒",
+      "Physical property":"物理性质",
+      "Chemical property":"化学性质",
+      "Correct.":"正确。",
+      "Next example":"下一个例子",
+      "Next equation":"下一个方程式",
+      "Balance equation":"配平方程式",
+      "More reaction examples":"更多反应示例",
+      "Properties in everyday materials":"日常材料的性质",
+      "Conductivity":"导电性",
+      "Solubility":"溶解度",
+      "Magnetism":"磁性",
+      "Reactivity":"反应性",
+      "Neutralization":"中和反应",
+      "Precipitation":"沉淀反应",
+      "Acid + carbonate":"酸 + 碳酸盐",
+      "Metal oxidation":"金属氧化",
+      "Learn how physical and chemical properties describe a substance, and how to distinguish a physical change from a chemical one.":"了解物理性质和化学性质如何描述物质，并学会区分物理变化和化学变化。",
+      "kinds of properties":"性质的种类",
+      "kinds of change":"变化的种类",
+      "Physical and chemical properties":"物理性质和化学性质",
+      "Observed or measured without changing a substance’s chemical identity. Examples include color, density, melting point, electrical conductivity, and whether a sample is solid, liquid, or gas at a stated temperature and pressure.":"在不改变物质化学身份的情况下观察或测量。例子包括颜色、密度、熔点、电导率，以及样品在指定温度和压力下是固体、液体还是气体。",
+      "Example · liquid water freezes → solid water (H₂O remains H₂O)":"例子 · 液态水结冰 → 固态水（H₂O 仍然是 H₂O）",
+      "Describe a substance’s ability to form different substances through chemical change. Examples include flammability, tendency to react with acids or oxygen, and resistance to corrosion.":"描述物质通过化学变化生成其他物质的能力。例子包括可燃性、与酸或氧气反应的倾向，以及抗腐蚀性。",
+      "Example · iron can react with oxygen and water to form rust":"例子 · 铁可以与氧气和水反应生成铁锈",
+      "A change in appearance or state alone does not mean a new substance formed. Look for changes in chemical composition.":"外观或状态的变化本身并不意味着形成了新物质。应观察化学组成是否发生变化。",
+      "Composition stays the same":"组成保持不变",
+      "Form, size, or state changes, but the particles remain the same substance. Many physical changes can be reversed by another physical process.":"形状、大小或状态发生变化，但粒子仍属于同一种物质。许多物理变化可以通过另一种物理过程逆转。",
+      "Examples · ice melting · cutting copper · salt dissolving in water":"例子 · 冰融化 · 切割铜 · 盐溶于水",
+      "New substances form":"形成新物质",
+      "Atoms are rearranged as bonds break and form. The products have different chemical compositions and properties from the reactants.":"化学键断裂并形成时，原子会重新排列。生成物的化学组成和性质与反应物不同。",
+      "Examples · iron rusting · food digesting · fuel burning":"例子 · 铁生锈 · 食物消化 · 燃料燃烧",
+      "Evidence is contextual":"证据需要结合情境判断",
+      "A persistent color change, gas formation, a precipitate, or energy transfer may be evidence of a reaction. None proves a chemical reaction by itself: boiling makes bubbles, and mixing can change temperature without forming a new substance.":"持续的颜色变化、气体生成、沉淀形成或能量传递可能是发生反应的证据，但单独一种现象都不能证明发生了化学反应：沸腾会产生气泡，混合也可能改变温度而不生成新物质。",
+      "Ask · did the substances’ chemical identities change?":"思考 · 物质的化学身份是否改变？",
+      "A property is useful when it helps identify, compare, or choose a material for a purpose.":"当一种性质有助于识别、比较材料或根据用途选择材料时，它就很有用。",
+      "A copper sample is much denser than an equal-volume sample of cork. Density = mass ÷ volume.":"同体积的铜样品比软木样品密度大得多。密度 = 质量 ÷ 体积。",
+      "Copper carries electric current well; rubber is an electrical insulator in ordinary conditions.":"铜的导电性很好；在通常条件下，橡胶是电绝缘体。",
+      "Table salt dissolves readily in water, while sand does not dissolve appreciably.":"食盐易溶于水，而沙子几乎不溶于水。",
+      "Pure ice melts near 0 °C at standard pressure; melting is a physical change.":"纯冰在标准压力下约 0 °C 时融化；融化属于物理变化。",
+      "Iron is attracted to a magnet; this observation does not change iron into a new substance.":"铁会被磁铁吸引；这一现象不会使铁变成新物质。",
+      "Iron can react with oxygen and moisture to form rust, so rusting behavior is a chemical property.":"铁可以与氧气和水分反应生成铁锈，因此生锈倾向是一种化学性质。",
+      "Choose the best description. Consider whether the observation is a property of a material or a change in it.":"选择最恰当的描述。判断这一现象是材料的性质，还是材料发生的变化。",
+      "A copper wire lets electric current pass through it.":"铜导线可以让电流通过。",
+      "Electrical conductivity can be measured without changing copper into another substance.":"测量导电性不会使铜变成其他物质。",
+      "A steel nail reacts with oxygen and moisture and develops rust.":"钢钉与氧气和水分反应并生锈。",
+      "The tendency to react and form rust describes iron’s chemical property.":"容易发生反应并生锈描述了铁的化学性质。",
+      "An ice cube melts into liquid water.":"冰块融化成液态水。",
+      "The state changes, but the particles remain H₂O.":"状态发生了变化，但粒子仍然是 H₂O。",
+      "A strip of magnesium burns and forms a white solid.":"镁条燃烧并形成白色固体。",
+      "A new substance, magnesium oxide, forms during the reaction.":"反应过程中形成了一种新物质——氧化镁。",
+      "A sample has a mass of 12 g and a volume of 4 mL.":"某样品的质量为 12 g，体积为 4 mL。",
+      "Its density is 3 g/mL, a physical property that does not change the sample’s identity.":"它的密度为 3 g/mL，这是一种不会改变样品身份的物理性质。",
+      "A liquid fuel can ignite in oxygen.":"液体燃料可以在氧气中点燃。",
+      "Flammability describes a substance’s ability to form new substances by reacting.":"可燃性描述物质通过反应形成新物质的能力。",
+      "A piece of chalk is crushed into powder.":"一块粉笔被压碎成粉末。",
+      "The size and shape change, but the chalk’s chemical identity is unchanged.":"大小和形状发生变化，但粉笔的化学身份没有改变。",
+      "Two clear solutions form a solid precipitate when mixed.":"两种透明溶液混合后生成了固体沉淀。",
+      "A precipitate is a new solid product, which is evidence of a chemical reaction.":"沉淀是一种新的固体产物，是发生化学反应的证据。",
+      "Two reactants combine to make one compound.":"两种反应物结合生成一种化合物。",
+      "One compound breaks into two simpler products.":"一种化合物分解成两种较简单的产物。",
+      "Zinc replaces hydrogen in the compound.":"锌取代了化合物中的氢。",
+      "The ions exchange partners; insoluble AgCl forms.":"离子交换组合，并形成不溶性的 AgCl。",
+      "A hydrocarbon reacts with oxygen to form carbon dioxide and water in complete combustion.":"烃在完全燃烧时与氧气反应，生成二氧化碳和水。",
+      "An acid and a base react to form water and a salt.":"酸和碱反应生成水和盐。",
+      "One reactant forms multiple products.":"一种反应物生成多种产物。",
+      "Two elements combine to form one compound.":"两种元素结合生成一种化合物。",
+      "Topics on this page":"本页主题",
+      "Comparing physical and chemical changes":"比较物理变化和化学变化",
+      "Examples of common chemical reaction patterns":"常见化学反应类型示例",
+      "Explore how reactions rearrange atoms, how to read and balance equations, and how common reaction patterns are organized.":"了解反应如何重新排列原子、如何读写并配平方程式，以及常见反应类型如何分类。",
+      "reaction patterns":"反应类型",
+      "conserved atom count":"守恒的原子数",
+      "How chemical reactions work":"化学反应如何进行",
+      "Reactants are the starting substances in a chemical reaction. Atoms rearrange as bonds break and form, producing substances with different chemical compositions.":"反应物是化学反应开始时的物质。化学键断裂并形成时，原子会重新排列，从而生成化学组成不同的物质。",
+      "Reactants → products":"反应物 → 生成物",
+      "In ordinary chemical reactions, atoms are not created or destroyed. A balanced equation has the same number of each kind of atom on both sides.":"在普通化学反应中，原子不会被创造或消灭。配平后的方程式两边每种原子的数目都相同。",
+      "Balance equations with coefficients, never by changing formulas.":"配平方程式时要使用系数，绝不要更改化学式。",
+      "Balancing changes how many particles take part, not which substances they are.":"配平改变的是参与反应的粒子数，而不是物质的种类。",
+      "1 · Write correct formulas":"1 · 写出正确的化学式",
+      "Start with the unbalanced equation. Never change a formula’s subscripts to make atom counts match.":"从未配平的方程式开始。绝不要为了让原子数相等而更改化学式的下标。",
+      "2 · Count each element":"2 · 逐一统计元素",
+      "Make an atom inventory for reactants and products. Multiply subscripts by any coefficient already in front.":"分别统计反应物和生成物中的原子数。若化学式前已有系数，应将下标乘以该系数。",
+      "3 · Add coefficients":"3 · 添加系数",
+      "Adjust whole-number coefficients in front of formulas. Balance elements that appear in fewer compounds first; often leave H and O until later.":"调整化学式前的整数系数。先配平出现在较少化合物中的元素；通常将 H 和 O 留到后面处理。",
+      "4 · Reduce and check":"4 · 化简并检查",
+      "Reduce coefficients to the smallest whole-number ratio, then recount every element on both sides.":"将系数化简为最小整数比，然后重新统计方程式两边的每种元素。",
+      "Enter formulas separated by + and use → or -> between sides. Parentheses are supported. The balancer returns the smallest whole-number coefficients.":"输入化学式时用 + 分隔，并用 → 或 -> 分隔方程式两边。支持使用括号。配平器会给出最小整数系数。",
+      "Unbalanced equation":"未配平的化学方程式",
+      "Enter exactly one reaction arrow between the reactants and products.":"请在反应物和生成物之间输入且仅输入一个反应箭头。",
+      "Invalid subscript in":"下标无效：",
+      "Mismatched parentheses in":"括号不匹配：",
+      "Could not read":"无法识别",
+      "Use element symbols, subscripts, and parentheses only.":"请仅使用元素符号、下标和括号。",
+      "Missing closing parenthesis in":"缺少右括号：",
+      "Enter a valid chemical formula instead of":"请输入有效的化学式，而不是",
+      "Could not solve this equation.":"无法求解此方程式。",
+      "Each side of the equation needs at least one formula.":"方程式两边都必须至少包含一个化学式。",
+      "No nonzero coefficient solution exists for these formulas.":"这些化学式不存在非零系数解。",
+      "This equation has multiple independent solutions. Check the formulas or add known products/reactants.":"此方程式有多个独立解。请检查化学式，或补充已知的反应物或生成物。",
+      "These formulas do not have a positive coefficient balance.":"这些化学式无法得到正系数配平结果。",
+      "Could not balance this equation.":"无法配平此方程式。",
+      "Examples: H2 + O2 -> H2O · Al2(SO4)3 + Ca(OH)2 -> Al(OH)3 + CaSO4":"示例：H2 + O2 -> H2O · Al2(SO4)3 + Ca(OH)2 -> Al(OH)3 + CaSO4",
+      "Equation examples":"方程式示例",
+      "Water formation":"水的生成",
+      "Propane combustion":"丙烷燃烧",
+      "Parentheses":"括号",
+      "Iron oxide":"氧化铁",
+      "These patterns help organize reactions, but not every reaction fits one introductory category perfectly.":"这些类型有助于整理反应，但并非每种反应都能完全归入某一种入门类别。",
+      "Several reactants form a product":"多个反应物生成一种产物",
+      "Two or more reactants combine to make a compound.":"两个或更多反应物结合生成一种化合物。",
+      "One reactant forms simpler products":"一种反应物生成较简单的产物",
+      "A compound breaks down, sometimes with heat, light, electricity, or a catalyst.":"化合物发生分解，有时需要加热、光照、电流或催化剂。",
+      "An element replaces another":"一种元素取代另一种元素",
+      "An element reacts with a compound to form a new compound and a different element, when the reaction is favorable.":"在反应可行时，一种元素与化合物反应，生成新的化合物和另一种元素。",
+      "Ions exchange partners":"离子交换组合",
+      "Two ionic compounds exchange ions in solution; a reaction proceeds when a product such as a precipitate, water, or gas forms.":"两种离子化合物在溶液中交换离子；当生成沉淀、水或气体等产物时，反应得以进行。",
+      "Reaction with an oxidizer":"与氧化剂反应",
+      "In complete combustion of a hydrocarbon in sufficient oxygen, the products are carbon dioxide and water. Other conditions can produce different products.":"烃在充足氧气中完全燃烧时，产物是二氧化碳和水。其他条件下可能生成不同产物。",
+      "Acid and base react":"酸与碱反应",
+      "A common aqueous neutralization produces water and a dissolved ionic compound called a salt.":"常见的水溶液中和反应会生成水和一种称为盐的可溶性离子化合物。",
+      "These equations illustrate atom rearrangement; equations are not instructions to perform reactions.":"这些方程式用于说明原子的重新排列，并不是进行反应的操作说明。",
+      "Classify the equation by its overall pattern. A reaction may have more than one useful description in advanced chemistry.":"根据方程式的总体类型进行分类。在高等化学中，一个反应可能有不止一种有用的描述。",
+      "Reactants are written to the left of the arrow and products to the right. A balanced equation has the same number of each kind of atom on both sides; balance by changing coefficients, never the chemical formulas. Follow your instructor’s safety procedures—reaction examples are not instructions to perform them.":"反应物写在箭头左侧，生成物写在右侧。配平后的方程式两边每种原子的数目都相同；配平时要更改系数，绝不要更改化学式。请遵循教师的安全规范——反应示例不是实际操作说明。",
       "Meet protons, neutrons, electrons, and ions.":"认识质子、中子、电子和离子。",
       "Read periods, groups, and element families.":"了解周期、族和元素家族。",
       "Arrange electrons into shells and identify valence electrons.":"将电子排入电子层并识别价电子。",
@@ -7583,6 +8308,8 @@
       "Getting started":"快速入门",
       "Explore the periodic table":"探索元素周期表",
       "Search or filter the 118 elements, then select one to explore its properties, isotopes, and atomic model.":"搜索或筛选 118 种元素，选择一种即可查看其性质、同位素和原子模型。",
+      "Tour progress":"导览进度",
+      "Use ← and → to move between steps. Press Esc to close the tour.":"使用 ← 和 → 切换步骤。按 Esc 关闭导览。",
       "See how molecules take shape":"了解分子如何形成形状",
       "Explore interactive molecular models, Lewis structures, VSEPR shapes, polarity, and intermolecular forces.":"探索交互式分子模型、路易斯结构、VSEPR 构型、极性和分子间作用力。",
       "Build your chemistry skills":"提升你的化学知识",
@@ -7591,12 +8318,22 @@
       "Review safety reminders and browse common equipment before starting a lab activity. Always follow your instructor’s directions.":"开始实验前，请查看安全提示和常用设备。务必遵循老师的指导。",
       "Meet your study buddy":"认识你的学习伙伴",
       "Ask Chema about chemistry topics from this guide and get a helpful starting explanation right in your browser.":"向 Chema 提问本指南中的化学主题，在浏览器中获取有帮助的入门解释。",
+      "Explore material properties":"探索物质性质",
+      "Compare physical and chemical properties, then try the quick activity to practice identifying properties and changes.":"比较物理性质和化学性质，然后试试互动练习，判断物质性质和变化。",
+      "Balance a chemical equation":"配平化学方程式",
+      "Enter formulas with + between substances and an arrow between sides. Try an example, then balance it to see the smallest whole-number coefficients.":"输入化学式，用 + 分隔物质，并用箭头分隔方程式两边。试用示例并配平方程式，查看最小整数系数。",
+      "Learn at your own pace":"按照自己的节奏学习",
+      "Browse the topic lessons for key rules and examples. Choose Practice this topic when you’re ready to check your understanding.":"浏览各主题课程中的关键规则和示例。准备好检验学习成果时，选择“练习此主题”。",
+      "Ask Chema a chemistry question or choose a suggested prompt for an explanation based on this guide.":"向 Chema 提出化学问题，或选择一个建议问题，获取基于本指南的讲解。",
+      "Step 1 of 8":"第 1 步，共 8 步",
+      "Step 2 of 8":"第 2 步，共 8 步",
+      "Step 3 of 8":"第 3 步，共 8 步",
+      "Step 4 of 8":"第 4 步，共 8 步",
+      "Step 5 of 8":"第 5 步，共 8 步",
+      "Step 6 of 8":"第 6 步，共 8 步",
+      "Step 7 of 8":"第 7 步，共 8 步",
+      "Step 8 of 8":"第 8 步，共 8 步",
       "Finish guide":"完成指南",
-      "Step 1 of 5":"第 1 步，共 5 步",
-      "Step 2 of 5":"第 2 步，共 5 步",
-      "Step 3 of 5":"第 3 步，共 5 步",
-      "Step 4 of 5":"第 4 步，共 5 步",
-      "Step 5 of 5":"第 5 步，共 5 步",
       "Chemica updates":"Chemica 更新",
       "What’s new in Chemica?":"Chemica 有哪些新内容？",
       "View update log":"查看更新日志",
@@ -7615,6 +8352,7 @@
     const traditionalCharacterMap = {
       "万":"萬","与":"與","专业":"專業","东":"東","丝":"絲","两":"兩","严":"嚴","丧":"喪","个":"個","丰":"豐","临":"臨","为":"為","丽":"麗","举":"舉","义":"義","乌":"烏","乐":"樂","乔":"喬","习":"習","乡":"鄉","书":"書","买":"買","乱":"亂","争":"爭","于":"於","云":"雲","亚":"亞","产":"產","亩":"畝","亲":"親","仅":"僅","从":"從","仓":"倉","仪":"儀","们":"們","价":"價","众":"眾","优":"優","会":"會","伞":"傘","伟":"偉","传":"傳","伤":"傷","伦":"倫","伪":"偽","体":"體","余":"餘","侠":"俠","侣":"侶","侥":"僥","侧":"側","侨":"僑","侩":"儈","俩":"倆","俭":"儉","债":"債","倾":"傾","偿":"償","儿":"兒","兑":"兌","党":"黨","兰":"蘭","关":"關","兴":"興","养":"養","兽":"獸","冈":"岡","册":"冊","写":"寫","军":"軍","农":"農","冲":"沖","决":"決","况":"況","冻":"凍","净":"淨","凉":"涼","减":"減","凑":"湊","几":"幾","凤":"鳳","凭":"憑","凯":"凱","击":"擊","凿":"鑿","划":"劃","刘":"劉","则":"則","刚":"剛","创":"創","删":"刪","别":"別","类":"類","刹":"剎","剂":"劑","剑":"劍","剧":"劇","剩":"剩","劳":"勞","势":"勢","勋":"勳","区":"區","医":"醫","华":"華","协":"協","单":"單","卖":"賣","卢":"盧","卫":"衛","却":"卻","厂":"廠","厅":"廳","历":"歷","厉":"厲","压":"壓","厌":"厭","厕":"廁","厘":"釐","县":"縣","参":"參","双":"雙","发":"發","变":"變","叙":"敘","叶":"葉","号":"號","叹":"嘆","吓":"嚇","吕":"呂","吗":"嗎","听":"聽","启":"啟","吴":"吳","呐":"吶","员":"員","呛":"嗆","呜":"嗚","咏":"詠","咙":"嚨","响":"響","哑":"啞","哗":"嘩","唤":"喚","啰":"囉","啸":"嘯","喷":"噴","嘱":"囑","团":"團","园":"園","围":"圍","国":"國","图":"圖","圆":"圓","圣":"聖","场":"場","坏":"壞","块":"塊","坚":"堅","坛":"壇","坝":"壩","坟":"墳","坠":"墜","垒":"壘","垄":"壟","垦":"墾","垫":"墊","墙":"牆","壮":"壯","声":"聲","壳":"殼","壶":"壺","处":"處","备":"備","复":"復","够":"夠","头":"頭","夹":"夾","夺":"奪","奋":"奮","奖":"獎","妇":"婦","妈":"媽","妆":"妝","妇":"婦","姗":"姍","娇":"嬌","娱":"娛","娅":"婭","婴":"嬰","孙":"孫","学":"學","宁":"寧","宝":"寶","实":"實","宠":"寵","审":"審","宪":"憲","宫":"宮","宽":"寬","宾":"賓","寻":"尋","导":"導","寿":"壽","将":"將","尔":"爾","尝":"嘗","层":"層","届":"屆","属":"屬","岁":"歲","岂":"豈","岗":"崗","岛":"島","岭":"嶺","峡":"峽","币":"幣","师":"師","帐":"帳","帘":"簾","帮":"幫","带":"帶","干":"乾","并":"並","广":"廣","庄":"莊","庆":"慶","应":"應","庙":"廟","废":"廢","开":"開","异":"異","弃":"棄","张":"張","弥":"彌","弯":"彎","弹":"彈","强":"強","归":"歸","当":"當","录":"錄","彻":"徹","径":"徑","忆":"憶","忧":"憂","怀":"懷","态":"態","总":"總","恋":"戀","恶":"惡","恼":"惱","惊":"驚","惧":"懼","惨":"慘","惯":"慣","愿":"願","戏":"戲","战":"戰","户":"戶","扩":"擴","扫":"掃","扬":"揚","扰":"擾","抚":"撫","抛":"拋","抢":"搶","护":"護","报":"報","担":"擔","拟":"擬","拥":"擁","拦":"攔","择":"擇","挂":"掛","挚":"摯","挛":"攣","挤":"擠","挥":"揮","损":"損","换":"換","据":"據","掷":"擲","揽":"攬","摆":"擺","摄":"攝","摊":"攤","机":"機","杀":"殺","杂":"雜","权":"權","条":"條","来":"來","杨":"楊","极":"極","构":"構","枪":"槍","桥":"橋","桨":"槳","桩":"樁","梦":"夢","检":"檢","楼":"樓","欢":"歡","欧":"歐","残":"殘","殴":"毆","毁":"毀","毕":"畢","毙":"斃","气":"氣","汇":"匯","汉":"漢","汤":"湯","沟":"溝","没":"沒","沥":"瀝","沧":"滄","沪":"滬","泪":"淚","泻":"瀉","泼":"潑","泽":"澤","洁":"潔","浅":"淺","浆":"漿","浇":"澆","测":"測","浊":"濁","济":"濟","浓":"濃","涂":"塗","涌":"湧","涛":"濤","涝":"澇","润":"潤","涨":"漲","涩":"澀","淀":"澱","渊":"淵","渗":"滲","温":"溫","湾":"灣","湿":"濕","溃":"潰","滞":"滯","滚":"滾","满":"滿","滤":"濾","滥":"濫","滨":"濱","滩":"灘","漓":"灕","演":"演","潇":"瀟","潜":"潛","澜":"瀾","濒":"瀕","灭":"滅","灯":"燈","灵":"靈","灾":"災","灿":"燦","炉":"爐","点":"點","炼":"煉","烁":"爍","烂":"爛","烟":"煙","烦":"煩","烧":"燒","烫":"燙","热":"熱","焕":"煥","爱":"愛","爷":"爺","牵":"牽","犹":"猶","状":"狀","独":"獨","狭":"狹","狮":"獅","狱":"獄","猎":"獵","猪":"豬","猫":"貓","献":"獻","环":"環","现":"現","电":"電","疗":"療","疯":"瘋","痴":"癡","瘫":"癱","皱":"皺","盏":"盞","盐":"鹽","监":"監","盖":"蓋","盘":"盤","着":"著","睁":"睜","瞒":"瞞","矫":"矯","矿":"礦","码":"碼","砖":"磚","砚":"硯","硕":"碩","确":"確","碍":"礙","礼":"禮","祷":"禱","祸":"禍","离":"離","种":"種","积":"積","称":"稱","稳":"穩","穷":"窮","窃":"竊","窍":"竅","竞":"競","笔":"筆","笼":"籠","笺":"箋","筑":"築","筛":"篩","签":"簽","简":"簡","箫":"簫","节":"節","范":"範","筑":"築","粮":"糧","粽":"糉","系":"係","紧":"緊","纠":"糾","红":"紅","纤":"纖","约":"約","级":"級","纪":"紀","纯":"純","纲":"綱","纳":"納","纵":"縱","纷":"紛","纸":"紙","纹":"紋","纺":"紡","纽":"紐","线":"線","练":"練","组":"組","细":"細","织":"織","终":"終","绍":"紹","经":"經","绑":"綁","绒":"絨","结":"結","绕":"繞","绘":"繪","给":"給","络":"絡","绝":"絕","统":"統","绢":"絹","绣":"繡","继":"繼","绩":"績","绪":"緒","续":"續","绳":"繩","维":"維","绵":"綿","绿":"綠","缀":"綴","缆":"纜","缉":"緝","缎":"緞","缓":"緩","编":"編","缘":"緣","缚":"縛","缝":"縫","缠":"纏","缩":"縮","缴":"繳","网":"網","罗":"羅","罚":"罰","罢":"罷","职":"職","联":"聯","聪":"聰","肃":"肅","肠":"腸","肤":"膚","肾":"腎","肿":"腫","胀":"脹","胆":"膽","胜":"勝","胁":"脅","脉":"脈","脏":"臟","腊":"臘","腻":"膩","腾":"騰","舆":"輿","舰":"艦","舱":"艙","艺":"藝","节":"節","苏":"蘇","范":"範","荐":"薦","获":"獲","药":"藥","萝":"蘿","营":"營","萨":"薩","蓝":"藍","虑":"慮","虚":"虛","虫":"蟲","虽":"雖","虾":"蝦","蚀":"蝕","蚁":"蟻","蛮":"蠻","蜡":"蠟","蝇":"蠅","补":"補","装":"裝","袜":"襪","裤":"褲","见":"見","观":"觀","规":"規","视":"視","览":"覽","觉":"覺","触":"觸","计":"計","订":"訂","认":"認","讨":"討","让":"讓","训":"訓","议":"議","讯":"訊","记":"記","讲":"講","讶":"訝","许":"許","论":"論","讼":"訟","设":"設","访":"訪","证":"證","评":"評","识":"識","诈":"詐","诉":"訴","诊":"診","词":"詞","译":"譯","试":"試","诗":"詩","诚":"誠","话":"話","诞":"誕","询":"詢","该":"該","详":"詳","语":"語","误":"誤","诱":"誘","说":"說","请":"請","诸":"諸","诺":"諾","读":"讀","课":"課","谁":"誰","调":"調","谅":"諒","谈":"談","谋":"謀","谎":"謊","谓":"謂","谜":"謎","谢":"謝","谣":"謠","谦":"謙","谨":"謹","谱":"譜","贝":"貝","负":"負","贡":"貢","财":"財","责":"責","贤":"賢","败":"敗","账":"帳","货":"貨","质":"質","贩":"販","贪":"貪","贫":"貧","购":"購","贮":"貯","贯":"貫","贴":"貼","贵":"貴","贷":"貸","费":"費","资":"資","赈":"賑","赊":"賒","赋":"賦","赌":"賭","赎":"贖","赏":"賞","赔":"賠","赖":"賴","赚":"賺","赛":"賽","赞":"贊","赠":"贈","赵":"趙","赶":"趕","趋":"趨","跃":"躍","践":"踐","踊":"踴","车":"車","轨":"軌","转":"轉","轮":"輪","软":"軟","轰":"轟","轴":"軸","轻":"輕","载":"載","较":"較","辅":"輔","辆":"輛","辈":"輩","辉":"輝","辐":"輻","辑":"輯","输":"輸","辖":"轄","辩":"辯","边":"邊","辽":"遼","达":"達","迁":"遷","过":"過","迈":"邁","运":"運","还":"還","这":"這","进":"進","远":"遠","违":"違","连":"連","迟":"遲","迹":"跡","适":"適","选":"選","逊":"遜","递":"遞","逻":"邏","遗":"遺","邮":"郵","邻":"鄰","郑":"鄭","郁":"鬱","郊":"郊","乡":"鄉","酝":"醞","酱":"醬","医":"醫","释":"釋","里":"裡","针":"針","钉":"釘","钓":"釣","钞":"鈔","钟":"鐘","钢":"鋼","钥":"鑰","钦":"欽","钧":"鈞","钩":"鉤","钮":"鈕","钱":"錢","钳":"鉗","钾":"鉀","铀":"鈾","铁":"鐵","铃":"鈴","铅":"鉛","铜":"銅","铝":"鋁","铲":"鏟","银":"銀","铺":"鋪","链":"鏈","销":"銷","锁":"鎖","锄":"鋤","锅":"鍋","锋":"鋒","错":"錯","锈":"鏽","锤":"錘","锦":"錦","锭":"錠","键":"鍵","锯":"鋸","锻":"鍛","镀":"鍍","镇":"鎮","镐":"鎬","镜":"鏡","镭":"鐳","门":"門","闪":"閃","闭":"閉","问":"問","闲":"閒","间":"間","闷":"悶","闹":"鬧","闻":"聞","闯":"闖","闲":"閒","闸":"閘","闺":"閨","阅":"閱","阀":"閥","阁":"閣","阎":"閻","阔":"闊","队":"隊","阳":"陽","阴":"陰","阵":"陣","阶":"階","际":"際","陆":"陸","陈":"陳","陕":"陝","险":"險","随":"隨","隐":"隱","难":"難","雾":"霧","霉":"黴","静":"靜","顶":"頂","项":"項","顺":"順","须":"須","顾":"顧","顿":"頓","颁":"頒","颂":"頌","预":"預","领":"領","颇":"頗","频":"頻","题":"題","颜":"顏","风":"風","飞":"飛","饭":"飯","饮":"飲","饰":"飾","饱":"飽","饼":"餅","馆":"館","马":"馬","驭":"馭","驰":"馳","驱":"驅","驳":"駁","驶":"駛","驻":"駐","驾":"駕","骂":"罵","骄":"驕","验":"驗","骑":"騎","骗":"騙","骚":"騷","骤":"驟","鱼":"魚","鲁":"魯","鲜":"鮮","鸟":"鳥","鸡":"雞","鸣":"鳴","鸥":"鷗","鸭":"鴨","鸽":"鴿","鹰":"鷹","麦":"麥","黄":"黃","齐":"齊","齿":"齒","龙":"龍","龟":"龜","图":"圖","层":"層","从":"從","复":"復","后":"後","发":"發","只":"只","干":"乾","余":"餘","征":"徵","台":"臺","里":"裡"
     };
+    Object.assign(traditionalCharacterMap,{"无":"無","标":"標"});
     function toTraditionalChinese(value) {
       return [...value].map(character=>traditionalCharacterMap[character]||character).join("");
     }
