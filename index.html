@@ -1070,7 +1070,8 @@
       <button class="page-tab" id="thermoTab" type="button" role="tab" aria-label="Thermochemistry" data-icon="↗" aria-selected="false" aria-controls="thermoPage" tabindex="-1"><span class="page-tab-label">Thermochemistry</span></button>
       <button class="page-tab" id="labTab" type="button" role="tab" aria-label="Science lab" data-icon="⚗" aria-selected="false" aria-controls="labPage" tabindex="-1"><span class="page-tab-label">Science lab</span></button>
       <button class="page-tab" id="bondsTab" type="button" role="tab" aria-label="Types of bonds" data-icon="∞" aria-selected="false" aria-controls="bondsPage" tabindex="-1"><span class="page-tab-label">Types of bonds</span></button>
-      <button class="page-tab" id="reactionsTab" type="button" role="tab" aria-label="Properties and reactions" data-icon="⇌" aria-selected="false" aria-controls="reactionsPage" tabindex="-1"><span class="page-tab-label">Properties &amp; reactions</span></button>
+      <button class="page-tab" id="propertiesTab" type="button" role="tab" aria-label="Properties" data-icon="◈" aria-selected="false" aria-controls="propertiesPage" tabindex="-1"><span class="page-tab-label">Properties</span></button>
+      <button class="page-tab" id="reactionsTab" type="button" role="tab" aria-label="Chemical reactions" data-icon="⇌" aria-selected="false" aria-controls="reactionsPage" tabindex="-1"><span class="page-tab-label">Chemical reactions</span></button>
     </div>
     <div class="nav-section" role="presentation">
       <span class="nav-section-label" aria-hidden="true">Study</span>
@@ -1774,30 +1775,39 @@
         const atomB = document.getElementById('bondAtomB');
         const bondOrder = document.getElementById('bondOrder');
 
-        function checkHydrogen() {
-          // Check if Hydrogen ('H') is selected in either dropdown
-          const hasHydrogen = (atomA.value === 'H' || atomB.value === 'H');
+        function updateBondOptions() {
+          const valA = atomA.value;
+          const valB = atomB.value;
 
-          // Disable double ('2') and triple ('3') bonds if Hydrogen is selected
+          // 1. Determine the maximum allowed bond order based on selected atoms
+          let maxBonds = 3; // Default allows Single, Double, and Triple
+
+          if (valA === 'H' || valB === 'H') {
+            maxBonds = 1; // Hydrogen only allows Single bonds
+          } else if (valA === 'O' || valB === 'O') {
+            maxBonds = 2; // Oxygen allows up to Double bonds (disables Triple)
+          }
+
+          // 2. Disable any bond option higher than maxBonds
           Array.from(bondOrder.options).forEach(option => {
-            if (option.value === '2' || option.value === '3') {
-              option.disabled = hasHydrogen;
-            }
+            const bondValue = Number(option.value);
+            option.disabled = bondValue > maxBonds;
           });
 
-          // If a double or triple bond was already chosen, switch it back to single ('1')
-          if (hasHydrogen && bondOrder.value !== '1') {
-            bondOrder.value = '1';
+          // 3. If the currently selected bond is now invalid, reset it to the max allowed
+          if (Number(bondOrder.value) > maxBonds) {
+            bondOrder.value = String(maxBonds); // Automatically drops Triple -> Double for Oxygen, or -> Single for Hydrogen
           }
         }
 
         // Listen for changes on both atom dropdowns
-        atomA.addEventListener('change', checkHydrogen);
-        atomB.addEventListener('change', checkHydrogen);
+        atomA.addEventListener('change', updateBondOptions);
+        atomB.addEventListener('change', updateBondOptions);
 
-        // Run once on page load to set the initial state
-        checkHydrogen();
+        // Run once on page load so Oxygen's default selection disables Triple bond immediately
+        updateBondOptions();
       </script>
+
 
     </section>
 
@@ -1826,7 +1836,7 @@
         <p class="intro-copy">Review a concept, open its interactive guide, then practice with 10 randomly selected questions from a larger challenge bank. Challenge progress is saved separately from the learning path.</p>
       </div>
       <div class="intro-aside" aria-label="Lesson library details">
-        <div class="stat"><strong id="lessonLibraryCount">9</strong><span>topic lessons</span></div>
+        <div class="stat"><strong id="lessonLibraryCount">10</strong><span>topic lessons</span></div>
         <div class="stat"><strong>10</strong><span>random questions each</span></div>
       </div>
     </section>
@@ -1872,9 +1882,14 @@
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="lab-safety">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="lab">Explore lab safety</button></div>
       </article>
       <article class="lesson-card">
-        <span class="lesson-index">09 · Matter &amp; change</span><h3>Properties &amp; reactions</h3>
-        <p>Physical properties describe a substance without changing its identity. Chemical properties describe how it can form new substances; reactions rearrange atoms while conserving each element.</p>
-        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="properties-reactions">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="reactions">Explore properties &amp; reactions</button></div>
+        <span class="lesson-index">09 · Matter</span><h3>Properties of matter</h3>
+        <p>Physical properties can be observed without changing a substance’s identity. Chemical properties describe how it can form new substances.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="properties">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="properties">Explore properties</button></div>
+      </article>
+      <article class="lesson-card">
+        <span class="lesson-index">10 · Chemical change</span><h3>Chemical reactions</h3>
+        <p>Reactions rearrange atoms into new substances. Read reaction patterns and balance equations by changing coefficients, not formulas.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="chemical-reactions">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="reactions">Explore chemical reactions</button></div>
       </article>
     </section>
   </main>
@@ -1887,7 +1902,7 @@
         <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.</p>
       </div>
       <div class="intro-aside" aria-label="Learning path details">
-        <div class="stat"><strong id="learningLessonCount">9</strong><span>short lessons</span></div>
+        <div class="stat"><strong id="learningLessonCount">10</strong><span>short lessons</span></div>
         <div class="stat"><strong>10</strong><span>questions each</span></div>
       </div>
     </section>
@@ -2016,7 +2031,7 @@
         <p class="intro-copy">Learn the vocabulary, core rules, and worked examples behind each topic. Then explore the interactive guide or test yourself with a quiz.</p>
       </div>
       <div class="intro-aside" aria-label="Lesson page details">
-        <div class="stat"><strong>09</strong><span>topic lessons</span></div>
+        <div class="stat"><strong>10</strong><span>topic lessons</span></div>
         <div class="stat"><strong>Learn → try</strong><span>your pace</span></div>
       </div>
     </section>
@@ -2064,21 +2079,28 @@
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="molecular-shapes">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="molecule">Explore shapes</button></div>
       </article>
       <article class="study-lesson-card">
-        <span class="lesson-index">07 · Matter &amp; change</span><h2>Properties and reactions</h2>
-        <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>Reactant</dt><dd>A starting substance in a chemical reaction.</dd></div><div><dt>Product</dt><dd>A substance formed by a chemical reaction.</dd></div><div><dt>Conservation of atoms</dt><dd>Atoms are rearranged in ordinary chemical reactions; each element’s atom count is conserved.</dd></div></dl></div>
-        <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Balance equations by changing coefficients, never the chemical formula subscripts.</li><li>A physical change alters form or state; a chemical reaction produces different substances.</li><li>Evidence such as color change or bubbles can be a clue, but context matters.</li></ul></div>
-        <p class="study-example"><strong>Example:</strong> 2H₂ + O₂ → 2H₂O balances 4 H atoms and 2 O atoms on each side.</p>
-        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="properties-reactions">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="reactions">Explore reactions</button></div>
+        <span class="lesson-index">07 · Matter</span><h2>Properties of matter</h2>
+        <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>Physical property</dt><dd>A characteristic that can be observed or measured without changing a substance’s chemical identity.</dd></div><div><dt>Chemical property</dt><dd>A substance’s ability to form different substances through chemical change.</dd></div><div><dt>Intensive property</dt><dd>A property, such as density, that does not depend on the amount of sample.</dd></div></dl></div>
+        <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Color, density, melting point, and conductivity are physical properties.</li><li>Flammability and reactivity describe chemical properties.</li><li>A physical change alters form or state while the substance’s chemical identity stays the same.</li></ul></div>
+        <p class="study-example"><strong>Example:</strong> Ice melting is a physical change: the substance remains H₂O.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="properties">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="properties">Explore properties</button></div>
       </article>
       <article class="study-lesson-card">
-        <span class="lesson-index">08 · Energy</span><h2>Heat and thermochemistry</h2>
+        <span class="lesson-index">08 · Chemical change</span><h2>Chemical reactions</h2>
+        <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>Reactant</dt><dd>A starting substance in a chemical reaction.</dd></div><div><dt>Product</dt><dd>A substance formed by a chemical reaction.</dd></div><div><dt>Conservation of atoms</dt><dd>Atoms are rearranged in ordinary chemical reactions; each element’s atom count is conserved.</dd></div></dl></div>
+        <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Balance equations by changing coefficients, never the chemical formula subscripts.</li><li>A chemical reaction forms substances with different chemical compositions.</li><li>Evidence such as color change or bubbles can be a clue, but context matters.</li></ul></div>
+        <p class="study-example"><strong>Example:</strong> 2H₂ + O₂ → 2H₂O balances 4 H atoms and 2 O atoms on each side.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="chemical-reactions">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="reactions">Explore chemical reactions</button></div>
+      </article>
+      <article class="study-lesson-card">
+        <span class="lesson-index">09 · Energy</span><h2>Heat and thermochemistry</h2>
         <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>System</dt><dd>The reaction or process being studied; everything else is the surroundings.</dd></div><div><dt>Enthalpy change (ΔH)</dt><dd>At constant pressure, the heat transferred for a process under the stated conditions.</dd></div><div><dt>Specific heat (c)</dt><dd>The heat needed to raise one gram of a substance by one degree.</dd></div></dl></div>
         <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Use q = mcΔT, where ΔT = final temperature − initial temperature.</li><li>Positive q means the chosen sample absorbs heat; negative q means it releases heat.</li><li>Thermodynamic favorability does not tell you how fast a reaction occurs.</li></ul></div>
         <p class="study-example"><strong>Example:</strong> Heating 10 g of water by 10 °C gives q = 10 × 4.184 × 10 = 418.4 J.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="thermochemistry">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="thermo">Explore thermochemistry</button></div>
       </article>
       <article class="study-lesson-card">
-        <span class="lesson-index">09 · Lab-ready habits</span><h2>Lab safety</h2>
+        <span class="lesson-index">10 · Lab-ready habits</span><h2>Lab safety</h2>
         <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>PPE</dt><dd>Personal protective equipment, such as the goggles and protective clothing required by your activity.</dd></div><div><dt>Eyewash / safety shower</dt><dd>Emergency equipment used immediately for chemical exposure, following site instructions.</dd></div><div><dt>Waste stream</dt><dd>The designated disposal route for a specific type of laboratory waste.</dd></div></dl></div>
         <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Follow your signed safety contract, procedure, and instructor’s directions; stop and ask when unsure.</li><li>Report spills, injuries, and broken equipment immediately. Never improvise cleanup of an unknown spill.</li><li>For a chemical splash on skin or in eyes, immediately flush at the designated station for at least 15 minutes and alert the instructor.</li></ul></div>
         <p class="study-example"><strong>Remember:</strong> These reminders do not replace your full safety contract, chemical-specific instructions, or supervision.</p>
@@ -2236,16 +2258,16 @@
     </section>
   </main>
 
-  <main id="reactionsPage" role="tabpanel" aria-labelledby="reactionsTab" hidden>
+  <main id="propertiesPage" role="tabpanel" aria-labelledby="propertiesTab" hidden>
     <section class="intro thermo-intro">
       <div>
-        <p class="eyebrow">Observe matter · explain change</p>
-        <h1>Properties &amp; <em>reactions.</em></h1>
-        <p class="intro-copy">Describe what a substance is like, distinguish physical changes from chemical reactions, and recognize common reaction patterns.</p>
+        <p class="eyebrow">Observe and describe matter</p>
+        <h1>Properties of <em>matter.</em></h1>
+        <p class="intro-copy">Learn how physical and chemical properties describe a substance, and how to distinguish a physical change from a chemical one.</p>
       </div>
       <div class="intro-aside" aria-label="Topics on this page">
         <div class="stat"><strong>2</strong><span>kinds of properties</span></div>
-        <div class="stat"><strong>6</strong><span>reaction patterns</span></div>
+        <div class="stat"><strong>2</strong><span>kinds of change</span></div>
       </div>
     </section>
 
@@ -2264,7 +2286,7 @@
 
     <section aria-labelledby="changeTypesHeading">
       <div class="reaction-section-heading">
-        <h2 id="changeTypesHeading">Physical change or chemical reaction?</h2>
+        <h2 id="changeTypesHeading">Physical change or chemical change?</h2>
         <p>A change in appearance or state alone does not mean a new substance formed. Look for changes in chemical composition.</p>
       </div>
       <div class="bond-type-grid" aria-label="Comparing physical and chemical changes">
@@ -2275,7 +2297,7 @@
           <div class="reaction-example">Examples · ice melting · cutting copper · salt dissolving in water</div>
         </article>
         <article class="molecule-card bond-type-card">
-          <h2>Chemical reaction</h2>
+          <h2>Chemical change</h2>
           <span class="bond-type-tag">New substances form</span>
           <p>Atoms are rearranged as bonds break and form. The products have different chemical compositions and properties from the reactants.</p>
           <div class="reaction-example">Examples · iron rusting · food digesting · fuel burning</div>
@@ -2288,7 +2310,32 @@
         </article>
       </div>
     </section>
+  </main>
 
+  <main id="reactionsPage" role="tabpanel" aria-labelledby="reactionsTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">From reactants to products</p>
+        <h1>Chemical <em>reactions.</em></h1>
+        <p class="intro-copy">Explore how reactions rearrange atoms, how to read and balance equations, and how common reaction patterns are organized.</p>
+      </div>
+      <div class="intro-aside" aria-label="Topics on this page">
+        <div class="stat"><strong>6</strong><span>reaction patterns</span></div>
+        <div class="stat"><strong>1</strong><span>conserved atom count</span></div>
+      </div>
+    </section>
+    <section class="bond-overview" aria-label="How chemical reactions work">
+      <article class="molecule-card bond-overview-card">
+        <h2>Reactants and products</h2>
+        <p>Reactants are the starting substances in a chemical reaction. Atoms rearrange as bonds break and form, producing substances with different chemical compositions.</p>
+        <div class="reaction-example">Reactants → products</div>
+      </article>
+      <article class="molecule-card bond-overview-card">
+        <h2>Conservation of atoms</h2>
+        <p>In ordinary chemical reactions, atoms are not created or destroyed. A balanced equation has the same number of each kind of atom on both sides.</p>
+        <div class="reaction-example">Balance equations with coefficients, never by changing formulas.</div>
+      </article>
+    </section>
     <section aria-labelledby="reactionPatternsHeading">
       <div class="reaction-section-heading">
         <h2 id="reactionPatternsHeading">Common reaction patterns</h2>
@@ -2436,7 +2483,7 @@
         <button type="button" class="detail-close" id="updateDialogClose" aria-label="Close update notice">×</button>
       </header>
       <h2 id="updateDialogTitle">What’s new in Chemica?</h2>
-      <time class="update-release-date" id="updateReleaseDate"></time>
+      <span class="update-release-date" id="updateReleaseVersion"></span>
       <h3 class="update-release-title" id="updateReleaseTitle"></h3>
       <p class="update-release-description" id="updateReleaseDescription"></p>
       <div class="welcome-actions update-actions">
@@ -3240,8 +3287,9 @@
         renderSpectrumNote(element, charge, "Loading verified reference wavelengths from NIST ASD…");
         scheduleDraw();
         try {
-          const response = await fetch(nistLinesUrl(element, charge), {signal: controller.signal});
-          if (!response.ok) throw new Error(`NIST ASD returned HTTP ${response.status}`);
+          const species = `${element.symbol} ${romanNumeral(charge + 1)}`;
+          const response = await fetch(`/api/spectrum?species=${encodeURIComponent(species)}`, {signal: controller.signal});
+          if (!response.ok) throw new Error(`Spectrum API returned HTTP ${response.status}`);
           const html = await response.text();
           const documentData = new DOMParser().parseFromString(html, "text/html");
           const normalizeCellText = text => text.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
@@ -4729,12 +4777,17 @@
         ]
       },
       {
-        id:"properties-reactions",icon:"⚗",title:"Properties & reactions",subtitle:"Tell physical changes from chemical reactions.",
+        id:"properties",icon:"◈",title:"Properties of matter",subtitle:"Distinguish physical and chemical properties.",
         questions:[
           ["Which is a physical property of a substance?",["Density","Flammability","Ability to rust","Reactivity with acid"],0,"Density can be measured without changing a substance's chemical identity."],
           ["Which describes a chemical property?",["Flammability","Melting point","Color","Electrical conductivity"],0,"Flammability describes a substance's ability to react chemically with oxygen."],
           ["Which is a physical change?",["Ice melting","Iron rusting","Wood burning","Hydrogen reacting with oxygen"],0,"Melting changes water's state, but the particles remain H₂O."],
-          ["Which is a chemical change?",["Iron forming rust","Water freezing","Copper being cut","Sugar dissolving in water"],0,"Rusting forms new substances as iron reacts with oxygen and moisture."],
+          ["Which is a chemical change?",["Iron forming rust","Water freezing","Copper being cut","Sugar dissolving in water"],0,"Rusting forms new substances as iron reacts with oxygen and moisture."]
+        ]
+      },
+      {
+        id:"chemical-reactions",icon:"⇌",title:"Chemical reactions",subtitle:"Explore how atoms rearrange and reactions are classified.",
+        questions:[
           ["What happens to atoms in an ordinary chemical reaction?",["They are rearranged and conserved","They are created from nothing","They all become one element","They disappear into energy"],0,"Chemical reactions rearrange atoms; the number of each kind is conserved."],
           ["Which pattern is shown by 2H₂ + O₂ → 2H₂O?",["Synthesis","Decomposition","Single replacement","Double replacement"],0,"Multiple reactants combine to make a product, which is a synthesis pattern."],
           ["Which pattern is shown by 2H₂O₂ → 2H₂O + O₂?",["Decomposition","Synthesis","Combustion","Neutralization"],0,"One reactant breaks down into simpler products in a decomposition reaction."],
@@ -4753,7 +4806,8 @@
       {id:"lewis-diagrams",label:"Lewis diagrams"},
       {id:"bonding",label:"Bonds"},
       {id:"molecular-shapes",label:"Molecular shapes"},
-      {id:"properties-reactions",label:"Reactions"},
+      {id:"properties",label:"Properties"},
+      {id:"chemical-reactions",label:"Chemical reactions"},
       {id:"thermochemistry",label:"Energy"}
     ];
     const learningLessonOrderIndex = new Map(learningLessonOrder.map((item,index)=>[item.id,index]));
@@ -4832,14 +4886,16 @@
         ["A liquid spills, but its identity and hazard are unclear. What should you do?",["Warn others, notify the instructor, and do not clean it unless directed and trained","Wipe it up immediately with paper towels","Add water to dilute it","Move it to another bench"],0,"Do not attempt to clean an unknown spill; alert the instructor and follow the site's spill response."],
         ["Why must a container not be heated while closed?",["Gas expansion or vapor formation can raise pressure and rupture it","Closed containers cannot absorb heat","The contents stop reacting","The container would lose its label"],0,"Heating can increase pressure as gas and vapor expand, creating a rupture hazard."]
       ],
-      "properties-reactions":[
+      properties:[
         ["A 10.0 g metal sample displaces 2.0 mL of water and remains chemically unchanged. Which property is measured, and what is its value?",["Physical density, 5.0 g/mL","Chemical reactivity, 5.0 g/mL","Physical density, 0.20 g/mL","Chemical density, 12.0 g/mL"],0,"Density is a physical property: 10.0 g ÷ 2.0 mL = 5.0 g/mL."],
         ["A sealed sample changes from a clear liquid to a colorless gas on heating and returns to the same liquid on cooling. What is the strongest conclusion?",["A physical phase change is consistent with the observations","A chemical reaction must have occurred","The atoms changed into a new element","The mass was destroyed"],0,"Reversible phase changes with the same chemical identity are physical changes."],
+        ["A metal reacts with oxygen to form an oxide. Which statement describes a chemical property of the metal?",["Its tendency to react with oxygen","Its measured density before reaction","Its melting point","Its shape when cut"],0,"Reactivity with oxygen describes the ability to form a new substance, so it is a chemical property."]
+      ],
+      "chemical-reactions":[
         ["Which observation most strongly supports formation of a new substance rather than only a phase change?",["A solid with a new composition forms and remains after cooling","A liquid boils and bubbles appear","A solid is crushed into powder","A liquid takes the shape of its container"],0,"Formation of a product with a different chemical composition is direct evidence of chemical change."],
         ["Balance: __ Al + __ O₂ → __ Al₂O₃. Which coefficients are the smallest whole numbers?",["4, 3, 2","2, 1, 1","2, 3, 2","3, 2, 1"],0,"Four Al atoms and three O₂ molecules give 4 Al and 6 O atoms, matching 2 Al₂O₃."],
         ["Classify: CaCO₃ → CaO + CO₂.",["Decomposition","Synthesis","Single replacement","Combustion"],0,"One reactant forms two products, which is a decomposition pattern."],
         ["For 2KClO₃ → 2KCl + 3O₂, how many oxygen atoms are present on each side?",["6","3","2","5"],0,"The left has 2 × 3 = 6 oxygen atoms; the right has 3 × 2 = 6."],
-        ["A metal reacts with oxygen to form an oxide. Which statement describes a chemical property of the metal?",["Its tendency to react with oxygen","Its measured density before reaction","Its melting point","Its shape when cut"],0,"Reactivity with oxygen describes the ability to form a new substance, so it is a chemical property."],
         ["In aqueous solution, AgNO₃ and NaCl form AgCl(s) and NaNO₃(aq). What drives this double-replacement reaction?",["Formation of insoluble AgCl precipitate","Formation of a metal alloy","Water changing to steam","The sodium atoms becoming protons"],0,"AgCl is insoluble under the usual conditions and precipitates from solution."],
         ["Which statement about balancing a chemical equation is correct?",["Change coefficients to conserve atoms; do not alter subscripts in formulas","Change subscripts until both sides look similar","Balance only the most abundant element","Atoms can be omitted if charge is conserved"],0,"Coefficients change particle amounts while formulas preserve each substance's identity."],
         ["A gas appears when two solutions are mixed. What is the most careful interpretation?",["Gas formation may indicate a reaction, but identify the products and rule out physical release of dissolved gas","Any bubbles prove a chemical reaction","Gas formation proves that atoms were destroyed","The mixture must be a pure element"],0,"Gas formation can be evidence of a reaction, but observations need context; dissolved gas can also escape physically."]
@@ -4903,9 +4959,16 @@
         ["A chemical splashes onto clothing but not skin. What is the safest next action?",["Alert the instructor immediately and follow the lab's emergency procedure","Wait to see whether the stain dries","Cover it with a coat and continue","Neutralize it with a chemical from the bench"],0,"Report exposure immediately and follow the site's emergency procedure; do not improvise a treatment."],
         ["Why should long hair and loose clothing be secured during lab work?",["To reduce contact with flames, chemicals, and equipment","To improve the accuracy of a balance","To prevent all chemical reactions","Because loose items change atomic mass"],0,"Securing hair and clothing reduces the chance of contact with hazards or equipment."]
       ],
-      "properties-reactions":[
+      properties:[
         ["Which is an intensive physical property, independent of sample size?",["Density","Mass","Volume","Total heat capacity"],0,"Density is intensive: it does not depend on the amount of a uniform sample."],
         ["A beaker of water is poured into a differently shaped flask. Which statement is correct?",["Its volume stays the same while its shape changes to fit the flask","Its shape and volume both stay fixed","Its chemical identity changes","It undergoes decomposition"],0,"A liquid has a definite volume but takes the shape of its container; this is a physical change."],
+        ["Which observation measures a physical property without changing the substance?",["Measuring the melting point of ice","Burning magnesium in air","Rusting an iron nail","Reacting zinc with acid"],0,"Melting point can be measured while the sample retains its chemical identity."],
+        ["Which is an extensive property that depends on the amount of sample?",["Mass","Density","Melting point","Color"],0,"Mass depends on how much substance is present, while density, melting point, and color do not scale with sample size."],
+        ["A solid keeps its composition while being crushed into powder. Which changed?",["Its size and shape, which are physical properties","Its chemical identity","Its ability to react with oxygen","Its element composition"],0,"Crushing changes form and size without changing the substance's chemical identity."],
+        ["A sample has a density of 2 g/mL. What is the density of a larger uniform sample of the same material?",["2 g/mL","It must double","It must be halved","It cannot be measured"],0,"Density is an intensive property, so it remains the same for a larger uniform sample."],
+        ["Which observation is a chemical property rather than a physical property?",["A material's ability to tarnish in air","Its measured mass","Its melting point","Its electrical conductivity"],0,"Tarnishing involves a chemical reaction that forms a different substance."]
+      ],
+      "chemical-reactions":[
         ["Balance: __ Fe + __ O₂ → __ Fe₂O₃. Which coefficients are smallest whole numbers?",["4, 3, 2","2, 1, 1","2, 3, 2","3, 2, 1"],0,"Four Fe atoms and three O₂ molecules give 4 Fe and 6 O atoms, matching 2 Fe₂O₃."],
         ["A student changes H₂O to H₂ and O₂ while balancing an equation. Why is that invalid?",["Changing subscripts changes the identities of the substances","Subscripts are the only values allowed to change","Atoms cannot appear in products","Water cannot participate in reactions"],0,"Subscripts are part of a chemical formula; balance equations by changing coefficients."],
         ["Which equation represents neutralization and is balanced as written?",["H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O","HCl + NaOH → Na₂Cl + H₂O","H₂SO₄ + NaOH → NaSO₄ + H₂O","HNO₃ + KOH → KNO₂ + H₂O"],0,"Two hydroxide ions neutralize the two acidic hydrogen ions; atom counts match on both sides."],
@@ -5829,7 +5892,7 @@
     function setPageTab(tab) {
       const currentTab=document.querySelector(".page-tab[aria-selected=\"true\"]");
       const pageChanged=currentTab?.id!==`${tab}Tab`;
-      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","about","settings","reactions"].forEach(name=>{
+      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","properties","reactions","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","about","settings"].forEach(name=>{
         const selected = name===tab;
         document.getElementById(`${name}Tab`).setAttribute("aria-selected",String(selected));
         document.getElementById(`${name}Tab`).tabIndex = selected ? 0 : -1;
@@ -5855,6 +5918,7 @@
     document.getElementById("thermoTab").addEventListener("click",()=>setPageTab("thermo"));
     document.getElementById("labTab").addEventListener("click",()=>setPageTab("lab"));
     document.getElementById("bondsTab").addEventListener("click",()=>setPageTab("bonds"));
+    document.getElementById("propertiesTab").addEventListener("click",()=>setPageTab("properties"));
     document.getElementById("studyLessonsTab").addEventListener("click",()=>setPageTab("studyLessons"));
     document.getElementById("flashcardsTab").addEventListener("click",()=>setPageTab("flashcards"));
     document.getElementById("learningTab").addEventListener("click",()=>setPageTab("learning"));
@@ -6714,7 +6778,19 @@
       "Heat & energy":"Calor y energía",
       "Lab-ready habits":"Hábitos para el laboratorio",
       "Matter & change":"Materia y cambio",
-      "Properties & reactions":"Propiedades y reacciones",
+      "Properties":"Propiedades",
+      "Chemical reactions":"Reacciones químicas",
+      "Properties of matter":"Propiedades de la materia",
+      "Properties of":"Propiedades de",
+      "matter.":"la materia.",
+      "properties.":"propiedades.",
+      "Chemical":"Reacciones",
+      "reactions.":"químicas.",
+      "Observe and describe matter":"Observa y describe la materia",
+      "From reactants to products":"De los reactivos a los productos",
+      "Physical change or chemical reaction?":"¿Cambio físico o reacción química?",
+      "Reactants and products":"Reactivos y productos",
+      "Chemical change":"Cambio químico",
       "Meet protons, neutrons, electrons, and ions.":"Conoce los protones, neutrones, electrones e iones.",
       "Read periods, groups, and element families.":"Aprende a leer períodos, grupos y familias de elementos.",
       "Arrange electrons into shells and identify valence electrons.":"Distribuye los electrones en capas e identifica los electrones de valencia.",
@@ -7203,7 +7279,19 @@
       "Heat & energy":"热与能量",
       "Lab-ready habits":"实验室安全习惯",
       "Matter & change":"物质与变化",
-      "Properties & reactions":"性质与反应",
+      "Properties":"性质",
+      "Chemical reactions":"化学反应",
+      "Properties of matter":"物质的性质",
+      "Properties of":"物质的",
+      "matter.":"性质。",
+      "properties.":"性质。",
+      "Chemical":"化学",
+      "reactions.":"反应。",
+      "Observe and describe matter":"观察并描述物质",
+      "From reactants to products":"从反应物到生成物",
+      "Physical change or chemical reaction?":"物理变化还是化学反应？",
+      "Reactants and products":"反应物和生成物",
+      "Chemical change":"化学变化",
       "Meet protons, neutrons, electrons, and ions.":"认识质子、中子、电子和离子。",
       "Read periods, groups, and element families.":"了解周期、族和元素家族。",
       "Arrange electrons into shells and identify valence electrons.":"将电子排入电子层并识别价电子。",
@@ -8696,10 +8784,11 @@
 
     function initializeUpdateNotice() {
       const release=document.querySelector("#updatesPage .update-entry");
-      const releaseDate=release?.querySelector("time");
+      const releaseParagraphs=release?.querySelectorAll(":scope > p");
+      const releaseVersion=releaseParagraphs?.[0];
       const releaseHeading=release?.querySelector("h2");
-      const releaseDescription=release?.querySelector("p");
-      if(!releaseDate||!releaseHeading||!releaseDescription) {
+      const releaseDescription=releaseParagraphs?.[1];
+      if(!releaseVersion||!releaseHeading||!releaseDescription) {
         console.error("Could not initialize the update notice: latest update details are missing.");
         return;
       }
@@ -8707,7 +8796,9 @@
       const heading=releaseHeading.cloneNode(true);
       heading.querySelectorAll(".update-badge").forEach(badge=>badge.remove());
       const title=heading.textContent.trim();
-      const releaseId=`${releaseDate.dateTime}:${title}`;
+      const releaseVersionText=releaseVersion.textContent.trim();
+      const description=releaseDescription.textContent.trim();
+      const releaseId=JSON.stringify([releaseVersionText,title,description]);
       const dialog=document.getElementById("updateDialog");
       let seenRelease="";
       try {
@@ -8716,23 +8807,28 @@
         console.error("Could not read the update-notice preference:",error);
       }
 
-      document.getElementById("updateReleaseDate").textContent=releaseDate.textContent.trim();
+      document.getElementById("updateReleaseVersion").textContent=releaseVersionText;
       document.getElementById("updateReleaseTitle").textContent=title;
-      document.getElementById("updateReleaseDescription").textContent=releaseDescription.textContent.trim();
-      dialog.addEventListener("close",()=>{
+      document.getElementById("updateReleaseDescription").textContent=description;
+      const markReleaseSeen=()=>{
         try {
           localStorage.setItem("chemica-update-notice-seen",releaseId);
         } catch(error) {
           console.error("Could not save the update-notice preference:",error);
         }
-      });
-      document.getElementById("updateDialogClose").addEventListener("click",()=>dialog.close());
-      document.getElementById("updateDialogLater").addEventListener("click",()=>dialog.close());
+      };
+      const closeUpdateDialog=()=>{
+        markReleaseSeen();
+        dialog.close();
+      };
+      dialog.addEventListener("close",markReleaseSeen);
+      document.getElementById("updateDialogClose").addEventListener("click",closeUpdateDialog);
+      document.getElementById("updateDialogLater").addEventListener("click",closeUpdateDialog);
       dialog.addEventListener("click",event=>{
-        if(event.target===dialog)dialog.close();
+        if(event.target===dialog)closeUpdateDialog();
       });
       document.getElementById("updateViewLog").addEventListener("click",()=>{
-        dialog.close();
+        closeUpdateDialog();
         setPageTab("updates");
         document.getElementById("updatesTab").focus();
       });
