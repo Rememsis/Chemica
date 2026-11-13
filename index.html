@@ -2242,7 +2242,7 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen was selected, and translation issues. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.0</p><h2>New Learning Path and Flashcard Mode and more Bug Fixes<span class="update-badge">MAJOR UPDATE</span></h2><p>Introducing a Learning Path to help you learn the concepts, or review if you forget, and a Flashcard Mode to review key concepts. Chema AI is now in beta 2, introducing more features. Multiple bug fixes regarding translation in questions, AI, and descriptions, and Element taking up entire screen with the spectrum not showing data. Fixed the Guide so that it doesnt take up the entire screen. Language selection is also added on the welcome screen for first time users. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.3.0</p><h2>Four Supported Languages! Plus a Welcome Popup<span class="update-badge">MAJOR UPDATE</span></h2><p>Site now supports English, Spanish, Simplified Chinese, and Traditional Chinese. Added a new Welcome Sign for first-time users with a guide. Fixed issues with the menu, where it gets cut off at the top and bottom, and improved Chema AI functionality. Included more questions and added a "Show Periodic Table" feature for questions that may require it.</p></article>
@@ -5200,6 +5200,22 @@
     const learningLessonOrderIndex = new Map(learningLessonOrder.map((item,index)=>[item.id,index]));
     learningLessons.sort((first,second)=>learningLessonOrderIndex.get(first.id)-learningLessonOrderIndex.get(second.id));
 
+    function renderStudyLessonOrder() {
+      const grid=document.querySelector("#studyLessonsPage .study-lesson-grid");
+      const cards=[...grid.querySelectorAll(".study-lesson-card")];
+      learningLessonOrder.forEach((item,index)=>{
+        const card=cards.find(candidate=>candidate.querySelector("[data-study-quiz]")?.dataset.studyQuiz===item.id);
+        if(!card)throw new Error(`Could not find the study lesson for quiz ${item.id}.`);
+        const number=String(index+1).padStart(2,"0");
+        const lessonIndex=card.querySelector(".lesson-index");
+        const quizButton=card.querySelector("[data-study-quiz]");
+        lessonIndex.textContent=`${number} · ${translateValue(item.label)}`;
+        quizButton.textContent=`${translateValue("Quiz")} ${number} · ${translateValue("Practice this topic")}`;
+        quizButton.dataset.quizNumber=number;
+        grid.append(card);
+      });
+    }
+
     const lessonChallengeQuestions = {
       atoms:[
         ["A species has 17 protons, 18 electrons, and 20 neutrons. Which description is correct?",["Cl⁻ with mass number 37","Ar⁺ with mass number 37","Cl⁺ with mass number 35","S²⁻ with mass number 38"],0,"Seventeen protons identify chlorine. One extra electron gives a −1 charge, and 17 + 20 = 37 is the mass number."],
@@ -5650,7 +5666,7 @@
           const lessonId=card.querySelector("[data-lesson-id]")?.dataset.lessonId;
           const orderItem=learningLessonOrder[index];
           const label=card.querySelector(".lesson-index");
-          if(label&&orderItem?.id===lessonId)label.textContent=`${String(index+1).padStart(2,"0")} · ${orderItem.label}`;
+          if(label&&orderItem?.id===lessonId)label.textContent=`${String(index+1).padStart(2,"0")} · ${translateValue(orderItem.label)}`;
           catalog.append(card);
         });
       document.querySelectorAll("#lessonCatalog [data-lesson-id]").forEach(button=>{
@@ -5659,7 +5675,11 @@
         const completed=Boolean(lessonChallengeState.completed[lesson.id]?.completed);
         const resumable=lessonChallengeState.run?.lessonId===lesson.id;
         button.disabled=false;
-        button.textContent=completed?`${translateValue("Retry")} · ${translateValue("best")} ${lessonChallengeState.completed[lesson.id].score}/10`:translateValue(resumable?"Resume challenge":"Start challenge");
+        const orderIndex=learningLessonOrderIndex.get(lesson.id);
+        const quizNumber=String(orderIndex+1).padStart(2,"0");
+        const challengeLabel=completed?`${translateValue("Retry")} · ${translateValue("best")} ${lessonChallengeState.completed[lesson.id].score}/10`:translateValue(resumable?"Resume challenge":"Start challenge");
+        button.textContent=`${translateValue("Quiz")} ${quizNumber} · ${challengeLabel}`;
+        button.dataset.quizNumber=quizNumber;
         button.setAttribute("aria-label",`${button.textContent}: ${translateValue(lesson.title)}`);
       });
     }
@@ -9448,6 +9468,8 @@
           activeLanguage==="zh-TW"?Object.fromEntries(Object.entries(localized).map(([source,target])=>[source,toTraditionalChinese(target)])):localized);
       }
       localizeSubtree(document.body);
+      renderStudyLessonOrder();
+      renderLessonCatalogActions();
       document.title=translateValue("Chemica — A Full-On Chemistry Site");
       document.querySelector('meta[name="description"]').content=activeLanguage==="es"
         ? "Explora la tabla periódica, modelos atómicos y moleculares interactivos y lecciones de química con Chemica."
