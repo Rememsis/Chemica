@@ -516,6 +516,17 @@
     .balancing-rule { padding: 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
     .balancing-rule strong { color: var(--accent); font-size: 10px; }
     .balancing-rule p { margin: 6px 0 0; color: #9da69b; font-size: 9px; line-height: 1.6; }
+    .matter-state-explorer { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); align-items: center; gap: 20px; }
+    .matter-particle-stage { display: grid; min-height: 190px; grid-template-columns: repeat(4,14px); align-content: center; justify-content: center; gap: 5px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: radial-gradient(ellipse at center,rgba(201,239,119,.07),transparent 72%),rgba(0,0,0,.12); }
+    .matter-particle { width: 14px; height: 14px; border-radius: 50%; background: #c9ef77; box-shadow: 0 0 12px rgba(201,239,119,.25); transition: transform .25s var(--motion-ease), box-shadow .25s var(--motion-ease); }
+    .matter-particle-stage[data-state="liquid"] { gap: 10px 12px; }
+    .matter-particle-stage[data-state="gas"], .matter-particle-stage[data-state="plasma"] { min-height: 240px; align-content: space-between; justify-content: space-between; }
+    .matter-particle-stage[data-state="gas"] .matter-particle { background: #8dd9ff; box-shadow: 0 0 12px rgba(141,217,255,.25); }
+    .matter-particle-stage[data-state="plasma"] .matter-particle { background: #d6bdff; box-shadow: 0 0 16px rgba(214,189,255,.6); }
+    .matter-state-readout h3 { margin: 0; color: var(--accent); font-size: 17px; }
+    .matter-state-readout p { margin: 8px 0 0; color: #a4ada5; font-size: 11px; line-height: 1.7; }
+    .matter-state-controls { margin-top: 15px; }
+    .matter-state-controls button[aria-pressed="true"] { border-color: rgba(201,239,119,.45); color: var(--accent); background: rgba(201,239,119,.08); }
     .property-examples { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-top: 14px; }
     .property-example { padding: 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
     .property-example strong { color: #c9ef77; font-size: 10px; }
@@ -584,6 +595,26 @@
     .feedback-contact { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 0 16px; border: 0; border-radius: 10px; color: var(--accent-ink); background: var(--accent); font-size: 11px; font-weight: 740; text-decoration: none; transition: filter .22s var(--motion-ease), transform .22s var(--motion-ease); }
     .feedback-contact:hover { filter: brightness(1.08); transform: translateY(-1px); }
     .feedback-contact:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .contact-nudge { position: fixed; right: max(20px,env(safe-area-inset-right)); bottom: max(20px,env(safe-area-inset-bottom)); z-index: 45; width: min(292px,calc(100vw - 32px)); }
+    .contact-nudge[hidden], .contact-nudge-menu[hidden] { display: none; }
+    .contact-nudge-card { position: relative; padding: 16px; border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line)); border-radius: 15px; background: color-mix(in srgb,var(--surface-raised) 94%,transparent); box-shadow: 0 16px 42px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.035); backdrop-filter: blur(16px); }
+    .contact-nudge-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .contact-nudge-kicker { margin: 0; color: var(--accent); font-size: 8px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+    .contact-nudge-close { width: 27px; height: 27px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 50%; color: #aab4a8; background: rgba(255,255,255,.035); font-size: 16px; cursor: pointer; }
+    .contact-nudge-close:hover, .contact-nudge-close[aria-expanded="true"] { border-color: color-mix(in srgb,var(--accent) 45%,var(--line)); color: var(--accent); background: color-mix(in srgb,var(--accent) 9%,transparent); }
+    .contact-nudge-message { margin: 4px 0 12px; color: var(--ink); font-size: 13px; font-weight: 650; letter-spacing: -.025em; }
+    .contact-nudge-link { display: inline-flex; min-height: 34px; align-items: center; justify-content: center; padding: 0 12px; border-radius: 9px; color: var(--accent-ink); background: var(--accent); font-size: 10px; font-weight: 740; text-decoration: none; transition: filter .2s var(--motion-ease),transform .2s var(--motion-ease); }
+    .contact-nudge-link:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .contact-nudge-link:focus-visible, .contact-nudge-close:focus-visible, .contact-nudge-menu button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .contact-nudge-menu { position: absolute; right: 0; bottom: calc(100% + 9px); width: 100%; display: grid; gap: 5px; padding: 7px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-raised); box-shadow: 0 12px 32px rgba(0,0,0,.38); transform-origin: bottom right; }
+    .contact-nudge-menu button { min-height: 35px; padding: 0 10px; border: 0; border-radius: 8px; color: #d3dacd; background: transparent; font-size: 10px; text-align: left; cursor: pointer; }
+    .contact-nudge-menu button:hover { color: var(--accent); background: rgba(255,255,255,.05); }
+    @media (prefers-reduced-motion: no-preference) {
+      .contact-nudge:not([hidden]) { animation: contact-nudge-enter .32s var(--motion-ease) both; }
+      .contact-nudge-menu:not([hidden]) { animation: contact-menu-enter .16s var(--motion-ease) both; }
+      @keyframes contact-nudge-enter { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+      @keyframes contact-menu-enter { from { opacity: 0; transform: translateY(6px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    }
     .settings-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; max-width: 980px; }
     .settings-card { min-width: 0; padding: 18px; }
     .settings-card h2 { margin: 0 0 14px; font-size: 13px; }
@@ -996,6 +1027,7 @@
       .electron-model-stage { min-height: 330px; }
       .lewis-summary { grid-template-columns: 1fr; }
       .bond-overview, .bond-explorer { grid-template-columns: 1fr; }
+      .matter-state-explorer { grid-template-columns: 1fr; }
       .chema-layout { grid-template-columns: 1fr; }
       .learning-columns { grid-template-columns: 1fr; }
       .learning-aside { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
@@ -1161,6 +1193,8 @@
       <button class="page-tab" id="bondsTab" type="button" role="tab" aria-label="Types of bonds" data-icon="∞" aria-selected="false" aria-controls="bondsPage" tabindex="-1"><span class="page-tab-label">Types of bonds</span></button>
       <button class="page-tab" id="propertiesTab" type="button" role="tab" aria-label="Properties" data-icon="◈" aria-selected="false" aria-controls="propertiesPage" tabindex="-1"><span class="page-tab-label">Properties</span></button>
       <button class="page-tab" id="reactionsTab" type="button" role="tab" aria-label="Chemical reactions" data-icon="⇌" aria-selected="false" aria-controls="reactionsPage" tabindex="-1"><span class="page-tab-label">Chemical reactions</span></button>
+      <button class="page-tab" id="stoichiometryTab" type="button" role="tab" aria-label="Stoichiometry" data-icon="⚖" aria-selected="false" aria-controls="stoichiometryPage" tabindex="-1"><span class="page-tab-label">Stoichiometry</span></button>
+      <button class="page-tab" id="statesMatterTab" type="button" role="tab" aria-label="States of Matter" data-icon="◌" aria-selected="false" aria-controls="statesMatterPage" tabindex="-1"><span class="page-tab-label">States of Matter</span></button>
     </div>
     <div class="nav-section" role="presentation">
       <span class="nav-section-label" aria-hidden="true">Study</span>
@@ -1980,6 +2014,11 @@
         <p>Reactions rearrange atoms into new substances. Read reaction patterns and balance equations by changing coefficients, not formulas.</p>
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="chemical-reactions">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="reactions">Explore chemical reactions</button></div>
       </article>
+      <article class="lesson-card">
+        <span class="lesson-index">11 · Stoichiometry</span><h3>Stoichiometry and the mole</h3>
+        <p>Use the mole as a particle-counting unit, convert between mass and amount, and apply balanced-equation ratios to reaction calculations.</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-lesson-id="stoichiometry">Start quiz</button><button class="lesson-card-link" type="button" data-page-tab="stoichiometry">Explore stoichiometry</button></div>
+      </article>
     </section>
   </main>
 
@@ -1988,7 +2027,7 @@
       <div>
         <p class="eyebrow">Small steps · big chemistry</p>
         <h1>Your <em>learning path.</em></h1>
-        <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.</p>
+        <p class="intro-copy">Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, stoichiometry, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.</p>
       </div>
       <div class="intro-aside" aria-label="Learning path details">
         <div class="stat"><strong id="learningLessonCount">10</strong><span>short lessons</span></div>
@@ -2120,7 +2159,7 @@
         <p class="intro-copy">Learn the vocabulary, core rules, and worked examples behind each topic. Then explore the interactive guide or test yourself with a quiz.</p>
       </div>
       <div class="intro-aside" aria-label="Lesson page details">
-        <div class="stat"><strong>10</strong><span>topic lessons</span></div>
+        <div class="stat"><strong id="studyLessonCount">11</strong><span>topic lessons</span></div>
         <div class="stat"><strong>Learn → try</strong><span>your pace</span></div>
       </div>
     </section>
@@ -2182,6 +2221,13 @@
         <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="chemical-reactions">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="reactions">Explore chemical reactions</button></div>
       </article>
       <article class="study-lesson-card">
+        <span class="lesson-index">09 · Stoichiometry</span><h2>Stoichiometry and the mole</h2>
+        <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>Mole (mol)</dt><dd>The SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, or ions.</dd></div><div><dt>Molar mass (M)</dt><dd>The mass of one mole of a substance, usually expressed in g/mol.</dd></div><div><dt>Stoichiometry</dt><dd>Using a balanced chemical equation to calculate amounts of reactants and products.</dd></div></dl></div>
+        <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Convert mass to amount with n = m ÷ M; convert amount to particles with N = n × Nₐ.</li><li>Use coefficients in a balanced equation as mole ratios; never use subscripts as ratios between substances.</li><li>For a mass-to-mass reaction calculation, convert grams to moles, apply the mole ratio, then convert to grams.</li><li>The limiting reactant runs out first and determines the maximum theoretical product.</li></ul></div>
+        <p class="study-example"><strong>Example:</strong> In 2H₂ + O₂ → 2H₂O, 3.0 mol H₂ with excess O₂ can form 3.0 mol H₂O. That is about 54.0 g H₂O (3.0 mol × 18.02 g/mol).</p>
+        <div class="lesson-card-actions"><button class="lesson-card-link" type="button" data-study-quiz="stoichiometry">Practice this topic</button><button class="lesson-card-link" type="button" data-study-page="stoichiometry">Explore stoichiometry</button></div>
+      </article>
+      <article class="study-lesson-card">
         <span class="lesson-index">09 · Energy</span><h2>Heat and thermochemistry</h2>
         <div class="study-lesson-section"><h3>Vocabulary</h3><dl><div><dt>System</dt><dd>The reaction or process being studied; everything else is the surroundings.</dd></div><div><dt>Enthalpy change (ΔH)</dt><dd>At constant pressure, the heat transferred for a process under the stated conditions.</dd></div><div><dt>Specific heat (c)</dt><dd>The heat needed to raise one gram of a substance by one degree.</dd></div></dl></div>
         <div class="study-lesson-section"><h3>Key rules</h3><ul><li>Use q = mcΔT, where ΔT = final temperature − initial temperature.</li><li>Positive q means the chosen sample absorbs heat; negative q means it releases heat.</li><li>Thermodynamic favorability does not tell you how fast a reaction occurs.</li></ul></div>
@@ -2203,13 +2249,13 @@
       <div>
         <p class="eyebrow">Your chemistry study buddy</p>
         <h1>Meet <em>Chema AI.</em></h1>
-        <p class="intro-copy">Ask about elements, bonding, molecular shapes, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.</p>
+        <p class="intro-copy">Ask about elements, bonding, molecular shapes, states of matter, stoichiometry, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.</p>
       </div>
       <div class="intro-aside" aria-label="Assistant details"><div class="stat"><strong>24/7</strong><span>study help</span></div></div>
     </section>
     <section class="chema-layout" aria-label="Chema chemistry assistant">
       <article class="molecule-card chema-chat">
-        <div class="chema-chat-head"><h2>Ask Chema (Beta 2)</h2><button class="chema-reset" id="chemaClear" type="button">Clear chat</button></div>
+        <div class="chema-chat-head"><h2>Ask Chema (Beta 3)</h2><button class="chema-reset" id="chemaClear" type="button">Clear chat</button></div>
         <p class="chema-status" id="chemaStatus" role="status">Built-in guide mode · your questions stay in this browser.</p>
         <div class="chema-transcript" id="chemaTranscript" role="log" aria-live="polite" aria-relevant="additions text"></div>
         <form class="chema-form" id="chemaForm">
@@ -2222,6 +2268,9 @@
         <article class="molecule-card"><h2>Try asking</h2><div class="chema-prompts">
           <button class="chema-prompt" type="button">How do I find neutrons?</button>
           <button class="chema-prompt" type="button">Find the molar mass of Ca(OH)2</button>
+          <button class="chema-prompt" type="button">How do I convert grams to moles?</button>
+          <button class="chema-prompt" type="button">What happens to particles when water boils?</button>
+          <button class="chema-prompt" type="button">Balance H2 + O2 -&gt; H2O</button>
           <button class="chema-prompt" type="button">How many electrons are in Fe3+?</button>
           <button class="chema-prompt" type="button">Why is water bent and polar?</button>
           <button class="chema-prompt" type="button">Show me a Bohr model of oxygen</button>
@@ -2242,7 +2291,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.0</p><h2>New Topics and a Smarter Chema<span class="update-badge">LATEST</span><span class="update-badge">NEW TOPIC</span><span class="update-badge">MINOR UPDATE</span></h2><p>Added a Stoichiometry and the Mole lesson, and a States of Matter page with an interactive particle explorer. Chema can now explain phase changes, balance equations, and solve more mole calculations. Fixed a bug where there was 6 lone pairs on the chlorine atom for CH₃Cl</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen was selected, and translation issues. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.0</p><h2>New Learning Path and Flashcard Mode and more Bug Fixes<span class="update-badge">MAJOR UPDATE</span></h2><p>Introducing a Learning Path to help you learn the concepts, or review if you forget, and a Flashcard Mode to review key concepts. Chema AI is now in beta 2, introducing more features. Multiple bug fixes regarding translation in questions, AI, and descriptions, and Element taking up entire screen with the spectrum not showing data. Fixed the Guide so that it doesnt take up the entire screen. Language selection is also added on the welcome screen for first time users. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.3.0</p><h2>Four Supported Languages! Plus a Welcome Popup<span class="update-badge">MAJOR UPDATE</span></h2><p>Site now supports English, Spanish, Simplified Chinese, and Traditional Chinese. Added a new Welcome Sign for first-time users with a guide. Fixed issues with the menu, where it gets cut off at the top and bottom, and improved Chema AI functionality. Included more questions and added a "Show Periodic Table" feature for questions that may require it.</p></article>
@@ -2551,6 +2601,175 @@
     </aside>
   </main>
 
+  <main id="stoichiometryPage" role="tabpanel" aria-labelledby="stoichiometryTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Count particles · calculate reactions</p>
+        <h1>Stoichiometry <em>and the mole.</em></h1>
+        <p class="intro-copy">Use the mole to count atoms and molecules, convert between mass and amount, and predict how much product a balanced reaction can make.</p>
+      </div>
+      <div class="intro-aside" aria-label="Stoichiometry essentials">
+        <div class="stat"><strong>1 mol</strong><span>6.02214076 × 10²³ entities</span></div>
+        <div class="stat"><strong>n = m ÷ M</strong><span>mass to amount</span></div>
+      </div>
+    </section>
+    <section class="bond-overview" aria-label="Mole and stoichiometry basics">
+      <article class="molecule-card bond-overview-card">
+        <h2>What is a mole?</h2>
+        <p>A mole is the SI unit for amount of substance. It counts a specified kind of entity, such as atoms, molecules, ions, or formula units.</p>
+        <div class="reaction-example">1 mol = 6.02214076 × 10²³ entities</div>
+      </article>
+      <article class="molecule-card bond-overview-card">
+        <h2>What is stoichiometry?</h2>
+        <p>Stoichiometry uses a balanced chemical equation to relate the amounts of reactants consumed and products formed.</p>
+        <div class="reaction-example">Balanced coefficients → mole ratios</div>
+      </article>
+    </section>
+    <section aria-labelledby="moleConversionsHeading">
+      <div class="reaction-section-heading">
+        <h2 id="moleConversionsHeading">The mole conversion map</h2>
+        <p>Use molar mass to connect mass and moles, and Avogadro’s constant to connect moles and particles.</p>
+      </div>
+      <div class="balancing-rules">
+        <article class="balancing-rule"><strong>Mass → moles</strong><p>Divide the sample mass by its molar mass: <b>n = m ÷ M</b>. For example, 36.0 g H₂O ÷ 18.02 g/mol ≈ 2.00 mol H₂O.</p></article>
+        <article class="balancing-rule"><strong>Moles → mass</strong><p>Multiply amount by molar mass: <b>m = n × M</b>. For example, 0.50 mol NaCl × 58.44 g/mol = 29.22 g NaCl.</p></article>
+        <article class="balancing-rule"><strong>Moles → particles</strong><p>Multiply by Avogadro’s constant: <b>N = n × Nₐ</b>. For example, 0.50 mol H₂O contains about 3.01 × 10²³ molecules.</p></article>
+        <article class="balancing-rule"><strong>Particles → moles</strong><p>Divide the particle count by Avogadro’s constant: <b>n = N ÷ Nₐ</b>. State which entities you are counting.</p></article>
+      </div>
+    </section>
+    <section aria-labelledby="stoichiometryStepsHeading">
+      <div class="reaction-section-heading">
+        <h2 id="stoichiometryStepsHeading">A reliable stoichiometry workflow</h2>
+        <p>For reaction calculations, start with a balanced equation and keep units with every value.</p>
+      </div>
+      <div class="balancing-rules">
+        <article class="balancing-rule"><strong>1 · Balance the equation</strong><p>Coefficients describe the smallest whole-number particle ratio. Never change formula subscripts to balance an equation.</p></article>
+        <article class="balancing-rule"><strong>2 · Convert the given amount to moles</strong><p>Use the molar mass for a mass measurement, or Avogadro’s constant for a particle count.</p></article>
+        <article class="balancing-rule"><strong>3 · Apply the mole ratio</strong><p>Multiply by the ratio of product to reactant coefficients from the balanced equation.</p></article>
+        <article class="balancing-rule"><strong>4 · Convert to the requested unit</strong><p>Use molar mass for grams or Avogadro’s constant for particles. Check units and significant figures.</p></article>
+      </div>
+    </section>
+    <section class="bond-overview" aria-label="Worked stoichiometry examples">
+      <article class="molecule-card bond-overview-card">
+        <h2>Example · mass to moles</h2>
+        <p>How many moles are in 36.0 g of water? The molar mass of H₂O is about 18.02 g/mol.</p>
+        <div class="reaction-example">n = m ÷ M = 36.0 g ÷ 18.02 g/mol ≈ 2.00 mol H₂O</div>
+      </article>
+      <article class="molecule-card bond-overview-card">
+        <h2>Example · reaction ratio</h2>
+        <p>For 2H₂ + O₂ → 2H₂O, the coefficients give a 2:2 (or 1:1) mole ratio between H₂ and H₂O.</p>
+        <div class="reaction-example">3.0 mol H₂ × (2 mol H₂O ÷ 2 mol H₂) = 3.0 mol H₂O</div>
+      </article>
+    </section>
+    <aside class="reaction-note">
+      <strong>Limiting reactant:</strong> When more than one reactant amount is given, compare each amount with the balanced-equation ratio. The reactant that runs out first limits the theoretical product. Actual yield can be lower because reactions and collection are not always perfect.
+    </aside>
+    <section class="lesson-card-actions" aria-label="Stoichiometry practice">
+      <button class="lesson-card-link" type="button" data-stoichiometry-quiz>Start the stoichiometry quiz</button>
+      <button class="lesson-card-link" type="button" data-stoichiometry-reactions>Open the equation balancer</button>
+    </section>
+  </main>
+
+  <main id="statesMatterPage" role="tabpanel" aria-labelledby="statesMatterTab" hidden>
+    <section class="intro thermo-intro">
+      <div>
+        <p class="eyebrow">Particles · energy · phase</p>
+        <h1>States of <em>matter.</em></h1>
+        <p class="intro-copy">Explore how particle arrangement and motion distinguish solids, liquids, gases, and plasmas—and how matter changes from one state to another.</p>
+      </div>
+      <div class="intro-aside" aria-label="States of matter essentials">
+        <div class="stat"><strong>4</strong><span>familiar states</span></div>
+        <div class="stat"><strong>Energy</strong><span>changes particle motion</span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="matterStatesHeading">
+      <div class="reaction-section-heading">
+        <h2 id="matterStatesHeading">Four familiar states</h2>
+        <p>These are useful models. The state a substance occupies depends on its temperature and pressure.</p>
+      </div>
+      <div class="bond-type-grid">
+        <article class="molecule-card bond-type-card">
+          <h2>Solid</h2>
+          <span class="bond-type-tag">Fixed shape and volume</span>
+          <p>Particles stay close together and vibrate around positions. Solids can be crystalline, with an ordered structure, or amorphous, without long-range order.</p>
+          <div class="reaction-example">Examples · ice · salt crystals · glass</div>
+        </article>
+        <article class="molecule-card bond-type-card">
+          <h2>Liquid</h2>
+          <span class="bond-type-tag">Fixed volume · takes container shape</span>
+          <p>Particles remain close but can move past one another. Liquids flow and are difficult to compress compared with gases.</p>
+          <div class="reaction-example">Examples · water · cooking oil · liquid mercury</div>
+        </article>
+        <article class="molecule-card bond-type-card">
+          <h2>Gas</h2>
+          <span class="bond-type-tag">No fixed shape or volume</span>
+          <p>Particles are far apart, move rapidly in random directions, and spread to fill their container. Gases are readily compressed.</p>
+          <div class="reaction-example">Examples · water vapor · helium · nitrogen</div>
+        </article>
+        <article class="molecule-card bond-type-card">
+          <h2>Plasma</h2>
+          <span class="bond-type-tag">Ionized gas</span>
+          <p>Plasma contains charged particles, including free electrons and ions. Its collective behavior responds to electric and magnetic fields.</p>
+          <div class="reaction-example">Examples · stars · lightning · fluorescent lamps</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="chem-interactive" aria-labelledby="matterExplorerHeading">
+      <h3 id="matterExplorerHeading">Interactive · explore particle behavior</h3>
+      <p class="chem-interactive-copy">Choose a state to compare a schematic particle arrangement and the motion of its particles.</p>
+      <div class="matter-state-explorer">
+        <div class="matter-particle-stage" id="matterParticleStage" data-state="solid" aria-hidden="true">
+          <span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span>
+          <span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span>
+          <span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span><span class="matter-particle"></span>
+        </div>
+        <div class="matter-state-readout" aria-live="polite">
+          <h3 id="matterStateTitle">Solid</h3>
+          <p id="matterStateDescription">Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume.</p>
+        </div>
+      </div>
+      <div class="chem-interactive-options matter-state-controls" id="matterStateControls" aria-label="Choose a state of matter">
+        <button type="button" data-matter-state="solid" aria-pressed="true">Solid</button>
+        <button type="button" data-matter-state="liquid" aria-pressed="false">Liquid</button>
+        <button type="button" data-matter-state="gas" aria-pressed="false">Gas</button>
+        <button type="button" data-matter-state="plasma" aria-pressed="false">Plasma</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="phaseChangesHeading">
+      <div class="reaction-section-heading">
+        <h2 id="phaseChangesHeading">Phase changes</h2>
+        <p>During a phase change, energy changes particle arrangement and interactions; the substance’s chemical identity usually stays the same.</p>
+      </div>
+      <div class="balancing-rules">
+        <article class="balancing-rule"><strong>Melting · solid → liquid</strong><p>Energy enters as particles gain enough freedom to move past one another.</p></article>
+        <article class="balancing-rule"><strong>Freezing · liquid → solid</strong><p>Energy leaves as particles settle into a solid arrangement.</p></article>
+        <article class="balancing-rule"><strong>Vaporization · liquid → gas</strong><p>Energy enters as particles separate into the gas state. Evaporation occurs at a surface; boiling occurs throughout a liquid.</p></article>
+        <article class="balancing-rule"><strong>Condensation · gas → liquid</strong><p>Energy leaves as gas particles come closer together to form a liquid.</p></article>
+        <article class="balancing-rule"><strong>Sublimation · solid → gas</strong><p>A solid changes directly to a gas without first becoming a liquid.</p></article>
+        <article class="balancing-rule"><strong>Deposition · gas → solid</strong><p>A gas changes directly to a solid without first becoming a liquid.</p></article>
+      </div>
+    </section>
+
+    <section class="bond-overview" aria-label="Energy and phase-change examples">
+      <article class="molecule-card bond-overview-card">
+        <h2>Temperature and energy</h2>
+        <p>Within one state, adding thermal energy generally raises the average kinetic energy and temperature of the particles. During a phase change at constant pressure, energy changes particle interactions instead, so the temperature can remain constant until the change is complete.</p>
+        <div class="reaction-example">Heating curve · sloped regions warm a phase; flat regions mark phase changes</div>
+      </article>
+      <article class="molecule-card bond-overview-card">
+        <h2>Water near standard pressure</h2>
+        <p>For pure water near 1 atm, ice melts around 0 °C and liquid water boils around 100 °C. These temperatures shift with pressure and dissolved substances; other materials have different phase-change temperatures.</p>
+        <div class="reaction-example">H₂O(s) ⇌ H₂O(l) ⇌ H₂O(g)</div>
+      </article>
+    </section>
+    <aside class="reaction-note">
+      <strong>Beyond the familiar four:</strong> At extremely low temperatures, some materials form a Bose–Einstein condensate, a quantum state where many particles behave collectively. It is not a common everyday state. The particle diagrams above are schematic and not to scale.
+    </aside>
+  </main>
+
   <dialog class="detail-dialog" id="detailDialog" aria-labelledby="detailSymbol">
     <article class="detail-panel" id="detailPanel" aria-live="polite" aria-label="Selected element details"></article>
   </dialog>
@@ -2680,6 +2899,21 @@
       </div>
     </form>
   </dialog>
+
+  <aside class="contact-nudge" id="contactNudge" aria-label="Contact Chemica" hidden>
+    <div class="contact-nudge-card">
+      <div class="contact-nudge-top">
+        <p class="contact-nudge-kicker">A note from Chemica</p>
+        <button class="contact-nudge-close" id="contactNudgeDismiss" type="button" aria-label="Dismiss contact prompt" aria-expanded="false" aria-controls="contactNudgeMenu">×</button>
+      </div>
+      <p class="contact-nudge-message">Suggestions, bugs, or say hi?</p>
+      <a class="contact-nudge-link" href="mailto:luparker567@gmail.com?subject=Chemica%20feedback">Click here</a>
+      <div class="contact-nudge-menu" id="contactNudgeMenu" role="group" aria-label="Contact prompt options" hidden>
+        <button id="contactNudgeLater" type="button">Maybe later</button>
+        <button id="contactNudgeNever" type="button">Don’t Show this Again</button>
+      </div>
+    </div>
+  </aside>
 
   <footer>
     <span>Made for the endlessly curious. An independent field guide to the elements.</span>
@@ -3896,7 +4130,7 @@
         polarity:"Polar",dipoleText:"The net dipole points toward chlorine; the molecule no longer has tetrahedral symmetry among its ends.",
         bondDipoles:"The strong C–Cl bond dipole is not cancelled by the three C–H bonds.",
         imf:["Dipole–dipole","London dispersion"],imfNote:"Chloromethane is polar but has no hydrogen-bond donor.",
-        atoms:[{symbol:"C",x:250,y:155,partial:"δ+",central:true,lonePairs:[]},{symbol:"Cl",x:385,y:155,partial:"δ−",lonePairs:[0,60,120,-60,-120]},{symbol:"H",x:150,y:75,partial:"δ+",lonePairs:[]},{symbol:"H",x:150,y:235,partial:"δ+",lonePairs:[]},{symbol:"H",x:250,y:265,partial:"δ+",lonePairs:[]}],
+        atoms:[{symbol:"C",x:250,y:155,partial:"δ+",central:true,lonePairs:[]},{symbol:"Cl",x:385,y:155,partial:"δ−",lonePairs:[0,120,-120]},{symbol:"H",x:150,y:75,partial:"δ+",lonePairs:[]},{symbol:"H",x:150,y:235,partial:"δ+",lonePairs:[]},{symbol:"H",x:250,y:265,partial:"δ+",lonePairs:[]}],
         bonds:[[0,1,1],[0,2,1],[0,3,1],[0,4,1]],dipole:{from:[178,266],to:[325,266]},cancel:false
       },
       {
@@ -5182,6 +5416,21 @@
           ["For complete combustion of methane in sufficient oxygen, which products form?",["Carbon dioxide and water","Carbon monoxide only","Methane and water","Carbon and hydrogen"],0,"Complete combustion of a hydrocarbon in sufficient oxygen forms carbon dioxide and water."],
           ["Bubbles appear while water boils. Does that alone prove a chemical reaction?",["No; the bubbles can be water vapor","Yes; every gas bubble is a new substance","Yes; boiling breaks water into elements","No; boiling is always a chemical reaction"],0,"Boiling forms bubbles of the same substance in a different state; evidence must be interpreted in context."]
         ]
+      },
+      {
+        id:"stoichiometry",icon:"⚖",title:"Stoichiometry and the mole",subtitle:"Count particles, convert mass and moles, and use balanced-equation ratios.",
+        questions:[
+          ["How many specified entities are in one mole?",["6.02214076 × 10²³","6.02214076 × 10²²","3.00 × 10⁸","1.00 × 10³"],0,"The Avogadro constant is exactly 6.02214076 × 10²³ entities per mole."],
+          ["How many molecules are in 0.50 mol H₂O?",["3.01 × 10²³","6.02 × 10²³","1.20 × 10²⁴","0.50 × 10²³"],0,"Multiply amount by Avogadro’s constant: 0.50 × 6.022 × 10²³ ≈ 3.01 × 10²³ molecules."],
+          ["What is the molar mass of H₂O, using H = 1.008 and O = 16.00 g/mol?",["18.02 g/mol","17.01 g/mol","16.00 g/mol","20.02 g/mol"],0,"H₂O contains two H atoms and one O atom: 2(1.008) + 16.00 = 18.016 g/mol, or 18.02 g/mol."],
+          ["About how many moles are in 36.0 g H₂O? Use M = 18.02 g/mol.",["2.00 mol","0.500 mol","18.0 mol","648 mol"],0,"Use n = m ÷ M: 36.0 g ÷ 18.02 g/mol ≈ 2.00 mol."],
+          ["What mass is 0.25 mol CO₂? Use M = 44.01 g/mol.",["11.0 g","44.0 g","176 g","0.0057 g"],0,"Use m = nM: 0.25 mol × 44.01 g/mol ≈ 11.0 g."],
+          ["For 2H₂ + O₂ → 2H₂O, what is the mole ratio O₂:H₂O?",["1:2","2:1","1:1","2:3"],0,"The balanced-equation coefficients give a ratio of 1 mol O₂ to 2 mol H₂O."],
+          ["In 2H₂ + O₂ → 2H₂O, how much H₂O can form from 3.0 mol H₂ with excess O₂?",["3.0 mol","1.5 mol","6.0 mol","0.0 mol"],0,"The H₂:H₂O coefficient ratio is 2:2, or 1:1, so 3.0 mol H₂ can form 3.0 mol H₂O."],
+          ["For 2Al + 3Cl₂ → 2AlCl₃, how much Cl₂ is needed to form 4.0 mol AlCl₃?",["6.0 mol","2.0 mol","4.0 mol","12 mol"],0,"The Cl₂:AlCl₃ ratio is 3:2, so 4.0 mol AlCl₃ requires 4.0 × 3/2 = 6.0 mol Cl₂."],
+          ["For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 1.0 mol O₂. Which reactant is limiting?",["O₂","H₂","H₂O","Neither; they are exactly stoichiometric"],0,"One mole of O₂ requires 2 mol H₂. Only 2 of the available 4 mol H₂ react, so O₂ is limiting."],
+          ["What mass is 0.50 mol NaCl? Use M = 58.44 g/mol.",["29.2 g","58.4 g","117 g","0.0086 g"],0,"Use m = nM: 0.50 mol × 58.44 g/mol = 29.22 g, or 29.2 g to three significant figures."]
+        ]
       }
     ];
 
@@ -5195,6 +5444,7 @@
       {id:"molecular-shapes",label:"Molecular shapes"},
       {id:"properties",label:"Properties"},
       {id:"chemical-reactions",label:"Chemical reactions"},
+      {id:"stoichiometry",label:"Stoichiometry"},
       {id:"thermochemistry",label:"Energy"}
     ];
     const learningLessonOrderIndex = new Map(learningLessonOrder.map((item,index)=>[item.id,index]));
@@ -5319,7 +5569,18 @@
       ]
     };
 
+    const stoichiometryLesson=learningLessons.find(lesson=>lesson.id==="stoichiometry");
+    if(!stoichiometryLesson)throw new Error("The stoichiometry lesson is missing from the learning path.");
+    lessonChallengeQuestions.stoichiometry=[...stoichiometryLesson.questions];
+
     const additionalLessonChallengeQuestions = {
+      stoichiometry:[
+        ["For 2KClO₃ → 2KCl + 3O₂, how many moles of O₂ form from 4.0 mol KClO₃?",["6.0 mol","4.0 mol","3.0 mol","2.0 mol"],0,"The KClO₃:O₂ ratio is 2:3, so 4.0 mol KClO₃ forms 4.0 × 3/2 = 6.0 mol O₂."],
+        ["What mass is 2.0 mol H₂? Use M = 2.016 g/mol.",["4.03 g","2.02 g","1.01 g","8.06 g"],0,"Use m = nM: 2.0 mol × 2.016 g/mol = 4.032 g, or 4.03 g."],
+        ["How many formula units are in 1.5 mol NaCl?",["9.03 × 10²³","6.02 × 10²³","3.01 × 10²³","1.50 × 10²³"],0,"Multiply by Avogadro’s constant: 1.5 × 6.022 × 10²³ ≈ 9.03 × 10²³ formula units."],
+        ["For CaCO₃ → CaO + CO₂, how much CO₂ can form from 0.75 mol CaCO₃?",["0.75 mol","1.50 mol","0.38 mol","2.25 mol"],0,"The CaCO₃:CO₂ coefficient ratio is 1:1, so 0.75 mol CaCO₃ can form 0.75 mol CO₂."],
+        ["For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 3.0 mol O₂. Which reactant is limiting?",["H₂","O₂","H₂O","Neither; both are consumed"],0,"Four moles of H₂ require 2.0 mol O₂. Since 3.0 mol O₂ is available, H₂ runs out first."]
+      ],
       atoms:[
         ["A 2+ ion contains 18 electrons. How many protons does it have?",["20","16","18","36"],0,"A 2+ charge means two more protons than electrons: 18 + 2 = 20."],
         ["An isotope has 35 protons and 45 neutrons. Which nuclide notation is correct?",["⁸⁰₃₅Br","⁴⁵₃₅Br","⁸⁰₄₅Br","⁸⁰₃₆Kr"],0,"The mass number is 35 + 45 = 80, and atomic number 35 identifies bromine."],
@@ -5726,6 +5987,7 @@
       progressTrack.setAttribute("aria-valuenow",String(completedCount));
       document.getElementById("learningLessonCount").textContent=String(learningLessons.length);
       document.getElementById("lessonLibraryCount").textContent=String(learningLessons.length);
+      document.getElementById("studyLessonCount").textContent=String(learningLessons.length);
       document.getElementById("learningProgressFill").style.width=`${progress}%`;
       document.getElementById("learningProgressTitle").textContent=translateValue(completedCount===learningLessons.length?"Path complete — brilliant work!":"Your chemistry journey");
       document.getElementById("learningProgressDescription").textContent=`${completedCount} ${translateValue("of")} ${learningLessons.length} ${translateValue("lessons complete")} · ${learningLessons.length-completedCount} ${translateValue("lessons to explore")}`;
@@ -6168,6 +6430,19 @@
           document.getElementById(`${tab}Tab`).focus();
         }
       });
+      document.getElementById("stoichiometryPage").addEventListener("click",event=>{
+        if(event.target.closest("[data-stoichiometry-quiz]")) {
+          const lesson=learningLessons.find(item=>item.id==="stoichiometry");
+          if(!lesson)throw new Error("The stoichiometry quiz is missing from the lesson bank.");
+          setPageTab("learning");
+          startLearningLesson(lesson,"lesson");
+          return;
+        }
+        if(event.target.closest("[data-stoichiometry-reactions]")) {
+          setPageTab("reactions");
+          document.getElementById("equationBalancerInput").focus();
+        }
+      });
       document.getElementById("learningBack").addEventListener("click",showLearningPath);
       document.getElementById("learningSubmit").addEventListener("click",submitLearningAnswer);
       document.getElementById("learningCompleteButton").addEventListener("click",showLearningPath);
@@ -6307,10 +6582,39 @@
     syncNavigationToggle();
 
     let activePageTransition=null;
+    let activeMatterState="solid";
+    const matterStateDetails={
+      solid:{title:"Solid",description:"Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume."},
+      liquid:{title:"Liquid",description:"Particles stay close together but can move past one another. The sample flows, keeps a fixed volume, and takes its container’s shape."},
+      gas:{title:"Gas",description:"Particles are far apart and move rapidly in random directions. They spread to fill a container and can be compressed."},
+      plasma:{title:"Plasma",description:"Plasma is ionized matter with free electrons and ions. Its charged particles can respond collectively to electric and magnetic fields."}
+    };
+    function renderMatterState(stateName) {
+      const state=matterStateDetails[stateName];
+      if(!state)throw new Error(`Unknown matter state: ${stateName}`);
+      document.getElementById("matterParticleStage").dataset.state=stateName;
+      document.getElementById("matterStateTitle").textContent=translateValue(state.title);
+      document.getElementById("matterStateDescription").textContent=translateValue(state.description);
+    }
+    function initializeMatterPage() {
+      const controls=document.getElementById("matterStateControls");
+      controls.addEventListener("click",event=>{
+        const selected=event.target.closest("[data-matter-state]");
+        if(!selected)return;
+        const stateName=selected.dataset.matterState;
+        if(!matterStateDetails[stateName])throw new Error(`Unknown matter state: ${stateName}`);
+        activeMatterState=stateName;
+        controls.querySelectorAll("[data-matter-state]").forEach(button=>{
+          button.setAttribute("aria-pressed",String(button===selected));
+        });
+        renderMatterState(stateName);
+      });
+    }
+
     function setPageTab(tab) {
       const currentTab=document.querySelector(".page-tab[aria-selected=\"true\"]");
       const pageChanged=currentTab?.id!==`${tab}Tab`;
-      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","properties","reactions","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","about","settings"].forEach(name=>{
+      ["periodic","bohr","lewis","molecule","builder","thermo","lab","bonds","properties","reactions","stoichiometry","statesMatter","studyLessons","flashcards","learning","lessons","chemai","updates","feedback","about","settings"].forEach(name=>{
         const selected = name===tab;
         document.getElementById(`${name}Tab`).setAttribute("aria-selected",String(selected));
         document.getElementById(`${name}Tab`).tabIndex = selected ? 0 : -1;
@@ -6347,6 +6651,8 @@
     document.getElementById("aboutTab").addEventListener("click",()=>setPageTab("about"));
     document.getElementById("settingsTab").addEventListener("click",()=>setPageTab("settings"));
     document.getElementById("reactionsTab").addEventListener("click",()=>setPageTab("reactions"));
+    document.getElementById("stoichiometryTab").addEventListener("click",()=>setPageTab("stoichiometry"));
+    document.getElementById("statesMatterTab").addEventListener("click",()=>setPageTab("statesMatter"));
     document.getElementById("updatesFooterLink").addEventListener("click",event=>{event.preventDefault();setPageTab("updates");document.getElementById("updatesTab").focus();});
     document.querySelector(".page-tabs").addEventListener("keydown",event=>{
       if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
@@ -6370,18 +6676,22 @@
     initializeBondExplorer();
     initializeElectronModelPages();
     initializeLearningPath();
+    initializeMatterPage();
 
     const chemaTranscript = document.getElementById("chemaTranscript");
 
     const chemaSpanishTerms = [
       ["cuántos","how many"],["cuántas","how many"],["cuánto","how many"],["salpicadura","splash"],["salpicó","splash"],["ojos","eyes"],["piel","skin"],["ácido","chemical"],
-      ["masa atómica promedio","average atomic mass"],      ["laboratorio","lab"],["seguridad","safety"],      ["grados celsius","°C"],["promedio ponderado","weighted average"],["número atómico","atomic number"],["masa molar","molar mass"],["masa de fórmula","formula mass"],["calor específico","specific heat"],["calorimetría","calorimetry"],["configuración electrónica","electron configuration"],["tabla periódica","periodic table"],["electronegatividad","electronegativity"],["radio atómico","atomic radius"],["enlace covalente","covalent bond"],["enlace iónico","ionic bond"],["enlace metálico","metallic bond"],["puente de hidrógeno","hydrogen bond"],["par solitario","lone pair"],["geometría molecular","molecular geometry"],["forma molecular","molecular shape"],["abundancia isotópica","isotope abundance"],["neutrones","neutrons"],["neutrón","neutron"],["protones","protons"],["protón","proton"],["electrones","electrons"],["electrón","electron"],["isótopos","isotopes"],["isótopo","isotope"],["átomos","atoms"],["átomo","atom"],["moléculas","molecules"],["molécula","molecule"],["elementos","elements"],["elemento","element"],["iones","ions"],["ion","ion"],["calor","heat"],["energía","energy"],["masa","mass"],["moles","moles"],["mol","mol"],["gramos","grams"],["gramo","gram"],["polaridad","polarity"],["polar","polar"],["enlace","bond"],["forma","shape"],["electrón","electron"],["neutro","neutral"],["neutra","neutral"],["carbono","carbon"],["oxígeno","oxygen"],["hidrógeno","hydrogen"],["hierro","iron"],["cobre","copper"],["sodio","sodium"],["cloro","chlorine"],["agua","water"]
+      ["estados de la materia","states of matter"],["estados de agregación","states of matter"],["estado de la materia","state of matter"],["cambio de estado","phase change"],["cambio de fase","phase change"],["cambios de fase","phase changes"],["sólido","solid"],["sólida","solid"],["líquido","liquid"],["líquida","liquid"],["gaseoso","gas"],["gaseosa","gas"],["partículas","particles"],["hielo","ice"],["fusión","melting"],["derretir","melt"],["congelación","freezing"],["congelar","freeze"],["evaporación","evaporation"],["evaporar","evaporate"],["ebullición","boiling"],["hirviendo","boiling"],["hierve","boiling"],["hervir","boil"],["condensación","condensation"],["sublimación","sublimation"],["deposición","deposition"],["comparar","compare"],["diferencia","difference"],["balancear","balance"],["balancea","balance"],
+      ["masa atómica promedio","average atomic mass"],["estequiometría","stoichiometry"],["proporción molar","mole ratio"],["reactivo limitante","limiting reactant"],["convertir","convert"],["laboratorio","lab"],["seguridad","safety"],["grados celsius","°C"],["promedio ponderado","weighted average"],["número atómico","atomic number"],["masa molar","molar mass"],["masa de fórmula","formula mass"],["calor específico","specific heat"],["calorimetría","calorimetry"],["configuración electrónica","electron configuration"],["tabla periódica","periodic table"],["electronegatividad","electronegativity"],["radio atómico","atomic radius"],["enlace covalente","covalent bond"],["enlace iónico","ionic bond"],["enlace metálico","metallic bond"],["puente de hidrógeno","hydrogen bond"],["par solitario","lone pair"],["geometría molecular","molecular geometry"],["forma molecular","molecular shape"],["abundancia isotópica","isotope abundance"],["neutrones","neutrons"],["neutrón","neutron"],["protones","protons"],["protón","proton"],["electrones","electrons"],["electrón","electron"],["isótopos","isotopes"],["isótopo","isotope"],["átomos","atoms"],["átomo","atom"],["moléculas","molecules"],["molécula","molecule"],["elementos","elements"],["elemento","element"],["iones","ions"],["ion","ion"],["calor","heat"],["energía","energy"],["masa","mass"],["moles","moles"],["mol","mol"],["gramos","grams"],["gramo","gram"],["polaridad","polarity"],["polar","polar"],["enlace","bond"],["forma","shape"],["electrón","electron"],["neutro","neutral"],["neutra","neutral"],["carbono","carbon"],["oxígeno","oxygen"],["hidrógeno","hydrogen"],["hierro","iron"],["cobre","copper"],["sodio","sodium"],["cloro","chlorine"],["agua","water"]
     ];
     const chemaChineseTerms = [
-      ["平均原子質量","average atomic mass"],["原子序數","atomic number"],["摩爾質量","molar mass"],["比熱容","specific heat"],["量熱法","calorimetry"],["電子排布","electron configuration"],["電子構型","electron configuration"],["元素週期表","periodic table"],["電負性","electronegativity"],["原子半徑","atomic radius"],["共價鍵","covalent bond"],["離子鍵","ionic bond"],["金屬鍵","metallic bond"],["氫鍵","hydrogen bond"],["孤對電子","lone pair"],["分子幾何","molecular geometry"],["分子形狀","molecular shape"],["同位素豐度","isotope abundance"],["質子","proton"],["電子","electron"],["同位素","isotope"],["原子","atom"],["分子","molecule"],["元素","element"],["離子","ion"],["熱量","heat"],["能量","energy"],["質量","mass"],["摩爾","mol"],["克","g"],["多少","how many "],["幾多","how many "],["碳","carbon"],["氧","oxygen"],["氫","hydrogen"],["鐵","iron"],["銅","copper"],["鈉","sodium"],["氯","chlorine"],["水","water"],
+      ["物质的状态","states of matter"],["物质状态","states of matter"],["物态变化","phase change"],["相变","phase change"],["固态","solid"],["固体","solid"],["液态","liquid"],["液体","liquid"],["气态","gas"],["气体","gas"],["等离子体","plasma"],["熔化","melting"],["融化","melting"],["凝固","freezing"],["冻结","freezing"],["蒸发","evaporation"],["沸腾","boiling"],["凝结","condensation"],["升华","sublimation"],["凝华","deposition"],["室温","room temperature"],["冰","ice"],["比较","compare"],["区别","difference"],["配平","balance"],
+      ["平均原子質量","average atomic mass"],["化學計量","stoichiometry"],["化学计量","stoichiometry"],["限量反應物","limiting reactant"],["限量反应物","limiting reactant"],["摩爾比","mole ratio"],["摩尔比","mole ratio"],["原子序數","atomic number"],["摩爾質量","molar mass"],["比熱容","specific heat"],["量熱法","calorimetry"],["電子排布","electron configuration"],["電子構型","electron configuration"],["元素週期表","periodic table"],["電負性","electronegativity"],["原子半徑","atomic radius"],["共價鍵","covalent bond"],["離子鍵","ionic bond"],["金屬鍵","metallic bond"],["氫鍵","hydrogen bond"],["孤對電子","lone pair"],["分子幾何","molecular geometry"],["分子形狀","molecular shape"],["同位素豐度","isotope abundance"],["質子","proton"],["電子","electron"],["同位素","isotope"],["原子","atom"],["分子","molecule"],["元素","element"],["離子","ion"],["熱量","heat"],["能量","energy"],["質量","mass"],["摩爾","mol"],["克","g"],["多少","how many "],["幾多","how many "],["碳","carbon"],["氧","oxygen"],["氫","hydrogen"],["鐵","iron"],["銅","copper"],["鈉","sodium"],["氯","chlorine"],["水","water"],
       ["摄氏度","°C"],["攝氏度","°C"],["濺到","splash"],["溅到","splash"],["濺","splash"],["溅","splash"],["眼睛","eyes"],["化學品","chemical"],["化学品","chemical"],["實驗室","lab"],["实验室","lab"],["安全","safety"],["平均原子質量","average atomic mass"],["平均原子质量","average atomic mass"],["加權平均","weighted average"],["加权平均","weighted average"],["原子序數","atomic number"],["摩爾質量","molar mass"],["摩尔质量","molar mass"],["式量","formula mass"],["比熱容","specific heat"],["比热容","specific heat"],["量熱法","calorimetry"],["量热法","calorimetry"],["電子排布","electron configuration"],["电子排布","electron configuration"],["電子構型","electron configuration"],["电子构型","electron configuration"],["元素週期表","periodic table"],["元素周期表","periodic table"],["電負性","electronegativity"],["电负性","electronegativity"],["原子半徑","atomic radius"],["原子半径","atomic radius"],["共價鍵","covalent bond"],["共价键","covalent bond"],["離子鍵","ionic bond"],["离子键","ionic bond"],["金屬鍵","metallic bond"],["金属键","metallic bond"],["氫鍵","hydrogen bond"],["氢键","hydrogen bond"],["孤對電子","lone pair"],["孤对电子","lone pair"],["分子幾何","molecular geometry"],["分子几何","molecular geometry"],["分子形狀","molecular shape"],["分子形状","molecular shape"],["同位素豐度","isotope abundance"],["同位素丰度","isotope abundance"],["中子","neutron"],["質子","proton"],["质子","proton"],["電子","electron"],["电子","electron"],["同位素","isotope"],["原子","atom"],["分子","molecule"],["元素","element"],["離子","ion"],["离子","ion"],["熱量","heat"],["热量","heat"],["能量","energy"],["質量","mass"],["质量","mass"],["摩爾","mol"],["摩尔","mol"],["克","g"],["极性","polarity"],["極性","polarity"],["極性分子","polar molecule"],["键","bond"],["鍵","bond"],["形状","shape"],["形狀","shape"],["碳","carbon"],["氧","oxygen"],["氢","hydrogen"],["氫","hydrogen"],["铁","iron"],["鐵","iron"],["铜","copper"],["銅","copper"],["钠","sodium"],["鈉","sodium"],["氯","chlorine"],["水","water"]
     ];
     const chemaSpanishPhrases = {
+      "Stoichiometry and the mole\n1 mol = 6.02214076 × 10²³ entities.\nFor mass, use n = m ÷ M or m = nM.\nFor particles, use N = n × Nₐ.\nUse coefficients in a balanced equation as mole ratios; the limiting reactant runs out first.\n\nFor worked examples, open the stoichiometry lesson in the Learning path.":"Estequiometría y el mol\n1 mol = 6.02214076 × 10²³ entidades.\nPara la masa, usa n = m ÷ M o m = nM.\nPara las partículas, usa N = n × Nₐ.\nUsa los coeficientes de una ecuación balanceada como proporciones molares; el reactivo limitante se consume primero.\n\nPara ver ejemplos resueltos, abre la lección de estequiometría en la ruta de aprendizaje.",
       "Safety first: stop work, alert your instructor, and follow your lab’s emergency procedure. For a chemical splash on skin or in eyes, immediately use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t try to clean an unknown spill yourself.":"Seguridad ante todo: detén el trabajo, avisa al instructor y sigue el procedimiento de emergencia del laboratorio. Si una sustancia química salpica la piel o los ojos, usa inmediatamente la ducha de seguridad o el lavaojos y enjuaga durante al menos 15 minutos mientras pides ayuda. No intentes limpiar un derrame desconocido por tu cuenta.",
       "Average atomic mass":"Masa atómica promedio",
       "Each isotope’s mass is multiplied by its fractional abundance, then the contributions are added.":"La masa de cada isótopo se multiplica por su abundancia fraccionaria y luego se suman los resultados.",
@@ -6452,9 +6762,37 @@
       "Bonding comparison:\n• Ionic: attraction among positive and negative ions in an extended lattice; many ionic substances conduct when molten or dissolved because their ions can move.\n• Covalent: atoms share electron density, forming molecules or networks.\n• Metallic: metal atoms are held together with delocalized valence electrons, helping explain conductivity and malleability.\n\nThese are useful models; real bonds can have mixed character. Hydrogen bonding is an intermolecular force, not a primary bond category.":"Comparación de enlaces:\n• Iónico: atracción entre iones positivos y negativos en una red extensa; muchas sustancias iónicas conducen fundidas o disueltas porque sus iones pueden moverse.\n• Covalente: los átomos comparten densidad electrónica y forman moléculas o redes.\n• Metálico: los átomos metálicos se mantienen unidos mediante electrones de valencia deslocalizados, lo que ayuda a explicar la conductividad y la maleabilidad.\n\nSon modelos útiles; los enlaces reales pueden tener carácter mixto. El enlace de hidrógeno es una fuerza intermolecular, no una categoría de enlace primario.",
       "For a temperature change, calorimetry uses q = mcΔT:\n• q: heat transferred (J); m: mass (g); c: specific heat (J/(g·°C)); ΔT = Tfinal − Tinitial.\n• A positive q means the chosen sample absorbed heat; a negative q means it released heat.\nAt constant pressure, heat is related to enthalpy change (qₚ = ΔH for the process). Gibbs energy indicates thermodynamic favorability under stated conditions, not reaction speed.":"Para un cambio de temperatura, la calorimetría usa q = mcΔT:\n• q: calor transferido (J); m: masa (g); c: calor específico (J/(g·°C)); ΔT = Tfinal − Tinicial.\n• Un q positivo indica que la muestra elegida absorbió calor; uno negativo indica que lo liberó.\nA presión constante, el calor se relaciona con el cambio de entalpía (qₚ = ΔH para el proceso). La energía de Gibbs indica la favorabilidad termodinámica en las condiciones dadas, no la velocidad de reacción.",
       "Water (H₂O)":"Agua (H₂O)","Carbon dioxide (CO₂)":"Dióxido de carbono (CO₂)","Ammonia (NH₃)":"Amoníaco (NH₃)","Methane (CH₄)":"Metano (CH₄)","Carbon-14":"Carbono-14","Hydrogen":"Hidrógeno","Oxygen":"Oxígeno","Iron":"Hierro","Copper":"Cobre","Sodium":"Sodio","Chlorine":"Cloro","Nitrogen":"Nitrógeno","Sulfur":"Azufre","Calcium":"Calcio","Helium":"Helio","Fluorine":"Flúor","Magnesium":"Magnesio","Silver":"Plata","Gold":"Oro","Bent":"Angular","Tetrahedral":"Tetraédrica","Polar":"Polar","Nonpolar molecule":"Molécula no polar","Hydrogen bonding":"Enlace de hidrógeno","Dipole–dipole":"Dipolo-dipolo","London dispersion":"Dispersión de London","Net dipole points toward oxygen; the two O–H bond dipoles reinforce rather than cancel.":"El dipolo neto apunta hacia el oxígeno; los dos dipolos de enlace O–H se refuerzan en lugar de cancelarse.",
-      "An orbital is a quantum-mechanical description of where an electron is likely to be found—not a fixed planetary path. Electron configurations show how electrons occupy orbitals; the periodic table reflects repeating configurations and properties. Choose an element in the Periodic table page to inspect its configuration, atom model, and spectrum.":"Un orbital describe, mediante la mecánica cuántica, dónde es probable encontrar un electrón; no es una trayectoria planetaria fija. Las configuraciones electrónicas muestran cómo ocupan los electrones los orbitales; la tabla periódica refleja la repetición de configuraciones y propiedades. Elige un elemento en la página de la tabla periódica para ver su configuración, modelo atómico y espectro."
+      "An orbital is a quantum-mechanical description of where an electron is likely to be found—not a fixed planetary path. Electron configurations show how electrons occupy orbitals; the periodic table reflects repeating configurations and properties. Choose an element in the Periodic table page to inspect its configuration, atom model, and spectrum.":"Un orbital describe, mediante la mecánica cuántica, dónde es probable encontrar un electrón; no es una trayectoria planetaria fija. Las configuraciones electrónicas muestran cómo ocupan los electrones los orbitales; la tabla periódica refleja la repetición de configuraciones y propiedades. Elige un elemento en la página de la tabla periódica para ver su configuración, modelo atómico y espectro.",
+      "To balance an equation, count each element on both sides, change coefficients (never subscripts), then recount. Send the unbalanced equation, for example H2 + O2 -> H2O, and I can balance it.":"Para balancear una ecuación, cuenta cada elemento en ambos lados, cambia los coeficientes (nunca los subíndices) y vuelve a contar. Envíame la ecuación sin balancear, por ejemplo H2 + O2 -> H2O, y puedo balancearla.",
+      "Balanced equation: ":"Ecuación balanceada: ",
+      "\nCheck: every element has the same atom count on both sides. Only coefficients change; subscripts stay part of each formula.":"\nComprobación: cada elemento tiene el mismo número de átomos en ambos lados. Solo cambian los coeficientes; los subíndices forman parte de cada fórmula.",
+      "I couldn’t balance that input. Check that each side contains valid chemical formulas and one reaction arrow, then try again in the Chemical Reactions equation balancer.":"No pude balancear esa entrada. Comprueba que cada lado contenga fórmulas químicas válidas y una sola flecha de reacción; luego inténtalo en el balanceador de ecuaciones de Reacciones químicas.",
+      "States of matter differ in particle arrangement and motion:\n• Solid: particles vibrate around fixed positions; shape and volume are fixed.\n• Liquid: particles stay close but move past one another; volume is fixed, shape follows the container.\n• Gas: particles are far apart and move freely; they fill and can be compressed in a container.\n• Plasma: an ionized gas with free electrons and ions that responds to electric and magnetic fields.\nA phase change is usually a physical change: the substance’s chemical identity stays the same.":"Los estados de la materia se diferencian por la disposición y el movimiento de sus partículas:\n• Sólido: las partículas vibran alrededor de posiciones fijas; la forma y el volumen son fijos.\n• Líquido: las partículas están próximas, pero se deslizan; el volumen es fijo y la forma se adapta al recipiente.\n• Gas: las partículas están separadas y se mueven libremente; llenan el recipiente y pueden comprimirse.\n• Plasma: gas ionizado con electrones libres e iones que responde a campos eléctricos y magnéticos.\nUn cambio de estado suele ser un cambio físico: la identidad química de la sustancia permanece igual.",
+      "Solid: ":"Sólido: ","Liquid: ":"Líquido: ","Gas: ":"Gas: ","Plasma: ":"Plasma: ",
+      "Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume.":"Las partículas están muy juntas y vibran alrededor de posiciones fijas. La muestra conserva su propia forma y volumen.",
+      "Particles stay close together but can move past one another. The sample flows, keeps a fixed volume, and takes its container’s shape.":"Las partículas permanecen juntas, pero pueden deslizarse unas junto a otras. La muestra fluye, conserva un volumen definido y adopta la forma de su recipiente.",
+      "Particles are far apart and move rapidly in random directions. They spread to fill a container and can be compressed.":"Las partículas están muy separadas y se mueven rápidamente en direcciones aleatorias. Se expanden para llenar un recipiente y pueden comprimirse.",
+      "Plasma is ionized matter with free electrons and ions. Its charged particles can respond collectively to electric and magnetic fields.":"El plasma es materia ionizada con electrones libres e iones. Sus partículas cargadas pueden responder colectivamente a los campos eléctricos y magnéticos.",
+      "Heating or cooling can cause a phase change without changing the substance’s chemical identity.":"Calentar o enfriar puede provocar un cambio de estado sin cambiar la identidad química de la sustancia.",
+      "Melting is the change from solid to liquid. At the melting point, added energy separates particles from their fixed positions; for a pure substance at constant pressure, temperature stays nearly constant until melting is complete.":"La fusión es el cambio de sólido a líquido. En el punto de fusión, la energía añadida separa las partículas de sus posiciones fijas; para una sustancia pura a presión constante, la temperatura permanece casi constante hasta que termina la fusión.",
+      "Freezing is the change from liquid to solid. The substance releases energy as particles settle into a solid arrangement. For a pure substance at constant pressure, its temperature stays nearly constant while freezing.":"La congelación es el cambio de líquido a sólido. La sustancia libera energía mientras las partículas adoptan una disposición sólida. Para una sustancia pura a presión constante, su temperatura permanece casi constante durante la congelación.",
+      "Vaporization changes a liquid into a gas. Evaporation occurs at the liquid’s surface and can happen below the boiling point; boiling occurs throughout the liquid when its vapor pressure matches the surrounding pressure. Both require energy.":"La vaporización cambia un líquido a gas. La evaporación ocurre en la superficie y puede suceder por debajo del punto de ebullición; la ebullición ocurre en todo el líquido cuando su presión de vapor iguala la presión circundante. Ambos procesos requieren energía.",
+      "Condensation changes a gas into a liquid as particles come closer together. The substance releases energy to its surroundings; cooling or increasing pressure can encourage condensation.":"La condensación cambia un gas a líquido cuando las partículas se acercan. La sustancia libera energía al entorno; enfriar o aumentar la presión puede favorecer la condensación.",
+      "Sublimation is a direct change from solid to gas without passing through the liquid state. Dry ice (solid CO₂) sublimates at ordinary atmospheric pressure.":"La sublimación es un cambio directo de sólido a gas sin pasar por el estado líquido. El hielo seco (CO₂ sólido) se sublima a presión atmosférica ordinaria.",
+      "Deposition is a direct change from gas to solid without first becoming a liquid. Frost forming from water vapor is a familiar example.":"La deposición es un cambio directo de gas a sólido sin convertirse primero en líquido. La formación de escarcha a partir del vapor de agua es un ejemplo conocido.",
+      "Near ordinary room temperature and atmospheric pressure, pure water is a liquid. Its state can change with temperature and pressure: ice melts near 0 °C and water boils near 100 °C at about 1 atm.":"Cerca de la temperatura ambiente y la presión atmosférica ordinaria, el agua pura es líquida. Su estado puede cambiar con la temperatura y la presión: el hielo se funde cerca de 0 °C y el agua hierve cerca de 100 °C a aproximadamente 1 atm.",
+      "Ice is less dense than liquid water because hydrogen bonds hold water molecules in an open crystal structure when frozen. Melting disrupts some of that open arrangement, allowing molecules to pack closer together. This is why ordinary ice floats.":"El hielo es menos denso que el agua líquida porque los enlaces de hidrógeno mantienen las moléculas de agua en una estructura cristalina abierta al congelarse. Al fundirse, parte de esa estructura se rompe y las moléculas pueden acercarse. Por eso el hielo común flota.",
+      " atoms":" átomos"," molecules":" moléculas"," ions":" iones"," formula units":" unidades fórmula",
+      "Calculation: ":"Cálculo: ",
+      "Use molecules for covalent substances, formula units for ionic compounds, and atoms when counting individual atoms.":"Usa moléculas para sustancias covalentes, unidades fórmula para compuestos iónicos y átomos al contar átomos individuales.",
+      "To convert grams to moles, use n = mass ÷ molar mass. First find the substance’s formula and molar mass in g/mol, then divide the sample mass by that value. Send the mass and chemical formula and I can calculate it.":"Para convertir gramos a moles, usa n = masa ÷ masa molar. Primero encuentra la fórmula y la masa molar de la sustancia en g/mol; luego divide la masa de la muestra entre ese valor. Envíame la masa y la fórmula química y puedo calcularlo.",
+      "A mole (mol) is the SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, ions, or formula units. To convert moles to particles, multiply by this constant; to convert particles to moles, divide by it.":"El mol (mol) es la unidad del SI para la cantidad de sustancia. Un mol contiene exactamente 6.02214076 × 10²³ entidades especificadas, como átomos, moléculas, iones o unidades fórmula. Para convertir moles en partículas, multiplica por esta constante; para convertir partículas en moles, divide entre ella.",
+      "The limiting reactant is the reactant that is used up first and therefore limits the maximum amount of product. Balance the equation, convert each reactant amount to moles, divide by its coefficient, and compare the results; the smallest value identifies the limiting reactant. Send the balanced equation and reactant amounts and I can work through it.":"El reactivo limitante es el que se consume primero y, por tanto, limita la cantidad máxima de producto. Balancea la ecuación, convierte a moles la cantidad de cada reactivo, divide entre su coeficiente y compara los resultados; el valor menor identifica el reactivo limitante. Envíame la ecuación balanceada y las cantidades para resolverlo.",
+      "For stoichiometry, start with a balanced equation. Convert the given amount to moles, multiply by the ratio of product and reactant coefficients, then convert to the requested unit. Coefficients give mole ratios; never use formula subscripts as ratios between substances.":"Para la estequiometría, empieza con una ecuación balanceada. Convierte la cantidad dada a moles, multiplica por la proporción entre los coeficientes del producto y del reactivo y luego convierte a la unidad solicitada. Los coeficientes indican proporciones molares; nunca uses los subíndices como proporciones entre sustancias.",
+      " entities/mol":" entidades/mol"
     };
     const chemaChinesePhrases = {
+      "Stoichiometry and the mole\n1 mol = 6.02214076 × 10²³ entities.\nFor mass, use n = m ÷ M or m = nM.\nFor particles, use N = n × Nₐ.\nUse coefficients in a balanced equation as mole ratios; the limiting reactant runs out first.\n\nFor worked examples, open the stoichiometry lesson in the Learning path.":"化学计量与摩尔\n1 mol = 6.02214076 × 10²³ 个实体。\n计算质量时，使用 n = m ÷ M 或 m = nM。\n计算粒子数时，使用 N = n × Nₐ。\n将配平后方程式的系数用作摩尔比；限量反应物最先耗尽。\n\n如需查看例题，请打开学习路径中的化学计量课程。",
       "Safety first: stop work, alert your instructor, and follow your lab’s emergency procedure. For a chemical splash on skin or in eyes, immediately use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t try to clean an unknown spill yourself.":"安全第一：立即停止操作，通知老师并遵循实验室应急程序。如果化学品溅到皮肤或眼睛，立即使用安全淋浴或洗眼器冲洗至少 15 分钟并寻求帮助。不要自行清理不明溢出物。",
       "Average atomic mass":"平均原子质量",
       "Each isotope’s mass is multiplied by its fractional abundance, then the contributions are added.":"将每种同位素的质量乘以其分数丰度，然后将各项相加。",
@@ -6523,7 +6861,34 @@
       "Bonding comparison:\n• Ionic: attraction among positive and negative ions in an extended lattice; many ionic substances conduct when molten or dissolved because their ions can move.\n• Covalent: atoms share electron density, forming molecules or networks.\n• Metallic: metal atoms are held together with delocalized valence electrons, helping explain conductivity and malleability.\n\nThese are useful models; real bonds can have mixed character. Hydrogen bonding is an intermolecular force, not a primary bond category.":"化学键比较：\n• 离子键：扩展晶格中正负离子之间的吸引；许多离子物质熔融或溶解时可以导电，因为离子能够移动。\n• 共价键：原子共享电子密度，形成分子或网络。\n• 金属键：金属原子由离域价电子结合，这有助于解释导电性和延展性。\n\n这些是有用的模型；真实化学键可能兼具多种性质。氢键是分子间作用力，不属于主要化学键类别。",
       "For a temperature change, calorimetry uses q = mcΔT:\n• q: heat transferred (J); m: mass (g); c: specific heat (J/(g·°C)); ΔT = Tfinal − Tinitial.\n• A positive q means the chosen sample absorbed heat; a negative q means it released heat.\nAt constant pressure, heat is related to enthalpy change (qₚ = ΔH for the process). Gibbs energy indicates thermodynamic favorability under stated conditions, not reaction speed.":"发生温度变化时，量热法使用 q = mcΔT：\n• q：传递的热量（J）；m：质量（g）；c：比热容（J/(g·°C)）；ΔT = 终温 − 初温。\n• q 为正表示所选样品吸收热量；q 为负表示释放热量。\n恒压下，热量与焓变相关（该过程 qₚ = ΔH）。吉布斯能表示给定条件下的热力学有利程度，而非反应速率。",
       "Water (H₂O)":"水 (H₂O)","Carbon dioxide (CO₂)":"二氧化碳 (CO₂)","Ammonia (NH₃)":"氨 (NH₃)","Methane (CH₄)":"甲烷 (CH₄)","Carbon-14":"碳-14","Hydrogen":"氢","Oxygen":"氧","Iron":"铁","Copper":"铜","Sodium":"钠","Chlorine":"氯","Nitrogen":"氮","Sulfur":"硫","Calcium":"钙","Helium":"氦","Fluorine":"氟","Magnesium":"镁","Silver":"银","Gold":"金","Bent":"弯曲形","Tetrahedral":"四面体","Polar":"有极性","Nonpolar molecule":"非极性分子","Hydrogen bonding":"氢键","Dipole–dipole":"偶极-偶极力","London dispersion":"伦敦色散力","Net dipole points toward oxygen; the two O–H bond dipoles reinforce rather than cancel.":"净偶极指向氧原子一侧；两个 O–H 键偶极相互增强而非抵消。",
-      "An orbital is a quantum-mechanical description of where an electron is likely to be found—not a fixed planetary path. Electron configurations show how electrons occupy orbitals; the periodic table reflects repeating configurations and properties. Choose an element in the Periodic table page to inspect its configuration, atom model, and spectrum.":"轨道是对电子可能出现位置的量子力学描述，并非固定的行星轨道。电子排布展示电子如何占据轨道；元素周期表反映了排布和性质的周期性。请在元素周期表页面选择元素，查看其排布、原子模型和光谱。"
+      "An orbital is a quantum-mechanical description of where an electron is likely to be found—not a fixed planetary path. Electron configurations show how electrons occupy orbitals; the periodic table reflects repeating configurations and properties. Choose an element in the Periodic table page to inspect its configuration, atom model, and spectrum.":"轨道是对电子可能出现位置的量子力学描述，并非固定的行星轨道。电子排布展示电子如何占据轨道；元素周期表反映了排布和性质的周期性。请在元素周期表页面选择元素，查看其排布、原子模型和光谱。",
+      "To balance an equation, count each element on both sides, change coefficients (never subscripts), then recount. Send the unbalanced equation, for example H2 + O2 -> H2O, and I can balance it.":"配平方程式时，先统计两边每种元素的原子数，调整系数（绝不改下标），然后重新核对。发送未配平的方程式，例如 H2 + O2 -> H2O，我可以帮你配平。",
+      "Balanced equation: ":"配平后的方程式：",
+      "\nCheck: every element has the same atom count on both sides. Only coefficients change; subscripts stay part of each formula.":"\n检查：方程式两边每种元素的原子数相同。只改变系数；下标是化学式的一部分。",
+      "I couldn’t balance that input. Check that each side contains valid chemical formulas and one reaction arrow, then try again in the Chemical Reactions equation balancer.":"无法配平该输入。请检查两边是否都包含有效化学式且只有一个反应箭头，然后在“化学反应”页面的配平器中重试。",
+      "States of matter differ in particle arrangement and motion:\n• Solid: particles vibrate around fixed positions; shape and volume are fixed.\n• Liquid: particles stay close but move past one another; volume is fixed, shape follows the container.\n• Gas: particles are far apart and move freely; they fill and can be compressed in a container.\n• Plasma: an ionized gas with free electrons and ions that responds to electric and magnetic fields.\nA phase change is usually a physical change: the substance’s chemical identity stays the same.":"物质的不同状态具有不同的粒子排列和运动方式：\n• 固体：粒子在固定位置附近振动；形状和体积固定。\n• 液体：粒子彼此接近但可相互滑动；体积固定，形状随容器改变。\n• 气体：粒子相距较远并自由运动；气体充满容器且可被压缩。\n• 等离子体：含有自由电子和离子的电离气体，会响应电场和磁场。\n相变通常属于物理变化：物质的化学身份保持不变。",
+      "Solid: ":"固体：","Liquid: ":"液体：","Gas: ":"气体：","Plasma: ":"等离子体：",
+      "Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume.":"粒子紧密排列并在固定位置附近振动。样品保持自身形状和体积。",
+      "Particles stay close together but can move past one another. The sample flows, keeps a fixed volume, and takes its container’s shape.":"粒子彼此接近但可相互滑动。样品能够流动，体积固定，并呈现容器的形状。",
+      "Particles are far apart and move rapidly in random directions. They spread to fill a container and can be compressed.":"粒子相距较远并快速随机运动。它们扩散至充满容器，也可以被压缩。",
+      "Plasma is ionized matter with free electrons and ions. Its charged particles can respond collectively to electric and magnetic fields.":"等离子体是含有自由电子和离子的电离物质。其带电粒子可集体响应电场和磁场。",
+      "Heating or cooling can cause a phase change without changing the substance’s chemical identity.":"加热或冷却可以引起相变，而不改变物质的化学身份。",
+      "Melting is the change from solid to liquid. At the melting point, added energy separates particles from their fixed positions; for a pure substance at constant pressure, temperature stays nearly constant until melting is complete.":"熔化是从固体变为液体。在熔点，加入的能量使粒子脱离固定位置；对于恒压下的纯物质，在熔化完成之前温度几乎保持不变。",
+      "Freezing is the change from liquid to solid. The substance releases energy as particles settle into a solid arrangement. For a pure substance at constant pressure, its temperature stays nearly constant while freezing.":"凝固是从液体变为固体。粒子形成固体排列时，物质会释放能量。对于恒压下的纯物质，凝固期间温度几乎保持不变。",
+      "Vaporization changes a liquid into a gas. Evaporation occurs at the liquid’s surface and can happen below the boiling point; boiling occurs throughout the liquid when its vapor pressure matches the surrounding pressure. Both require energy.":"汽化使液体变为气体。蒸发发生在液体表面，可在沸点以下进行；当液体蒸气压等于周围压力时，沸腾会发生在液体各处。两者都需要能量。",
+      "Condensation changes a gas into a liquid as particles come closer together. The substance releases energy to its surroundings; cooling or increasing pressure can encourage condensation.":"粒子相互靠近时，凝结使气体变为液体。物质向周围释放能量；降温或增压可以促进凝结。",
+      "Sublimation is a direct change from solid to gas without passing through the liquid state. Dry ice (solid CO₂) sublimates at ordinary atmospheric pressure.":"升华是从固体直接变为气体而不经过液体阶段。干冰（固态 CO₂）在普通大气压下会升华。",
+      "Deposition is a direct change from gas to solid without first becoming a liquid. Frost forming from water vapor is a familiar example.":"凝华是从气体直接变为固体而不先经过液体。水蒸气形成霜是常见例子。",
+      "Near ordinary room temperature and atmospheric pressure, pure water is a liquid. Its state can change with temperature and pressure: ice melts near 0 °C and water boils near 100 °C at about 1 atm.":"在普通室温和大气压附近，纯水呈液态。其状态会随温度和压力变化：在约 1 atm 下，冰在接近 0 °C 时熔化，水在接近 100 °C 时沸腾。",
+      "Ice is less dense than liquid water because hydrogen bonds hold water molecules in an open crystal structure when frozen. Melting disrupts some of that open arrangement, allowing molecules to pack closer together. This is why ordinary ice floats.":"冰的密度低于液态水，因为冻结时氢键将水分子固定在疏松的晶体结构中。熔化会破坏部分疏松排列，使分子可以靠得更近。这就是普通冰会漂浮的原因。",
+      " atoms":" 个原子"," molecules":" 个分子"," ions":" 个离子"," formula units":" 个化学式单位",
+      "Calculation: ":"计算：",
+      "Use molecules for covalent substances, formula units for ionic compounds, and atoms when counting individual atoms.":"共价物质使用分子作为计数单位，离子化合物使用化学式单位；统计单个原子时使用原子。",
+      "To convert grams to moles, use n = mass ÷ molar mass. First find the substance’s formula and molar mass in g/mol, then divide the sample mass by that value. Send the mass and chemical formula and I can calculate it.":"克换算为摩尔时，使用 n = 质量 ÷ 摩尔质量。先确定物质的化学式和以 g/mol 表示的摩尔质量，再用样品质量除以该值。请提供质量和化学式，我可以帮你计算。",
+      "A mole (mol) is the SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, ions, or formula units. To convert moles to particles, multiply by this constant; to convert particles to moles, divide by it.":"摩尔 (mol) 是物质的量的 SI 单位。一摩尔含有恰好 6.02214076 × 10²³ 个指定实体，例如原子、分子、离子或化学式单位。摩尔换算为粒子数时乘以该常数；粒子数换算为摩尔时除以该常数。",
+      "The limiting reactant is the reactant that is used up first and therefore limits the maximum amount of product. Balance the equation, convert each reactant amount to moles, divide by its coefficient, and compare the results; the smallest value identifies the limiting reactant. Send the balanced equation and reactant amounts and I can work through it.":"限量反应物是最先消耗完、因此限制产物最大生成量的反应物。配平方程式，将每种反应物的量换算为摩尔，除以各自的系数并比较结果；最小值对应限量反应物。请提供配平后的方程式和反应物用量，我可以帮你逐步计算。",
+      "For stoichiometry, start with a balanced equation. Convert the given amount to moles, multiply by the ratio of product and reactant coefficients, then convert to the requested unit. Coefficients give mole ratios; never use formula subscripts as ratios between substances.":"化学计量计算应从配平的方程式开始。将已知量换算为摩尔，乘以生成物与反应物系数的比值，再换算为所需单位。系数表示摩尔比；不要将化学式下标用作物质之间的比例。",
+      " entities/mol":" 个实体/mol"
     };
 
     function normalizeChemaQuestion(question) {
@@ -6587,9 +6952,9 @@
     }
 
     function chemaJumpLabel(tab) {
-      const pageName=({periodic:"Periodic table",bohr:"Bohr model",lewis:"Lewis diagrams",molecule:"Molecular shapes",builder:"AXE builder",thermo:"Thermochemistry",lab:"Science lab",bonds:"Types of bonds",learning:"Learning path"})[tab]||"guide";
-      if(activeLanguage==="es")return `Abrir ${({periodic:"tabla periódica",bohr:"modelo de Bohr",lewis:"diagramas de Lewis",molecule:"formas moleculares",builder:"constructor AXE",thermo:"termoquímica",lab:"laboratorio",bonds:"tipos de enlaces",learning:"ruta de aprendizaje"})[tab]||"guía"}`;
-      if(activeLanguage.startsWith("zh-"))return `打开${({periodic:"元素周期表",bohr:"玻尔模型",lewis:"路易斯结构",molecule:"分子形状",builder:"AXE 构建器",thermo:"热化学",lab:"实验室",bonds:"化学键类型",learning:"学习路径"})[tab]||"指南"}`;
+      const pageName=({periodic:"Periodic table",bohr:"Bohr model",lewis:"Lewis diagrams",molecule:"Molecular shapes",builder:"AXE builder",thermo:"Thermochemistry",lab:"Science lab",bonds:"Types of bonds",stoichiometry:"Stoichiometry",statesMatter:"States of Matter",learning:"Learning path"})[tab]||"guide";
+      if(activeLanguage==="es")return `Abrir ${({periodic:"tabla periódica",bohr:"modelo de Bohr",lewis:"diagramas de Lewis",molecule:"formas moleculares",builder:"constructor AXE",thermo:"termoquímica",lab:"laboratorio",bonds:"tipos de enlaces",stoichiometry:"estequiometría",statesMatter:"estados de la materia",learning:"ruta de aprendizaje"})[tab]||"guía"}`;
+      if(activeLanguage.startsWith("zh-"))return `打开${({periodic:"元素周期表",bohr:"玻尔模型",lewis:"路易斯结构",molecule:"分子形状",builder:"AXE 构建器",thermo:"热化学",lab:"实验室",bonds:"化学键类型",stoichiometry:"化学计量",statesMatter:"物质状态",learning:"学习路径"})[tab]||"指南"}`;
       return `Open ${pageName}`;
     }
 
@@ -6606,10 +6971,12 @@
     function chemaSuggestedPage(question) {
       const text=normalizeChemaQuestion(question).toLowerCase();
       if(/lab|safety|spill|splash|equipment|eyewash|goggles/.test(text))return "lab";
+      if(/states? of matter|phase change|solid|liquid|gas|plasma|melting|freezing|boiling|evaporation|condensation|sublimation|deposition|estado[s]? de la materia|estado[s]? de agregaci[oó]n|sólido|líquido|gaseoso|cambio de fase|fusión|congelación|ebullición|evaporación|condensación|sublimación|物质状态|物质的状态|固态|液态|气态|等离子体/.test(text))return "statesMatter";
       if(/bohr|shell model|electron shell/.test(text))return "bohr";
       if(/lewis|dot structure|valence electron/.test(text))return "lewis";
       if(/vsepr|molecular shape|molecule|axe|lone pair|dipole|polarity|polar/.test(text))return "molecule";
       if(/intermolecular|hydrogen bond|dispersion|imf/.test(text))return "molecule";
+      if(/stoich|mole|mol\b|avogadro|limiting reactant|mole ratio/.test(text))return "stoichiometry";
       if(/calorimetry|thermochem|enthalpy|entropy|gibbs|heat|energy/.test(text))return "thermo";
       if(/ionic|covalent|metallic|bond/.test(text))return "bonds";
       if(/lesson|quiz|learn|practice/.test(text))return "learning";
@@ -6677,6 +7044,39 @@
       if(/lab|safety|spill|splash|eyewash|chemical.*(eye|skin)|eye.*chemical/.test(text))
         return "Safety first: stop work, alert your instructor, and follow your lab’s emergency procedure. For a chemical splash on skin or in eyes, immediately use the safety shower or eyewash and flush for at least 15 minutes while getting help. Don’t try to clean an unknown spill yourself.";
 
+      if(/room temperature|ambient temperature|room temp/.test(text)&&/water/.test(text))
+        return "Near ordinary room temperature and atmospheric pressure, pure water is a liquid. Its state can change with temperature and pressure: ice melts near 0 °C and water boils near 100 °C at about 1 atm.";
+      if(/why.*(?:ice|water)|density.*ice/.test(text)&&/ice|water/.test(text))
+        return "Ice is less dense than liquid water because hydrogen bonds hold water molecules in an open crystal structure when frozen. Melting disrupts some of that open arrangement, allowing molecules to pack closer together. This is why ordinary ice floats.";
+
+      if(/balance(?:d|ing)?(?:\s+(?:this|the))?\s+(?:chemical\s+)?equation|balance\s+[A-Z]/i.test(question)) {
+        const formula="[A-Z][A-Za-z0-9()\\[\\]₀-₉]*";
+        const equationMatch=question.match(new RegExp(`(${formula}(?:\\s*\\+\\s*${formula})*)\\s*(?:\\u2192|->|=>|=)\\s*(${formula}(?:\\s*\\+\\s*${formula})*)`));
+        if(!equationMatch)return "To balance an equation, count each element on both sides, change coefficients (never subscripts), then recount. Send the unbalanced equation, for example H2 + O2 -> H2O, and I can balance it.";
+        try {
+          return `Balanced equation: ${balanceChemicalEquation(`${equationMatch[1]} → ${equationMatch[2]}`)}\nCheck: every element has the same atom count on both sides. Only coefficients change; subscripts stay part of each formula.`;
+        } catch(error) {
+          if(!(error instanceof Error))throw error;
+          return "I couldn’t balance that input. Check that each side contains valid chemical formulas and one reaction arrow, then try again in the Chemical Reactions equation balancer.";
+        }
+      }
+
+      if(/states? of matter|phase change|melting|melt|freezing|freez|boiling|boil|evaporation|evaporat|condensation|condens|sublimation|sublim|deposition|solid|liquid|gas|plasma|ice/.test(text)) {
+        if(/compare|difference|all four|four states/.test(text)||!/solid|liquid|gas|plasma|melting|freezing|boiling|evaporation|condensation|sublimation|deposition/.test(text))
+          return "States of matter differ in particle arrangement and motion:\n• Solid: particles vibrate around fixed positions; shape and volume are fixed.\n• Liquid: particles stay close but move past one another; volume is fixed, shape follows the container.\n• Gas: particles are far apart and move freely; they fill and can be compressed in a container.\n• Plasma: an ionized gas with free electrons and ions that responds to electric and magnetic fields.\nA phase change is usually a physical change: the substance’s chemical identity stays the same.";
+        const stateName=/plasma/.test(text)?"plasma":/\bgas\b/.test(text)?"gas":/\bliquid\b/.test(text)?"liquid":/\bsolid\b/.test(text)?"solid":null;
+        if(stateName) {
+          const state=matterStateDetails[stateName];
+          return `${state.title}: ${state.description}\nHeating or cooling can cause a phase change without changing the substance’s chemical identity.`;
+        }
+        if(/melting|melt/.test(text))return "Melting is the change from solid to liquid. At the melting point, added energy separates particles from their fixed positions; for a pure substance at constant pressure, temperature stays nearly constant until melting is complete.";
+        if(/freezing|freez/.test(text))return "Freezing is the change from liquid to solid. The substance releases energy as particles settle into a solid arrangement. For a pure substance at constant pressure, its temperature stays nearly constant while freezing.";
+        if(/boiling|boil|evaporation|evaporat/.test(text))return "Vaporization changes a liquid into a gas. Evaporation occurs at the liquid’s surface and can happen below the boiling point; boiling occurs throughout the liquid when its vapor pressure matches the surrounding pressure. Both require energy.";
+        if(/condensation|condens/.test(text))return "Condensation changes a gas into a liquid as particles come closer together. The substance releases energy to its surroundings; cooling or increasing pressure can encourage condensation.";
+        if(/sublimation|sublim/.test(text))return "Sublimation is a direct change from solid to gas without passing through the liquid state. Dry ice (solid CO₂) sublimates at ordinary atmospheric pressure.";
+        if(/deposition|deposit/.test(text))return "Deposition is a direct change from gas to solid without first becoming a liquid. Frost forming from water vapor is a familiar example.";
+      }
+
       if(/average atomic mass|weighted average|isotop(?:e|es).*abundance/.test(text)) {
         const pairs=[...question.matchAll(/(\d+(?:\.\d+)?)\s*(?:u|amu)?\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\)/gi)];
         const total=pairs.reduce((sum,pair)=>sum+Number(pair[2]),0);
@@ -6689,11 +7089,11 @@
       }
 
       const element=findElement();
-      const formulaCandidates=[...formulaText.matchAll(/(?:[A-Z][a-z]?\d*|\([^()]+\)\d*)+/g)]
-        .map(match=>({formula:match[0],counts:parseFormula(match[0])}))
-        .filter(match=>match.counts);
+      const formulaCandidates=[...formulaText.matchAll(/(?:^|[^A-Za-zÀ-ÿ])((?:[A-Z][a-z]?\d*|\([^()]+\)\d*)+)(?=$|[^A-Za-zÀ-ÿ])/g)]
+        .map(match=>({formula:match[1],index:match.index+match[0].lastIndexOf(match[1]),counts:parseFormula(match[1])}))
+        .filter(match=>match.counts&&(/[0-9()]/.test(match.formula)||/\b(?:of|for|formula|compound|molecule|mol(?:e)?)\s*$/i.test(formulaText.slice(0,match.index))));
       const asksMolarMass=/molar mass|formula mass|mass of (?:the )?(?:compound|molecule|formula)|grams? per mole/.test(text)||
-        (/\bmol(?:e|es)?\b/.test(text)&&/\bgrams?\b|\bmass\b|\bconvert\b/.test(text));
+        (/\bmol(?:e|es)?\b/.test(text)&&/\b(?:grams?|mass|convert)\b/.test(text));
       if(asksMolarMass&&formulaCandidates.length) {
         const chosen=formulaCandidates.find(match=>/[0-9()]/.test(match.formula))||formulaCandidates.at(-1);
         const mass=formula=>[...formula.keys()].reduce((sum,symbol)=>sum+elements.find(item=>item.symbol===symbol).mass*formula.get(symbol),0);
@@ -6710,6 +7110,30 @@
           return `Molar mass of ${chosen.formula}: ${formatMass(totalMass)} g/mol\n${breakdown.join("\n")}\n\nMoles = mass ÷ molar mass = ${gramMatch[1]} g ÷ ${formatMass(totalMass)} g/mol = ${formatMass(Number(gramMatch[1])/totalMass)} mol.`;
         return `Molar mass of ${chosen.formula}: ${formatMass(totalMass)} g/mol\n${breakdown.join("\n")}\nTotal: ${formatMass(totalMass)} g/mol.\n\nMethod: multiply each element’s atomic mass by its subscript, then add. Parentheses multiply every atom inside by the outside subscript.`;
       }
+      if(asksMolarMass)
+        return "To convert grams to moles, use n = mass ÷ molar mass. First find the substance’s formula and molar mass in g/mol, then divide the sample mass by that value. Send the mass and chemical formula and I can calculate it.";
+
+      const amountMatch=question.match(/(\d+(?:\.\d+)?)\s*mol(?:e)?\b/i);
+      if(amountMatch&&/particle|molecule|atom|ion|formula unit/.test(text)&&formulaCandidates.length) {
+        const chosen=formulaCandidates.find(match=>/[0-9()]/.test(match.formula))||formulaCandidates.at(-1);
+        const amount=Number(amountMatch[1]);
+        const entities=amount*6.02214076e23;
+        if(!Number.isFinite(entities))return "That amount is too large to calculate reliably. Try a smaller value in moles.";
+        const atomCount=[...chosen.counts.values()].reduce((total,count)=>total+count,0);
+        const entityName=/atoms?/.test(text)?"atoms":/ions?/.test(text)?"ions":/formula units?/.test(text)?"formula units":"molecules";
+        const entityTotal=entityName==="atoms"?entities*atomCount:entities;
+        return `${amountMatch[1]} mol ${chosen.formula} = ${formatMass(entityTotal)} ${entityName}.\nCalculation: ${amountMatch[1]} mol × 6.02214076 × 10²³ entities/mol${entityName==="atoms"?` × ${atomCount} atoms/entity`:""}.\nUse molecules for covalent substances, formula units for ionic compounds, and atoms when counting individual atoms.`;
+      }
+
+      if(/\b(?:what is|define|meaning of)\s+(?:a\s+)?mole\b|\bavogadro(?:'s)? constant\b/.test(text))
+        return "A mole (mol) is the SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, ions, or formula units. To convert moles to particles, multiply by this constant; to convert particles to moles, divide by it.";
+      if(/limiting reactant/.test(text))
+        return "The limiting reactant is the reactant that is used up first and therefore limits the maximum amount of product. Balance the equation, convert each reactant amount to moles, divide by its coefficient, and compare the results; the smallest value identifies the limiting reactant. Send the balanced equation and reactant amounts and I can work through it.";
+      if(/mole ratio|stoich|mole/.test(text))
+        return "For stoichiometry, start with a balanced equation. Convert the given amount to moles, multiply by the ratio of product and reactant coefficients, then convert to the requested unit. Coefficients give mole ratios; never use formula subscripts as ratios between substances.";
+
+      if(/stoich|mole|mol\b|avogadro|limiting reactant|mole ratio/.test(text))
+        return "Stoichiometry and the mole\n1 mol = 6.02214076 × 10²³ entities.\nFor mass, use n = m ÷ M or m = nM.\nFor particles, use N = n × Nₐ.\nUse coefficients in a balanced equation as mole ratios; the limiting reactant runs out first.\n\nFor worked examples, open the stoichiometry lesson in the Learning path.";
 
       if(/q\s*=\s*mc|calorimetry|specific heat|heat transferred|\bheat\b/.test(text)) {
         const massMatch=question.match(/(\d+(?:\.\d+)?)\s*g\b/i);
@@ -7419,6 +7843,7 @@
       "learning path.":"ruta de aprendizaje.",
       "short lessons":"lecciones breves",
       "questions each":"preguntas cada una",
+      "Quiz":"Cuestionario",
       "Your chemistry journey":"Tu viaje por la química",
       "Follow the trail":"Sigue el camino",
       "How it works":"Cómo funciona",
@@ -7441,6 +7866,13 @@
       "feedback.":"comentarios.",
       "Get in touch":"Ponte en contacto",
       "Contact the owner":"Contactar con el propietario",
+      "Contact Chemica":"Contactar con Chemica",
+      "A note from Chemica":"Un mensaje de Chemica",
+      "Suggestions, bugs, or say hi?":"¿Sugerencias, errores o simplemente quieres saludar?",
+      "Click here":"Haz clic aquí",
+      "Dismiss contact prompt":"Cerrar el aviso de contacto",
+      "Contact prompt options":"Opciones del aviso de contacto",
+      "Don’t Show this Again":"No volver a mostrar",
       "Make Chemica yours":"Personaliza Chemica",
       "Display":"Pantalla",
       "settings.":"ajustes.",
@@ -8194,6 +8626,7 @@
       "learning path.":"学习路径。",
       "short lessons":"个短课程",
       "questions each":"道题",
+      "Quiz":"测验",
       "Your chemistry journey":"你的化学学习之旅",
       "Follow the trail":"沿着学习路径前进",
       "How it works":"使用方法",
@@ -8216,6 +8649,13 @@
       "feedback.":"意见。",
       "Get in touch":"联系我们",
       "Contact the owner":"联系网站所有者",
+      "Contact Chemica":"联系 Chemica",
+      "A note from Chemica":"来自 Chemica 的提示",
+      "Suggestions, bugs, or say hi?":"有建议、发现问题，或想打个招呼吗？",
+      "Click here":"点击这里",
+      "Dismiss contact prompt":"关闭联系提示",
+      "Contact prompt options":"联系提示选项",
+      "Don’t Show this Again":"不再显示",
       "Make Chemica yours":"个性化 Chemica",
       "Display":"显示",
       "settings.":"设置。",
@@ -9252,7 +9692,205 @@
       "Follow your signed safety contract, procedure, and instructor’s directions; stop and ask when unsure.":"Sigue el contrato de seguridad firmado, el procedimiento y las indicaciones del instructor; detente y pregunta si tienes dudas.",
       "Report spills, injuries, and broken equipment immediately. Never improvise cleanup of an unknown spill.":"Informa de inmediato los derrames, lesiones y equipos rotos. Nunca improvises la limpieza de un derrame desconocido.",
       "For a chemical splash on skin or in eyes, immediately flush at the designated station for at least 15 minutes and alert the instructor.":"Si una sustancia química salpica la piel o los ojos, enjuaga de inmediato en la estación designada durante al menos 15 minutos y avisa al instructor.",
-      "These reminders do not replace your full safety contract, chemical-specific instructions, or supervision.":"Estos recordatorios no sustituyen el contrato de seguridad completo, las instrucciones específicas de la sustancia ni la supervisión."
+      "These reminders do not replace your full safety contract, chemical-specific instructions, or supervision.":"Estos recordatorios no sustituyen el contrato de seguridad completo, las instrucciones específicas de la sustancia ni la supervisión.",
+      "States of Matter":"Estados de la materia",
+      "Particles · energy · phase":"Partículas · energía · fase",
+      "States of":"Estados de",
+      "matter.":"la materia.",
+      "Explore how particle arrangement and motion distinguish solids, liquids, gases, and plasmas—and how matter changes from one state to another.":"Explora cómo la disposición y el movimiento de las partículas distinguen sólidos, líquidos, gases y plasmas, y cómo la materia cambia de un estado a otro.",
+      "States of matter essentials":"Conceptos esenciales de los estados de la materia",
+      "familiar states":"estados conocidos",
+      "Energy":"Energía",
+      "changes particle motion":"cambia el movimiento de las partículas",
+      "Four familiar states":"Cuatro estados conocidos",
+      "These are useful models. The state a substance occupies depends on its temperature and pressure.":"Son modelos útiles. El estado que ocupa una sustancia depende de su temperatura y presión.",
+      "Solid":"Sólido",
+      "Fixed shape and volume":"Forma y volumen definidos",
+      "Particles stay close together and vibrate around positions. Solids can be crystalline, with an ordered structure, or amorphous, without long-range order.":"Las partículas permanecen juntas y vibran alrededor de ciertas posiciones. Los sólidos pueden ser cristalinos, con una estructura ordenada, o amorfos, sin orden a largo alcance.",
+      "Examples · ice · salt crystals · glass":"Ejemplos · hielo · cristales de sal · vidrio",
+      "Liquid":"Líquido",
+      "Fixed volume · takes container shape":"Volumen definido · adopta la forma del recipiente",
+      "Particles remain close but can move past one another. Liquids flow and are difficult to compress compared with gases.":"Las partículas permanecen juntas, pero pueden deslizarse unas junto a otras. Los líquidos fluyen y son difíciles de comprimir en comparación con los gases.",
+      "Examples · water · cooking oil · liquid mercury":"Ejemplos · agua · aceite de cocina · mercurio líquido",
+      "Gas":"Gas",
+      "No fixed shape or volume":"Sin forma ni volumen definidos",
+      "Particles are far apart, move rapidly in random directions, and spread to fill their container. Gases are readily compressed.":"Las partículas están muy separadas, se mueven rápidamente en direcciones aleatorias y se expanden para llenar el recipiente. Los gases se comprimen con facilidad.",
+      "Examples · water vapor · helium · nitrogen":"Ejemplos · vapor de agua · helio · nitrógeno",
+      "Plasma":"Plasma",
+      "Ionized gas":"Gas ionizado",
+      "Plasma contains charged particles, including free electrons and ions. Its collective behavior responds to electric and magnetic fields.":"El plasma contiene partículas con carga, incluidos electrones libres e iones. Su comportamiento colectivo responde a los campos eléctricos y magnéticos.",
+      "Examples · stars · lightning · fluorescent lamps":"Ejemplos · estrellas · relámpagos · lámparas fluorescentes",
+      "Interactive · explore particle behavior":"Interactivo · explora el comportamiento de las partículas",
+      "Choose a state to compare a schematic particle arrangement and the motion of its particles.":"Elige un estado para comparar la disposición esquemática de las partículas y su movimiento.",
+      "Choose a state of matter":"Elige un estado de la materia",
+      "Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume.":"Las partículas están muy juntas y vibran alrededor de posiciones fijas. La muestra conserva su propia forma y volumen.",
+      "Particles stay close together but can move past one another. The sample flows, keeps a fixed volume, and takes its container’s shape.":"Las partículas permanecen juntas, pero pueden deslizarse unas junto a otras. La muestra fluye, conserva un volumen definido y adopta la forma de su recipiente.",
+      "Particles are far apart and move rapidly in random directions. They spread to fill a container and can be compressed.":"Las partículas están muy separadas y se mueven rápidamente en direcciones aleatorias. Se expanden para llenar un recipiente y pueden comprimirse.",
+      "Plasma is ionized matter with free electrons and ions. Its charged particles can respond collectively to electric and magnetic fields.":"El plasma es materia ionizada con electrones libres e iones. Sus partículas cargadas pueden responder colectivamente a los campos eléctricos y magnéticos.",
+      "Phase changes":"Cambios de estado",
+      "During a phase change, energy changes particle arrangement and interactions; the substance’s chemical identity usually stays the same.":"Durante un cambio de estado, la energía modifica la disposición y las interacciones de las partículas; por lo general, la identidad química de la sustancia no cambia.",
+      "Melting · solid → liquid":"Fusión · sólido → líquido",
+      "Energy enters as particles gain enough freedom to move past one another.":"La energía entra y las partículas adquieren libertad suficiente para deslizarse unas junto a otras.",
+      "Freezing · liquid → solid":"Congelación · líquido → sólido",
+      "Energy leaves as particles settle into a solid arrangement.":"La energía sale mientras las partículas adoptan una disposición sólida.",
+      "Vaporization · liquid → gas":"Vaporización · líquido → gas",
+      "Energy enters as particles separate into the gas state. Evaporation occurs at a surface; boiling occurs throughout a liquid.":"La energía entra y las partículas se separan para formar un gas. La evaporación ocurre en la superficie; la ebullición, en todo el líquido.",
+      "Condensation · gas → liquid":"Condensación · gas → líquido",
+      "Energy leaves as gas particles come closer together to form a liquid.":"La energía sale y las partículas gaseosas se acercan para formar un líquido.",
+      "Sublimation · solid → gas":"Sublimación · sólido → gas",
+      "A solid changes directly to a gas without first becoming a liquid.":"Un sólido pasa directamente a gas sin convertirse primero en líquido.",
+      "Deposition · gas → solid":"Deposición · gas → sólido",
+      "A gas changes directly to a solid without first becoming a liquid.":"Un gas pasa directamente a sólido sin convertirse primero en líquido.",
+      "Energy and phase-change examples":"Energía y ejemplos de cambios de estado",
+      "Temperature and energy":"Temperatura y energía",
+      "Within one state, adding thermal energy generally raises the average kinetic energy and temperature of the particles. During a phase change at constant pressure, energy changes particle interactions instead, so the temperature can remain constant until the change is complete.":"Dentro de un mismo estado, añadir energía térmica suele aumentar la energía cinética media y la temperatura de las partículas. Durante un cambio de estado a presión constante, la energía modifica las interacciones entre partículas; por eso la temperatura puede permanecer constante hasta que el cambio termine.",
+      "Heating curve · sloped regions warm a phase; flat regions mark phase changes":"Curva de calentamiento · los tramos inclinados calientan una fase; los tramos planos indican cambios de estado",
+      "Water near standard pressure":"Agua cerca de la presión estándar",
+      "For pure water near 1 atm, ice melts around 0 °C and liquid water boils around 100 °C. These temperatures shift with pressure and dissolved substances; other materials have different phase-change temperatures.":"Para el agua pura cerca de 1 atm, el hielo se funde alrededor de 0 °C y el agua líquida hierve alrededor de 100 °C. Estas temperaturas varían con la presión y las sustancias disueltas; otros materiales tienen temperaturas de cambio distintas.",
+      "Beyond the familiar four:":"Más allá de los cuatro estados conocidos:",
+      "At extremely low temperatures, some materials form a Bose–Einstein condensate, a quantum state where many particles behave collectively. It is not a common everyday state. The particle diagrams above are schematic and not to scale.":"A temperaturas extremadamente bajas, algunos materiales forman un condensado de Bose-Einstein, un estado cuántico en el que muchas partículas se comportan colectivamente. No es un estado habitual en la vida cotidiana. Los diagramas de partículas anteriores son esquemáticos y no están a escala.",
+      "New Topics and a Smarter Chema":"Nuevos temas y Chema más inteligente",
+      "Added a Stoichiometry and the Mole lesson, and a States of Matter page with an interactive particle explorer. Chema can now explain phase changes, balance equations, and solve more mole calculations.":"Se añadió una lección de estequiometría y el mol, y una página sobre los estados de la materia con un explorador interactivo de partículas. Chema ahora puede explicar cambios de estado, balancear ecuaciones y resolver más cálculos con moles.",
+      "Version 1.4.4":"Versión 1.4.4",
+      "Added a States of Matter page covering solids, liquids, gases, plasma, particle behavior, and phase changes, with an interactive particle explorer.":"Se añadió una página sobre los estados de la materia que incluye sólidos, líquidos, gases, plasma, comportamiento de partículas y cambios de estado, con un explorador interactivo de partículas.",
+      "Stoichiometry":"Estequiometría",
+      "Count particles · calculate reactions":"Cuenta partículas · calcula reacciones",
+      "and the mole.":"y el mol.",
+      "Use the mole to count atoms and molecules, convert between mass and amount, and predict how much product a balanced reaction can make.":"Usa el mol para contar átomos y moléculas, convertir entre masa y cantidad y predecir cuánto producto puede formarse en una reacción balanceada.",
+      "Stoichiometry essentials":"Conceptos esenciales de estequiometría",
+      "Mole and stoichiometry basics":"Fundamentos del mol y la estequiometría",
+      "What is a mole?":"¿Qué es un mol?",
+      "A mole is the SI unit for amount of substance. It counts a specified kind of entity, such as atoms, molecules, ions, or formula units.":"El mol es la unidad del SI para la cantidad de sustancia. Cuenta un tipo específico de entidad, como átomos, moléculas, iones o unidades fórmula.",
+      "What is stoichiometry?":"¿Qué es la estequiometría?",
+      "Stoichiometry uses a balanced chemical equation to relate the amounts of reactants consumed and products formed.":"La estequiometría usa una ecuación química balanceada para relacionar las cantidades de reactivos consumidos y productos formados.",
+      "Balanced coefficients → mole ratios":"Coeficientes balanceados → proporciones molares",
+      "The mole conversion map":"Guía de conversiones del mol",
+      "Use molar mass to connect mass and moles, and Avogadro’s constant to connect moles and particles.":"Usa la masa molar para relacionar masa y moles, y la constante de Avogadro para relacionar moles y partículas.",
+      "Mass → moles":"Masa → moles",
+      "Divide the sample mass by its molar mass: n = m ÷ M. For example, 36.0 g H₂O ÷ 18.02 g/mol ≈ 2.00 mol H₂O.":"Divide la masa de la muestra entre su masa molar: n = m ÷ M. Por ejemplo, 36,0 g de H₂O ÷ 18,02 g/mol ≈ 2,00 mol de H₂O.",
+      "Moles → mass":"Moles → masa",
+      "Multiply amount by molar mass: m = n × M. For example, 0.50 mol NaCl × 58.44 g/mol = 29.22 g NaCl.":"Multiplica la cantidad por la masa molar: m = n × M. Por ejemplo, 0,50 mol de NaCl × 58,44 g/mol = 29,22 g de NaCl.",
+      "Moles → particles":"Moles → partículas",
+      "Multiply by Avogadro’s constant: N = n × Nₐ. For example, 0.50 mol H₂O contains about 3.01 × 10²³ molecules.":"Multiplica por la constante de Avogadro: N = n × Nₐ. Por ejemplo, 0,50 mol de H₂O contiene aproximadamente 3,01 × 10²³ moléculas.",
+      "Particles → moles":"Partículas → moles",
+      "Divide the particle count by Avogadro’s constant: n = N ÷ Nₐ. State which entities you are counting.":"Divide el número de partículas entre la constante de Avogadro: n = N ÷ Nₐ. Indica qué tipo de entidades estás contando.",
+      "A reliable stoichiometry workflow":"Un método fiable para resolver problemas estequiométricos",
+      "For reaction calculations, start with a balanced equation and keep units with every value.":"Para los cálculos de reacciones, empieza con una ecuación balanceada y conserva las unidades en cada valor.",
+      "1 · Balance the equation":"1 · Balancea la ecuación",
+      "Coefficients describe the smallest whole-number particle ratio. Never change formula subscripts to balance an equation.":"Los coeficientes representan la proporción de partículas en los números enteros más pequeños. Nunca cambies los subíndices para balancear una ecuación.",
+      "2 · Convert the given amount to moles":"2 · Convierte la cantidad dada a moles",
+      "Use the molar mass for a mass measurement, or Avogadro’s constant for a particle count.":"Usa la masa molar si tienes una masa, o la constante de Avogadro si tienes un número de partículas.",
+      "3 · Apply the mole ratio":"3 · Aplica la proporción molar",
+      "Multiply by the ratio of product to reactant coefficients from the balanced equation.":"Multiplica por la proporción entre los coeficientes del producto y del reactivo en la ecuación balanceada.",
+      "4 · Convert to the requested unit":"4 · Convierte a la unidad solicitada",
+      "Use molar mass for grams or Avogadro’s constant for particles. Check units and significant figures.":"Usa la masa molar para convertir a gramos o la constante de Avogadro para convertir a partículas. Comprueba las unidades y las cifras significativas.",
+      "Worked stoichiometry examples":"Ejemplos resueltos de estequiometría",
+      "Example · mass to moles":"Ejemplo · de masa a moles",
+      "How many moles are in 36.0 g of water? The molar mass of H₂O is about 18.02 g/mol.":"¿Cuántos moles hay en 36,0 g de agua? La masa molar del H₂O es aproximadamente 18,02 g/mol.",
+      "Example · reaction ratio":"Ejemplo · proporción de reacción",
+      "For 2H₂ + O₂ → 2H₂O, the coefficients give a 2:2 (or 1:1) mole ratio between H₂ and H₂O.":"En 2H₂ + O₂ → 2H₂O, los coeficientes dan una proporción molar 2:2 (o 1:1) entre H₂ y H₂O.",
+      "Limiting reactant:":"Reactivo limitante:",
+      "When more than one reactant amount is given, compare each amount with the balanced-equation ratio. The reactant that runs out first limits the theoretical product. Actual yield can be lower because reactions and collection are not always perfect.":"Si se proporcionan las cantidades de varios reactivos, compara cada cantidad con la proporción de la ecuación balanceada. El reactivo que se agota primero limita la cantidad teórica de producto. El rendimiento real puede ser menor porque las reacciones y la recolección no siempre son perfectas.",
+      "Stoichiometry practice":"Práctica de estequiometría",
+      "Start the stoichiometry quiz":"Iniciar el cuestionario de estequiometría",
+      "Open the equation balancer":"Abrir el balanceador de ecuaciones",
+      "Stoichiometry and the mole":"Estequiometría y el mol",
+      "Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, stoichiometry, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.":"Empieza con hábitos de laboratorio y conceptos fundamentales, y avanza hacia los modelos moleculares, las reacciones, la estequiometría y la termoquímica. Cada intento presenta 10 preguntas aleatorias de un banco más amplio, y tu progreso se guarda en este dispositivo.",
+      "Use the mole as a particle-counting unit, convert between mass and amount, and apply balanced-equation ratios to reaction calculations.":"Usa el mol para contar partículas, convierte entre masa y cantidad y aplica las proporciones de ecuaciones balanceadas a los cálculos de reacciones.",
+      "Stoichiometry and the Mole":"Estequiometría y el mol",
+      "NEW TOPIC":"NUEVO TEMA",
+      "MINOR UPDATE":"ACTUALIZACIÓN MENOR",
+      "Review balanced equations":"Repasa las ecuaciones balanceadas",
+      "Mole (mol)":"Mol (mol)",
+      "The SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, or ions.":"Unidad del SI para la cantidad de sustancia. Un mol contiene exactamente 6.02214076 × 10²³ entidades especificadas, como átomos, moléculas o iones.",
+      "Molar mass (M)":"Masa molar (M)",
+      "The mass of one mole of a substance, usually expressed in g/mol.":"Masa de un mol de una sustancia, normalmente expresada en g/mol.",
+      "Using a balanced chemical equation to calculate amounts of reactants and products.":"Uso de una ecuación química balanceada para calcular las cantidades de reactivos y productos.",
+      "Convert mass to amount with n = m ÷ M; convert amount to particles with N = n × Nₐ.":"Convierte masa en cantidad con n = m ÷ M; convierte cantidad en partículas con N = n × Nₐ.",
+      "Use coefficients in a balanced equation as mole ratios; never use subscripts as ratios between substances.":"Usa los coeficientes de una ecuación balanceada como proporciones molares; nunca uses los subíndices como proporciones entre sustancias.",
+      "For a mass-to-mass reaction calculation, convert grams to moles, apply the mole ratio, then convert to grams.":"Para calcular una masa a partir de otra en una reacción, convierte los gramos a moles, aplica la proporción molar y vuelve a convertir a gramos.",
+      "The limiting reactant runs out first and determines the maximum theoretical product.":"El reactivo limitante se consume primero y determina la cantidad máxima teórica de producto.",
+      "In 2H₂ + O₂ → 2H₂O, 3.0 mol H₂ with excess O₂ can form 3.0 mol H₂O. That is about 54.0 g H₂O (3.0 mol × 18.02 g/mol).":"En 2H₂ + O₂ → 2H₂O, 3,0 mol de H₂ con exceso de O₂ pueden formar 3,0 mol de H₂O, aproximadamente 54,0 g (3,0 mol × 18,02 g/mol).",
+      "How many specified entities are in one mole?":"¿Cuántas entidades especificadas hay en un mol?",
+      "6.02214076 × 10²³":"6,02214076 × 10²³",
+      "6.02214076 × 10²²":"6,02214076 × 10²²",
+      "3.00 × 10⁸":"3,00 × 10⁸",
+      "1.00 × 10³":"1,00 × 10³",
+      "The Avogadro constant is exactly 6.02214076 × 10²³ entities per mole.":"La constante de Avogadro es exactamente 6,02214076 × 10²³ entidades por mol.",
+      "How many molecules are in 0.50 mol H₂O?":"¿Cuántas moléculas hay en 0,50 mol de H₂O?",
+      "3.01 × 10²³":"3,01 × 10²³",
+      "6.02 × 10²³":"6,02 × 10²³",
+      "1.20 × 10²⁴":"1,20 × 10²⁴",
+      "0.50 × 10²³":"0,50 × 10²³",
+      "Multiply amount by Avogadro’s constant: 0.50 × 6.022 × 10²³ ≈ 3.01 × 10²³ molecules.":"Multiplica la cantidad por la constante de Avogadro: 0,50 × 6,022 × 10²³ ≈ 3,01 × 10²³ moléculas.",
+      "What is the molar mass of H₂O, using H = 1.008 and O = 16.00 g/mol?":"¿Cuál es la masa molar de H₂O si H = 1,008 y O = 16,00 g/mol?",
+      "18.02 g/mol":"18,02 g/mol",
+      "17.01 g/mol":"17,01 g/mol",
+      "16.00 g/mol":"16,00 g/mol",
+      "20.02 g/mol":"20,02 g/mol",
+      "H₂O contains two H atoms and one O atom: 2(1.008) + 16.00 = 18.016 g/mol, or 18.02 g/mol.":"H₂O contiene dos átomos de H y uno de O: 2(1,008) + 16,00 = 18,016 g/mol, es decir, 18,02 g/mol.",
+      "About how many moles are in 36.0 g H₂O? Use M = 18.02 g/mol.":"¿Aproximadamente cuántos moles hay en 36,0 g de H₂O? Usa M = 18,02 g/mol.",
+      "2.00 mol":"2,00 mol",
+      "0.500 mol":"0,500 mol",
+      "18.0 mol":"18,0 mol",
+      "648 mol":"648 mol",
+      "Use n = m ÷ M: 36.0 g ÷ 18.02 g/mol ≈ 2.00 mol.":"Usa n = m ÷ M: 36,0 g ÷ 18,02 g/mol ≈ 2,00 mol.",
+      "What mass is 0.25 mol CO₂? Use M = 44.01 g/mol.":"¿Qué masa tienen 0,25 mol de CO₂? Usa M = 44,01 g/mol.",
+      "11.0 g":"11,0 g",
+      "44.0 g":"44,0 g",
+      "176 g":"176 g",
+      "0.0057 g":"0,0057 g",
+      "Use m = nM: 0.25 mol × 44.01 g/mol ≈ 11.0 g.":"Usa m = nM: 0,25 mol × 44,01 g/mol ≈ 11,0 g.",
+      "For 2H₂ + O₂ → 2H₂O, what is the mole ratio O₂:H₂O?":"Para 2H₂ + O₂ → 2H₂O, ¿cuál es la proporción molar O₂:H₂O?",
+      "1:2":"1:2",
+      "2:1":"2:1",
+      "1:1":"1:1",
+      "2:3":"2:3",
+      "The balanced-equation coefficients give a ratio of 1 mol O₂ to 2 mol H₂O.":"Los coeficientes de la ecuación balanceada dan una proporción de 1 mol de O₂ por 2 mol de H₂O.",
+      "In 2H₂ + O₂ → 2H₂O, how much H₂O can form from 3.0 mol H₂ with excess O₂?":"En 2H₂ + O₂ → 2H₂O, ¿cuánto H₂O se puede formar con 3,0 mol de H₂ y exceso de O₂?",
+      "3.0 mol":"3,0 mol",
+      "1.5 mol":"1,5 mol",
+      "6.0 mol":"6,0 mol",
+      "0.0 mol":"0,0 mol",
+      "The H₂:H₂O coefficient ratio is 2:2, or 1:1, so 3.0 mol H₂ can form 3.0 mol H₂O.":"La proporción de coeficientes H₂:H₂O es 2:2, o 1:1; por tanto, 3,0 mol de H₂ pueden formar 3,0 mol de H₂O.",
+      "For 2Al + 3Cl₂ → 2AlCl₃, how much Cl₂ is needed to form 4.0 mol AlCl₃?":"Para 2Al + 3Cl₂ → 2AlCl₃, ¿cuánto Cl₂ se necesita para formar 4,0 mol de AlCl₃?",
+      "2.0 mol":"2,0 mol",
+      "4.0 mol":"4,0 mol",
+      "12 mol":"12 mol",
+      "The Cl₂:AlCl₃ ratio is 3:2, so 4.0 mol AlCl₃ requires 4.0 × 3/2 = 6.0 mol Cl₂.":"La proporción Cl₂:AlCl₃ es 3:2; por eso, 4,0 mol de AlCl₃ requieren 4,0 × 3/2 = 6,0 mol de Cl₂.",
+      "For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 1.0 mol O₂. Which reactant is limiting?":"Para 2H₂ + O₂ → 2H₂O, una mezcla contiene 4,0 mol de H₂ y 1,0 mol de O₂. ¿Cuál es el reactivo limitante?",
+      "O₂":"O₂",
+      "H₂":"H₂",
+      "H₂O":"H₂O",
+      "Neither; they are exactly stoichiometric":"Ninguno; están en proporción estequiométrica exacta",
+      "One mole of O₂ requires 2 mol H₂. Only 2 of the available 4 mol H₂ react, so O₂ is limiting.":"Un mol de O₂ requiere 2 mol de H₂. Solo reaccionan 2 de los 4 mol disponibles de H₂, así que O₂ es el reactivo limitante.",
+      "What mass is 0.50 mol NaCl? Use M = 58.44 g/mol.":"¿Qué masa tienen 0,50 mol de NaCl? Usa M = 58,44 g/mol.",
+      "29.2 g":"29,2 g",
+      "58.4 g":"58,4 g",
+      "117 g":"117 g",
+      "0.0086 g":"0,0086 g",
+      "Use m = nM: 0.50 mol × 58.44 g/mol = 29.22 g, or 29.2 g to three significant figures.":"Usa m = nM: 0,50 mol × 58,44 g/mol = 29,22 g, o 29,2 g con tres cifras significativas.",
+      "For 2KClO₃ → 2KCl + 3O₂, how many moles of O₂ form from 4.0 mol KClO₃?":"Para 2KClO₃ → 2KCl + 3O₂, ¿cuántos moles de O₂ se forman a partir de 4,0 mol de KClO₃?",
+      "4.03 g":"4,03 g",
+      "2.02 g":"2,02 g",
+      "1.01 g":"1,01 g",
+      "8.06 g":"8,06 g",
+      "The KClO₃:O₂ ratio is 2:3, so 4.0 mol KClO₃ forms 4.0 × 3/2 = 6.0 mol O₂.":"La proporción KClO₃:O₂ es 2:3; por eso, 4,0 mol de KClO₃ forman 4,0 × 3/2 = 6,0 mol de O₂.",
+      "What mass is 2.0 mol H₂? Use M = 2.016 g/mol.":"¿Qué masa tienen 2,0 mol de H₂? Usa M = 2,016 g/mol.",
+      "Use m = nM: 2.0 mol × 2.016 g/mol = 4.032 g, or 4.03 g.":"Usa m = nM: 2,0 mol × 2,016 g/mol = 4,032 g, es decir, 4,03 g.",
+      "How many formula units are in 1.5 mol NaCl?":"¿Cuántas unidades fórmula hay en 1,5 mol de NaCl?",
+      "9.03 × 10²³":"9,03 × 10²³",
+      "1.50 × 10²³":"1,50 × 10²³",
+      "Multiply by Avogadro’s constant: 1.5 × 6.022 × 10²³ ≈ 9.03 × 10²³ formula units.":"Multiplica por la constante de Avogadro: 1,5 × 6,022 × 10²³ ≈ 9,03 × 10²³ unidades fórmula.",
+      "For CaCO₃ → CaO + CO₂, how much CO₂ can form from 0.75 mol CaCO₃?":"Para CaCO₃ → CaO + CO₂, ¿cuánto CO₂ se puede formar a partir de 0,75 mol de CaCO₃?",
+      "0.75 mol":"0,75 mol",
+      "1.50 mol":"1,50 mol",
+      "0.38 mol":"0,38 mol",
+      "2.25 mol":"2,25 mol",
+      "The CaCO₃:CO₂ coefficient ratio is 1:1, so 0.75 mol CaCO₃ can form 0.75 mol CO₂.":"La proporción de coeficientes CaCO₃:CO₂ es 1:1; por tanto, 0,75 mol de CaCO₃ pueden formar 0,75 mol de CO₂.",
+      "For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 3.0 mol O₂. Which reactant is limiting?":"Para 2H₂ + O₂ → 2H₂O, una mezcla contiene 4,0 mol de H₂ y 3,0 mol de O₂. ¿Cuál es el reactivo limitante?",
+      "Neither; both are consumed":"Ninguno; ambos se consumen",
+      "Four moles of H₂ require 2.0 mol O₂. Since 3.0 mol O₂ is available, H₂ runs out first.":"Cuatro moles de H₂ requieren 2,0 mol de O₂. Como hay 3,0 mol de O₂, el H₂ se agota primero."
     };
     const studyLessonsChinese={
       "Learn · review · understand":"学习 · 复习 · 理解",
@@ -9324,7 +9962,205 @@
       "Follow your signed safety contract, procedure, and instructor’s directions; stop and ask when unsure.":"遵循已签署的安全守则、实验步骤和老师指示；不确定时先停止并询问。",
       "Report spills, injuries, and broken equipment immediately. Never improvise cleanup of an unknown spill.":"立即报告溢出、受伤和器材破损。切勿自行处理不明溢出物。",
       "For a chemical splash on skin or in eyes, immediately flush at the designated station for at least 15 minutes and alert the instructor.":"化学品溅到皮肤或眼睛时，立即在指定设施冲洗至少 15 分钟并通知老师。",
-      "These reminders do not replace your full safety contract, chemical-specific instructions, or supervision.":"这些提示不能替代完整的安全守则、针对特定化学品的说明或现场监督。"
+      "These reminders do not replace your full safety contract, chemical-specific instructions, or supervision.":"这些提示不能替代完整的安全守则、针对特定化学品的说明或现场监督。",
+      "States of Matter":"物质状态",
+      "Particles · energy · phase":"粒子 · 能量 · 相态",
+      "States of":"物质",
+      "matter.":"的状态。",
+      "Explore how particle arrangement and motion distinguish solids, liquids, gases, and plasmas—and how matter changes from one state to another.":"了解粒子的排列和运动如何区分固体、液体、气体和等离子体，以及物质如何在不同状态间变化。",
+      "States of matter essentials":"物质状态要点",
+      "familiar states":"常见状态",
+      "Energy":"能量",
+      "changes particle motion":"改变粒子运动",
+      "Four familiar states":"四种常见状态",
+      "These are useful models. The state a substance occupies depends on its temperature and pressure.":"这些是有用的模型。物质所处的状态取决于温度和压力。",
+      "Solid":"固体",
+      "Fixed shape and volume":"形状和体积固定",
+      "Particles stay close together and vibrate around positions. Solids can be crystalline, with an ordered structure, or amorphous, without long-range order.":"粒子紧密排列，并在固定位置附近振动。固体可以是具有有序结构的晶体，也可以是没有长程有序结构的非晶体。",
+      "Examples · ice · salt crystals · glass":"示例 · 冰 · 盐晶体 · 玻璃",
+      "Liquid":"液体",
+      "Fixed volume · takes container shape":"体积固定 · 形状随容器改变",
+      "Particles remain close but can move past one another. Liquids flow and are difficult to compress compared with gases.":"粒子彼此接近但可相互滑动。液体能够流动，与气体相比不易压缩。",
+      "Examples · water · cooking oil · liquid mercury":"示例 · 水 · 食用油 · 液态汞",
+      "Gas":"气体",
+      "No fixed shape or volume":"形状和体积不固定",
+      "Particles are far apart, move rapidly in random directions, and spread to fill their container. Gases are readily compressed.":"粒子相距较远，快速随机运动并扩散至充满容器。气体容易压缩。",
+      "Examples · water vapor · helium · nitrogen":"示例 · 水蒸气 · 氦气 · 氮气",
+      "Plasma":"等离子体",
+      "Ionized gas":"电离气体",
+      "Plasma contains charged particles, including free electrons and ions. Its collective behavior responds to electric and magnetic fields.":"等离子体含有带电粒子，包括自由电子和离子。其集体行为会响应电场和磁场。",
+      "Examples · stars · lightning · fluorescent lamps":"示例 · 恒星 · 闪电 · 荧光灯",
+      "Interactive · explore particle behavior":"互动 · 探索粒子行为",
+      "Choose a state to compare a schematic particle arrangement and the motion of its particles.":"选择一种状态，比较示意性的粒子排列及其运动。",
+      "Choose a state of matter":"选择物质状态",
+      "Particles are tightly packed and vibrate around fixed positions. The sample keeps its own shape and volume.":"粒子紧密排列并在固定位置附近振动。样品保持自身形状和体积。",
+      "Particles stay close together but can move past one another. The sample flows, keeps a fixed volume, and takes its container’s shape.":"粒子彼此接近但可相互滑动。样品能够流动，体积固定，并呈现容器的形状。",
+      "Particles are far apart and move rapidly in random directions. They spread to fill a container and can be compressed.":"粒子相距较远并快速随机运动。它们扩散至充满容器，也可以被压缩。",
+      "Plasma is ionized matter with free electrons and ions. Its charged particles can respond collectively to electric and magnetic fields.":"等离子体是含有自由电子和离子的电离物质。其带电粒子可集体响应电场和磁场。",
+      "Phase changes":"相变",
+      "During a phase change, energy changes particle arrangement and interactions; the substance’s chemical identity usually stays the same.":"相变过程中，能量改变粒子的排列和相互作用；物质的化学身份通常保持不变。",
+      "Melting · solid → liquid":"熔化 · 固体 → 液体",
+      "Energy enters as particles gain enough freedom to move past one another.":"粒子获得足够能量，可以相互滑动。",
+      "Freezing · liquid → solid":"凝固 · 液体 → 固体",
+      "Energy leaves as particles settle into a solid arrangement.":"能量释放，粒子形成固体排列。",
+      "Vaporization · liquid → gas":"汽化 · 液体 → 气体",
+      "Energy enters as particles separate into the gas state. Evaporation occurs at a surface; boiling occurs throughout a liquid.":"粒子吸收能量并分散形成气体。蒸发发生在表面；沸腾则发生于整个液体。",
+      "Condensation · gas → liquid":"凝结 · 气体 → 液体",
+      "Energy leaves as gas particles come closer together to form a liquid.":"能量释放，气体粒子相互靠近形成液体。",
+      "Sublimation · solid → gas":"升华 · 固体 → 气体",
+      "A solid changes directly to a gas without first becoming a liquid.":"固体不经过液体阶段而直接变成气体。",
+      "Deposition · gas → solid":"凝华 · 气体 → 固体",
+      "A gas changes directly to a solid without first becoming a liquid.":"气体不经过液体阶段而直接变成固体。",
+      "Energy and phase-change examples":"能量与相变示例",
+      "Temperature and energy":"温度与能量",
+      "Within one state, adding thermal energy generally raises the average kinetic energy and temperature of the particles. During a phase change at constant pressure, energy changes particle interactions instead, so the temperature can remain constant until the change is complete.":"在同一状态内，增加热能通常会提高粒子的平均动能和温度。在恒压相变过程中，能量用于改变粒子间的相互作用，因此在相变完成前温度可能保持不变。",
+      "Heating curve · sloped regions warm a phase; flat regions mark phase changes":"加热曲线 · 斜坡段使某一相升温；平坦段表示相变",
+      "Water near standard pressure":"接近标准压力下的水",
+      "For pure water near 1 atm, ice melts around 0 °C and liquid water boils around 100 °C. These temperatures shift with pressure and dissolved substances; other materials have different phase-change temperatures.":"在接近 1 atm 时，纯冰约在 0 °C 熔化，液态水约在 100 °C 沸腾。这些温度会随压力和溶解物质而变化；其他材料的相变温度也不同。",
+      "Beyond the familiar four:":"超出四种常见状态：",
+      "At extremely low temperatures, some materials form a Bose–Einstein condensate, a quantum state where many particles behave collectively. It is not a common everyday state. The particle diagrams above are schematic and not to scale.":"在极低温下，一些材料会形成玻色-爱因斯坦凝聚态，这是一种许多粒子集体表现的量子态。它不是日常常见状态。以上粒子图均为示意图，并非按比例绘制。",
+      "New Topics and a Smarter Chema":"新增主题与更聪明的 Chema",
+      "Added a Stoichiometry and the Mole lesson, and a States of Matter page with an interactive particle explorer. Chema can now explain phase changes, balance equations, and solve more mole calculations.":"新增“化学计量与摩尔”课程，以及带有互动粒子探索器的物质状态页面。Chema 现在可以解释相变、配平方程式并解决更多摩尔计算问题。",
+      "Version 1.4.4":"版本 1.4.4",
+      "Added a States of Matter page covering solids, liquids, gases, plasma, particle behavior, and phase changes, with an interactive particle explorer.":"新增物质状态页面，介绍固体、液体、气体、等离子体、粒子行为和相变，并提供互动粒子探索器。",
+      "Stoichiometry":"化学计量",
+      "Count particles · calculate reactions":"计算粒子数 · 计算反应",
+      "and the mole.":"与摩尔。",
+      "Use the mole to count atoms and molecules, convert between mass and amount, and predict how much product a balanced reaction can make.":"使用摩尔计数原子和分子，在质量与物质的量之间换算，并预测配平反应可生成多少产物。",
+      "Stoichiometry essentials":"化学计量基础",
+      "Mole and stoichiometry basics":"摩尔与化学计量基础",
+      "What is a mole?":"什么是摩尔？",
+      "A mole is the SI unit for amount of substance. It counts a specified kind of entity, such as atoms, molecules, ions, or formula units.":"摩尔是物质的量的 SI 单位，用于计数指定种类的实体，例如原子、分子、离子或化学式单位。",
+      "What is stoichiometry?":"什么是化学计量？",
+      "Stoichiometry uses a balanced chemical equation to relate the amounts of reactants consumed and products formed.":"化学计量利用配平的化学方程式，关联反应物的消耗量与生成物的生成量。",
+      "Balanced coefficients → mole ratios":"配平系数 → 摩尔比",
+      "The mole conversion map":"摩尔换算图",
+      "Use molar mass to connect mass and moles, and Avogadro’s constant to connect moles and particles.":"使用摩尔质量连接质量与摩尔，并使用阿伏伽德罗常数连接摩尔与粒子数。",
+      "Mass → moles":"质量 → 摩尔",
+      "Divide the sample mass by its molar mass: n = m ÷ M. For example, 36.0 g H₂O ÷ 18.02 g/mol ≈ 2.00 mol H₂O.":"用样品质量除以摩尔质量：n = m ÷ M。例如，36.0 g H₂O ÷ 18.02 g/mol ≈ 2.00 mol H₂O。",
+      "Moles → mass":"摩尔 → 质量",
+      "Multiply amount by molar mass: m = n × M. For example, 0.50 mol NaCl × 58.44 g/mol = 29.22 g NaCl.":"物质的量乘以摩尔质量：m = n × M。例如，0.50 mol NaCl × 58.44 g/mol = 29.22 g NaCl。",
+      "Moles → particles":"摩尔 → 粒子",
+      "Multiply by Avogadro’s constant: N = n × Nₐ. For example, 0.50 mol H₂O contains about 3.01 × 10²³ molecules.":"乘以阿伏伽德罗常数：N = n × Nₐ。例如，0.50 mol H₂O 含有约 3.01 × 10²³ 个分子。",
+      "Particles → moles":"粒子 → 摩尔",
+      "Divide the particle count by Avogadro’s constant: n = N ÷ Nₐ. State which entities you are counting.":"用粒子数除以阿伏伽德罗常数：n = N ÷ Nₐ。请说明所计数的实体种类。",
+      "A reliable stoichiometry workflow":"可靠的化学计量解题步骤",
+      "For reaction calculations, start with a balanced equation and keep units with every value.":"进行反应计算时，先写出配平的方程式，并为每个数值保留单位。",
+      "1 · Balance the equation":"1 · 配平方程式",
+      "Coefficients describe the smallest whole-number particle ratio. Never change formula subscripts to balance an equation.":"系数表示最简整数粒子比。配平方程式时绝不能更改化学式下标。",
+      "2 · Convert the given amount to moles":"2 · 将已知量换算为摩尔",
+      "Use the molar mass for a mass measurement, or Avogadro’s constant for a particle count.":"已知质量时使用摩尔质量；已知粒子数时使用阿伏伽德罗常数。",
+      "3 · Apply the mole ratio":"3 · 应用摩尔比",
+      "Multiply by the ratio of product to reactant coefficients from the balanced equation.":"乘以配平方程式中生成物与反应物系数的比值。",
+      "4 · Convert to the requested unit":"4 · 换算为所需单位",
+      "Use molar mass for grams or Avogadro’s constant for particles. Check units and significant figures.":"换算为克时使用摩尔质量；换算为粒子数时使用阿伏伽德罗常数。检查单位和有效数字。",
+      "Worked stoichiometry examples":"化学计量例题",
+      "Example · mass to moles":"例题 · 质量换算为摩尔",
+      "How many moles are in 36.0 g of water? The molar mass of H₂O is about 18.02 g/mol.":"36.0 g 水中有多少摩尔？H₂O 的摩尔质量约为 18.02 g/mol。",
+      "Example · reaction ratio":"例题 · 反应比例",
+      "For 2H₂ + O₂ → 2H₂O, the coefficients give a 2:2 (or 1:1) mole ratio between H₂ and H₂O.":"对于 2H₂ + O₂ → 2H₂O，系数给出 H₂ 与 H₂O 之间 2:2（即 1:1）的摩尔比。",
+      "Limiting reactant:":"限量反应物：",
+      "When more than one reactant amount is given, compare each amount with the balanced-equation ratio. The reactant that runs out first limits the theoretical product. Actual yield can be lower because reactions and collection are not always perfect.":"已知多种反应物的量时，将各自的量与配平反应比例比较。最先耗尽的反应物决定理论产物量。由于反应和收集不一定完美，实际产量可能较低。",
+      "Stoichiometry practice":"化学计量练习",
+      "Start the stoichiometry quiz":"开始化学计量测验",
+      "Open the equation balancer":"打开化学方程式配平器",
+      "Stoichiometry and the mole":"化学计量与摩尔",
+      "Start with lab-ready habits and foundational concepts, then work toward molecular models, reactions, stoichiometry, and thermochemistry. Each attempt draws 10 randomized questions from a larger lesson bank, and your progress stays saved on this device.":"从实验室安全习惯和基础概念开始，逐步学习分子模型、化学反应、化学计量和热化学。每次练习会从更大的题库中随机抽取 10 道题，进度会保存在此设备上。",
+      "Use the mole as a particle-counting unit, convert between mass and amount, and apply balanced-equation ratios to reaction calculations.":"使用摩尔计数粒子，在质量与物质的量之间换算，并将配平后的方程式比例用于反应计算。",
+      "Stoichiometry and the Mole":"化学计量与摩尔",
+      "NEW TOPIC":"新主题",
+      "MINOR UPDATE":"小幅更新",
+      "Review balanced equations":"复习配平后的方程式",
+      "Mole (mol)":"摩尔 (mol)",
+      "The SI unit for amount of substance. One mole contains exactly 6.02214076 × 10²³ specified entities, such as atoms, molecules, or ions.":"物质的量的 SI 单位。一摩尔包含恰好 6.02214076 × 10²³ 个指定实体，例如原子、分子或离子。",
+      "Molar mass (M)":"摩尔质量 (M)",
+      "The mass of one mole of a substance, usually expressed in g/mol.":"一摩尔物质的质量，通常以 g/mol 表示。",
+      "Using a balanced chemical equation to calculate amounts of reactants and products.":"使用配平的化学方程式计算反应物和生成物的量。",
+      "Convert mass to amount with n = m ÷ M; convert amount to particles with N = n × Nₐ.":"用 n = m ÷ M 将质量换算为物质的量；用 N = n × Nₐ 将物质的量换算为粒子数。",
+      "Use coefficients in a balanced equation as mole ratios; never use subscripts as ratios between substances.":"将配平后方程式中的系数用作摩尔比；切勿将化学式下标当作物质之间的比例。",
+      "For a mass-to-mass reaction calculation, convert grams to moles, apply the mole ratio, then convert to grams.":"进行质量之间的反应计算时，先把克换算为摩尔，再应用摩尔比，最后换算回克。",
+      "The limiting reactant runs out first and determines the maximum theoretical product.":"限量反应物最先耗尽，并决定理论产物的最大量。",
+      "In 2H₂ + O₂ → 2H₂O, 3.0 mol H₂ with excess O₂ can form 3.0 mol H₂O. That is about 54.0 g H₂O (3.0 mol × 18.02 g/mol).":"在 2H₂ + O₂ → 2H₂O 中，3.0 mol H₂ 与过量 O₂ 反应可生成 3.0 mol H₂O，即约 54.0 g H₂O（3.0 mol × 18.02 g/mol）。",
+      "How many specified entities are in one mole?":"一摩尔中有多少个指定实体？",
+      "6.02214076 × 10²³":"6.02214076 × 10²³",
+      "6.02214076 × 10²²":"6.02214076 × 10²²",
+      "3.00 × 10⁸":"3.00 × 10⁸",
+      "1.00 × 10³":"1.00 × 10³",
+      "The Avogadro constant is exactly 6.02214076 × 10²³ entities per mole.":"阿伏伽德罗常数精确为每摩尔 6.02214076 × 10²³ 个实体。",
+      "How many molecules are in 0.50 mol H₂O?":"0.50 mol H₂O 中有多少个分子？",
+      "3.01 × 10²³":"3.01 × 10²³",
+      "6.02 × 10²³":"6.02 × 10²³",
+      "1.20 × 10²⁴":"1.20 × 10²⁴",
+      "0.50 × 10²³":"0.50 × 10²³",
+      "Multiply amount by Avogadro’s constant: 0.50 × 6.022 × 10²³ ≈ 3.01 × 10²³ molecules.":"将物质的量乘以阿伏伽德罗常数：0.50 × 6.022 × 10²³ ≈ 3.01 × 10²³ 个分子。",
+      "What is the molar mass of H₂O, using H = 1.008 and O = 16.00 g/mol?":"已知 H = 1.008、O = 16.00 g/mol，H₂O 的摩尔质量是多少？",
+      "18.02 g/mol":"18.02 g/mol",
+      "17.01 g/mol":"17.01 g/mol",
+      "16.00 g/mol":"16.00 g/mol",
+      "20.02 g/mol":"20.02 g/mol",
+      "H₂O contains two H atoms and one O atom: 2(1.008) + 16.00 = 18.016 g/mol, or 18.02 g/mol.":"H₂O 含有两个 H 原子和一个 O 原子：2(1.008) + 16.00 = 18.016 g/mol，即 18.02 g/mol。",
+      "About how many moles are in 36.0 g H₂O? Use M = 18.02 g/mol.":"36.0 g H₂O 约为多少摩尔？使用 M = 18.02 g/mol。",
+      "2.00 mol":"2.00 mol",
+      "0.500 mol":"0.500 mol",
+      "18.0 mol":"18.0 mol",
+      "648 mol":"648 mol",
+      "Use n = m ÷ M: 36.0 g ÷ 18.02 g/mol ≈ 2.00 mol.":"使用 n = m ÷ M：36.0 g ÷ 18.02 g/mol ≈ 2.00 mol。",
+      "What mass is 0.25 mol CO₂? Use M = 44.01 g/mol.":"0.25 mol CO₂ 的质量是多少？使用 M = 44.01 g/mol。",
+      "11.0 g":"11.0 g",
+      "44.0 g":"44.0 g",
+      "176 g":"176 g",
+      "0.0057 g":"0.0057 g",
+      "Use m = nM: 0.25 mol × 44.01 g/mol ≈ 11.0 g.":"使用 m = nM：0.25 mol × 44.01 g/mol ≈ 11.0 g。",
+      "For 2H₂ + O₂ → 2H₂O, what is the mole ratio O₂:H₂O?":"对于 2H₂ + O₂ → 2H₂O，O₂:H₂O 的摩尔比是多少？",
+      "1:2":"1:2",
+      "2:1":"2:1",
+      "1:1":"1:1",
+      "2:3":"2:3",
+      "The balanced-equation coefficients give a ratio of 1 mol O₂ to 2 mol H₂O.":"配平方程式的系数给出 1 mol O₂ 对 2 mol H₂O 的比例。",
+      "In 2H₂ + O₂ → 2H₂O, how much H₂O can form from 3.0 mol H₂ with excess O₂?":"在 2H₂ + O₂ → 2H₂O 中，3.0 mol H₂ 与过量 O₂ 可生成多少 H₂O？",
+      "3.0 mol":"3.0 mol",
+      "1.5 mol":"1.5 mol",
+      "6.0 mol":"6.0 mol",
+      "0.0 mol":"0.0 mol",
+      "The H₂:H₂O coefficient ratio is 2:2, or 1:1, so 3.0 mol H₂ can form 3.0 mol H₂O.":"H₂:H₂O 的系数比为 2:2，即 1:1，因此 3.0 mol H₂ 可生成 3.0 mol H₂O。",
+      "For 2Al + 3Cl₂ → 2AlCl₃, how much Cl₂ is needed to form 4.0 mol AlCl₃?":"对于 2Al + 3Cl₂ → 2AlCl₃，生成 4.0 mol AlCl₃ 需要多少 Cl₂？",
+      "2.0 mol":"2.0 mol",
+      "4.0 mol":"4.0 mol",
+      "12 mol":"12 mol",
+      "The Cl₂:AlCl₃ ratio is 3:2, so 4.0 mol AlCl₃ requires 4.0 × 3/2 = 6.0 mol Cl₂.":"Cl₂:AlCl₃ 的比例为 3:2，因此 4.0 mol AlCl₃ 需要 4.0 × 3/2 = 6.0 mol Cl₂。",
+      "For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 1.0 mol O₂. Which reactant is limiting?":"对于 2H₂ + O₂ → 2H₂O，混合物含有 4.0 mol H₂ 和 1.0 mol O₂。哪种反应物是限量反应物？",
+      "O₂":"O₂",
+      "H₂":"H₂",
+      "H₂O":"H₂O",
+      "Neither; they are exactly stoichiometric":"都不是；两者恰好符合化学计量比",
+      "One mole of O₂ requires 2 mol H₂. Only 2 of the available 4 mol H₂ react, so O₂ is limiting.":"1 mol O₂ 需要 2 mol H₂。可用的 4 mol H₂ 中只有 2 mol 会反应，因此 O₂ 是限量反应物。",
+      "What mass is 0.50 mol NaCl? Use M = 58.44 g/mol.":"0.50 mol NaCl 的质量是多少？使用 M = 58.44 g/mol。",
+      "29.2 g":"29.2 g",
+      "58.4 g":"58.4 g",
+      "117 g":"117 g",
+      "0.0086 g":"0.0086 g",
+      "Use m = nM: 0.50 mol × 58.44 g/mol = 29.22 g, or 29.2 g to three significant figures.":"使用 m = nM：0.50 mol × 58.44 g/mol = 29.22 g，按三位有效数字为 29.2 g。",
+      "For 2KClO₃ → 2KCl + 3O₂, how many moles of O₂ form from 4.0 mol KClO₃?":"对于 2KClO₃ → 2KCl + 3O₂，4.0 mol KClO₃ 会生成多少 mol O₂？",
+      "4.03 g":"4.03 g",
+      "2.02 g":"2.02 g",
+      "1.01 g":"1.01 g",
+      "8.06 g":"8.06 g",
+      "The KClO₃:O₂ ratio is 2:3, so 4.0 mol KClO₃ forms 4.0 × 3/2 = 6.0 mol O₂.":"KClO₃:O₂ 的比例为 2:3，因此 4.0 mol KClO₃ 会生成 4.0 × 3/2 = 6.0 mol O₂。",
+      "What mass is 2.0 mol H₂? Use M = 2.016 g/mol.":"2.0 mol H₂ 的质量是多少？使用 M = 2.016 g/mol。",
+      "Use m = nM: 2.0 mol × 2.016 g/mol = 4.032 g, or 4.03 g.":"使用 m = nM：2.0 mol × 2.016 g/mol = 4.032 g，即 4.03 g。",
+      "How many formula units are in 1.5 mol NaCl?":"1.5 mol NaCl 中有多少个化学式单位？",
+      "9.03 × 10²³":"9.03 × 10²³",
+      "1.50 × 10²³":"1.50 × 10²³",
+      "Multiply by Avogadro’s constant: 1.5 × 6.022 × 10²³ ≈ 9.03 × 10²³ formula units.":"乘以阿伏伽德罗常数：1.5 × 6.022 × 10²³ ≈ 9.03 × 10²³ 个化学式单位。",
+      "For CaCO₃ → CaO + CO₂, how much CO₂ can form from 0.75 mol CaCO₃?":"对于 CaCO₃ → CaO + CO₂，0.75 mol CaCO₃ 能生成多少 CO₂？",
+      "0.75 mol":"0.75 mol",
+      "1.50 mol":"1.50 mol",
+      "0.38 mol":"0.38 mol",
+      "2.25 mol":"2.25 mol",
+      "The CaCO₃:CO₂ coefficient ratio is 1:1, so 0.75 mol CaCO₃ can form 0.75 mol CO₂.":"CaCO₃:CO₂ 的系数比为 1:1，因此 0.75 mol CaCO₃ 可生成 0.75 mol CO₂。",
+      "For 2H₂ + O₂ → 2H₂O, a mixture has 4.0 mol H₂ and 3.0 mol O₂. Which reactant is limiting?":"对于 2H₂ + O₂ → 2H₂O，混合物含有 4.0 mol H₂ 和 3.0 mol O₂。哪种反应物是限量反应物？",
+      "Neither; both are consumed":"都不是；两者都会消耗",
+      "Four moles of H₂ require 2.0 mol O₂. Since 3.0 mol O₂ is available, H₂ runs out first.":"4 mol H₂ 需要 2.0 mol O₂。由于有 3.0 mol O₂，H₂ 会先耗尽。"
     };
     Object.assign(spanishText,studyLessonsSpanish);
     Object.assign(simplifiedChineseText,studyLessonsChinese);
@@ -9452,22 +10288,23 @@
       document.documentElement.lang=activeLanguage==="zh-CN"?"zh-Hans":activeLanguage==="zh-TW"?"zh-Hant":activeLanguage;
       if(activeLanguage!=="en") {
         const localized=activeLanguage==="es"?{
-          "Ask about elements, bonding, molecular shapes, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.":"Pregunta sobre elementos, enlaces, formas moleculares, termoquímica o seguridad de laboratorio. La guía integrada de Chema responde directamente en tu navegador y puede llevarte a la página correspondiente.",
+          "Ask about elements, bonding, molecular shapes, states of matter, stoichiometry, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.":"Pregunta sobre elementos, enlaces, formas moleculares, estados de la materia, estequiometría, termoquímica o seguridad de laboratorio. La guía integrada de Chema responde directamente en tu navegador y puede llevarte a la página correspondiente.",
           "Ask a chemistry question":"Haz una pregunta de química","Ask a chemistry question…":"Haz una pregunta de química…","Ask":"Preguntar","Clear chat":"Borrar chat","Try asking":"Prueba a preguntar",
           "Chema chemistry assistant":"Asistente de química Chema","Assistant details":"Detalles del asistente",
           "Chema uses its built-in chemistry guide. Your questions stay in this browser and are not sent to an AI service. Don’t include personal or sensitive information.":"Chema utiliza una guía de química integrada. Tus preguntas permanecen en este navegador y no se envían a ningún servicio de IA. No incluyas información personal ni confidencial.",
-          "How do I find neutrons?":"¿Cómo encuentro los neutrones?","Find the molar mass of Ca(OH)2":"Calcula la masa molar de Ca(OH)2","How many electrons are in Fe3+?":"¿Cuántos electrones hay en Fe3+?","Why is water bent and polar?":"¿Por qué el agua tiene forma angular y es polar?","Show me a Bohr model of oxygen":"Muéstrame el modelo de Bohr del oxígeno","How do Lewis dots show bonding?":"¿Cómo muestran los puntos de Lewis los enlaces?","Explain VSEPR and lone pairs":"Explica VSEPR y los pares solitarios","What makes a molecule polar?":"¿Qué hace que una molécula sea polar?","Compare ionic and covalent bonds":"Compara los enlaces iónicos y covalentes","How does calorimetry work?":"¿Cómo funciona la calorimetría?","What should I do after a lab splash?":"¿Qué debo hacer si ocurre una salpicadura en el laboratorio?","study help":"ayuda para estudiar"
+          "How do I find neutrons?":"¿Cómo encuentro los neutrones?","Find the molar mass of Ca(OH)2":"Calcula la masa molar de Ca(OH)2","How do I convert grams to moles?":"¿Cómo convierto gramos a moles?","How many electrons are in Fe3+?":"¿Cuántos electrones hay en Fe3+?","Why is water bent and polar?":"¿Por qué el agua tiene forma angular y es polar?","Show me a Bohr model of oxygen":"Muéstrame el modelo de Bohr del oxígeno","How do Lewis dots show bonding?":"¿Cómo muestran los puntos de Lewis los enlaces?","Explain VSEPR and lone pairs":"Explica VSEPR y los pares solitarios","What makes a molecule polar?":"¿Qué hace que una molécula sea polar?","Compare ionic and covalent bonds":"Compara los enlaces iónicos y covalentes","How does calorimetry work?":"¿Cómo funciona la calorimetría?","What happens to particles when water boils?":"¿Qué ocurre con las partículas cuando hierve el agua?","Balance H2 + O2 -> H2O":"Balancea H2 + O2 -> H2O","What should I do after a lab splash?":"¿Qué debo hacer si ocurre una salpicadura en el laboratorio?","study help":"ayuda para estudiar"
         }: {
-          "Ask about elements, bonding, molecular shapes, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.":"可以询问元素、化学键、分子形状、热化学或实验室安全。Chema 的内置指南会在浏览器中直接回答，并可跳转到相关页面。",
+          "Ask about elements, bonding, molecular shapes, states of matter, stoichiometry, thermochemistry, or lab safety. Chema’s built-in guide answers right in your browser and can jump you to the matching page.":"可以询问元素、化学键、分子形状、物质状态、化学计量、热化学或实验室安全。Chema 的内置指南会在浏览器中直接回答，并可跳转到相关页面。",
           "Ask a chemistry question":"提出化学问题","Ask a chemistry question…":"提出化学问题…","Ask":"提问","Clear chat":"清除对话","Try asking":"试着这样提问",
           "Chema chemistry assistant":"Chema 化学助手","Assistant details":"助手信息",
           "Chema uses its built-in chemistry guide. Your questions stay in this browser and are not sent to an AI service. Don’t include personal or sensitive information.":"Chema 使用内置化学指南。你的问题只保留在此浏览器中，不会发送给任何 AI 服务。请勿输入个人或敏感信息。",
-          "How do I find neutrons?":"如何求中子数？","Find the molar mass of Ca(OH)2":"计算 Ca(OH)2 的摩尔质量","How many electrons are in Fe3+?":"Fe3+ 有多少个电子？","Why is water bent and polar?":"为什么水分子是弯曲且有极性的？","Show me a Bohr model of oxygen":"展示氧原子的玻尔模型","How do Lewis dots show bonding?":"路易斯点式如何表示成键？","Explain VSEPR and lone pairs":"解释 VSEPR 和孤对电子","What makes a molecule polar?":"什么因素使分子具有极性？","Compare ionic and covalent bonds":"比较离子键和共价键","How does calorimetry work?":"量热法如何运作？","What should I do after a lab splash?":"实验室发生化学品飞溅后该怎么办？","study help":"学习帮助"
+          "How do I find neutrons?":"如何求中子数？","Find the molar mass of Ca(OH)2":"计算 Ca(OH)2 的摩尔质量","How do I convert grams to moles?":"如何将克换算为摩尔？","How many electrons are in Fe3+?":"Fe3+ 有多少个电子？","Why is water bent and polar?":"为什么水分子是弯曲且有极性的？","Show me a Bohr model of oxygen":"展示氧原子的玻尔模型","How do Lewis dots show bonding?":"路易斯点式如何表示成键？","Explain VSEPR and lone pairs":"解释 VSEPR 和孤对电子","What makes a molecule polar?":"什么因素使分子具有极性？","Compare ionic and covalent bonds":"比较离子键和共价键","How does calorimetry work?":"量热法如何运作？","What happens to particles when water boils?":"水沸腾时粒子会发生什么变化？","Balance H2 + O2 -> H2O":"配平 H2 + O2 -> H2O","What should I do after a lab splash?":"实验室发生化学品飞溅后该怎么办？","study help":"学习帮助"
         };
         Object.assign(activeLanguage==="es"?spanishText:activeLanguage==="zh-TW"?traditionalChineseText:simplifiedChineseText,
           activeLanguage==="zh-TW"?Object.fromEntries(Object.entries(localized).map(([source,target])=>[source,toTraditionalChinese(target)])):localized);
       }
       localizeSubtree(document.body);
+      renderMatterState(activeMatterState);
       renderStudyLessonOrder();
       renderLessonCatalogActions();
       document.title=translateValue("Chemica — A Full-On Chemistry Site");
@@ -9490,6 +10327,105 @@
           console.error("Could not save the selected language:",error);
         }
       }
+    }
+
+    function initializeContactNudge() {
+      const notice=document.getElementById("contactNudge");
+      const dismiss=document.getElementById("contactNudgeDismiss");
+      const menu=document.getElementById("contactNudgeMenu");
+      const storageKeys={hidden:"chemica-contact-nudge-hidden",remindAt:"chemica-contact-nudge-remind-at"};
+      let timer=null;
+
+      const hideMenu=({restoreFocus=false}={})=>{
+        menu.hidden=true;
+        dismiss.setAttribute("aria-expanded","false");
+        if(restoreFocus)dismiss.focus({preventScroll:true});
+      };
+      const canShowNow=()=>!["welcomeDialog","guideDialog","updateDialog","dangerResetDialog"].some(id=>document.getElementById(id).open);
+      const showWhenReady=()=>{
+        timer=null;
+        if(!canShowNow()) {
+          timer=window.setTimeout(showWhenReady,2000);
+          return;
+        }
+        notice.hidden=false;
+      };
+      const schedule=delay=>{
+        if(timer!==null)window.clearTimeout(timer);
+        timer=window.setTimeout(showWhenReady,Math.max(0,delay));
+      };
+      const savePreference=(action,value)=>{
+        try {
+          if(action==="hide") {
+            localStorage.setItem(storageKeys.hidden,"true");
+            localStorage.removeItem(storageKeys.remindAt);
+          } else {
+            localStorage.setItem(storageKeys.remindAt,String(value));
+          }
+          return true;
+        } catch(error) {
+          console.error("Could not save the contact prompt preference.",error);
+          return false;
+        }
+      };
+
+      dismiss.addEventListener("click",()=>{
+        const opening=menu.hidden;
+        menu.hidden=!opening;
+        dismiss.setAttribute("aria-expanded",String(opening));
+        if(opening)menu.querySelector("button").focus({preventScroll:true});
+      });
+      document.getElementById("contactNudgeLater").addEventListener("click",()=>{
+        const hours=12+Math.floor(Math.random()*5);
+        const remindAt=Date.now()+hours*60*60*1000;
+        savePreference("remind",remindAt);
+        notice.hidden=true;
+        hideMenu();
+        schedule(remindAt-Date.now());
+      });
+      document.getElementById("contactNudgeNever").addEventListener("click",()=>{
+        savePreference("hide");
+        notice.hidden=true;
+        hideMenu();
+        if(timer!==null)window.clearTimeout(timer);
+        timer=null;
+      });
+      menu.addEventListener("keydown",event=>{
+        if(event.key==="Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          hideMenu({restoreFocus:true});
+        }
+      });
+      document.addEventListener("click",event=>{
+        if(!notice.contains(event.target)&&!menu.hidden)hideMenu();
+      });
+      window.addEventListener("storage",event=>{
+        if(event.key===storageKeys.hidden&&event.newValue==="true") {
+          notice.hidden=true;
+          if(timer!==null)window.clearTimeout(timer);
+          timer=null;
+        } else if(event.key===storageKeys.remindAt&&event.newValue) {
+          notice.hidden=true;
+          schedule(Number(event.newValue)-Date.now());
+        }
+      });
+      document.addEventListener("visibilitychange",()=>{
+        if(!document.hidden&&!notice.hidden)showWhenReady();
+      });
+
+      try {
+        if(localStorage.getItem(storageKeys.hidden)==="true")return;
+        const remindAt=Number(localStorage.getItem(storageKeys.remindAt));
+        if(Number.isFinite(remindAt)&&remindAt>Date.now()) {
+          schedule(remindAt-Date.now());
+          return;
+        }
+        if(localStorage.getItem(storageKeys.remindAt)!==null)localStorage.removeItem(storageKeys.remindAt);
+      } catch(error) {
+        console.error("Could not read the contact prompt preference.",error);
+      }
+      schedule(5000);
     }
 
     function initializeDangerZone() {
@@ -9613,6 +10549,7 @@
       console.error("Could not read the saved language:",error);
     }
     setLanguage(savedLanguage,false);
+    initializeContactNudge();
 
     const localizationObserver=new MutationObserver(records=>{
       records.forEach(record=>{
