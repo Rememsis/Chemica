@@ -276,6 +276,13 @@
     .about-story { display: flex; flex-direction: column; justify-content: center; padding: clamp(22px,4vw,44px); }
     .about-story h2 { margin: 0; font-size: clamp(22px,3vw,34px); font-weight: 610; letter-spacing: -.055em; }
     .about-story p { margin: 14px 0 0; color: #a4ada5; font-size: 13px; line-height: 1.8; }
+    .instagram-top-link { display: inline-flex; width: 36px; min-height: 34px; box-sizing: border-box; flex: 0 0 auto; align-items: center; justify-content: center; gap: 7px; overflow: hidden; padding: 0; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: var(--surface); font-size: 10px; font-weight: 650; text-decoration: none; white-space: nowrap; transition: width .38s cubic-bezier(.2,.8,.2,1), padding .38s cubic-bezier(.2,.8,.2,1), gap .38s, border-color .22s, color .22s, background .22s, box-shadow .22s, transform .22s; }
+    .instagram-top-link span { max-width: 0; overflow: hidden; opacity: 0; transform: translateX(-6px); transition: max-width .38s cubic-bezier(.2,.8,.2,1), opacity .2s, transform .38s cubic-bezier(.2,.8,.2,1); }
+    .instagram-top-link:hover, .instagram-top-link:focus-visible { width: 178px; justify-content: flex-start; gap: 8px; padding: 0 11px; border-color: rgba(201,239,119,.42); color: var(--accent); background: linear-gradient(120deg,rgba(201,239,119,.12),rgba(201,239,119,.035)); box-shadow: 0 5px 20px rgba(201,239,119,.1); transform: translateY(-1px); }
+    .instagram-top-link:hover span, .instagram-top-link:focus-visible span { max-width: 145px; opacity: 1; transform: translateX(0); }
+    .instagram-top-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .instagram-top-link svg { width: 15px; height: 15px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; transition: transform .38s cubic-bezier(.2,.8,.2,1); }
+    .instagram-top-link:hover svg, .instagram-top-link:focus-visible svg { transform: rotate(-8deg) scale(1.08); }
     .molecule-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 17px; border-bottom: 1px solid var(--line); }
     .molecule-card-head h3 { margin: 0; font-size: 12px; font-weight: 680; }
     .molecule-card-head span { color: #838d84; font-size: 9px; }
@@ -1058,6 +1065,7 @@
       .brand-name { font-size: 13px; }
       .brand-name span { display: none; }
       .topbar-right { gap: 7px; }
+      .instagram-top-link { min-height: 32px; }
       .language-picker > span { display: none; }
       .language-select { width: 88px; max-width: 27vw; padding: 0 19px 0 6px; font-size: 9px; }
       .page-tabs { position: fixed; top: 66px; right: auto; bottom: 0; left: 0; width: min(84vw, 320px); height: auto; min-height: 0; max-height: calc(100vh - 66px); max-height: calc(100dvh - 66px); padding: 20px 14px calc(20px + env(safe-area-inset-bottom)); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; transform: translateX(-105%); visibility: hidden; box-shadow: 20px 0 60px rgba(0,0,0,.32); transition: transform .24s var(--motion-ease), visibility 0s linear .24s; }
@@ -1133,6 +1141,9 @@
     @media (max-width: 420px) {
       main { padding-right: 14px; padding-left: 14px; }
       .topbar { padding-right: 16px; padding-left: 16px; }
+      .instagram-top-link { width: 32px; }
+      .instagram-top-link:hover, .instagram-top-link:focus-visible { width: 32px; gap: 7px; padding: 0; }
+      .instagram-top-link span { display: none; }
       .intro-aside { gap: 23px; }
       .toolbar { padding: 10px; }
       .filter-select { max-width: 170px; }
@@ -1251,6 +1262,10 @@
     </a>
     <div class="topbar-right">
       <div class="top-note"><b>118 elements</b> · one curious universe</div>
+      <a class="instagram-top-link" href="https://www.instagram.com/premendence/" target="_blank" rel="noopener noreferrer" aria-label="Follow Chemica’s progress on Instagram" title="Follow Chemica’s progress on Instagram">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none"></circle></svg>
+        <span>Follow Me on Instagram for Updates!</span>
+      </a>
       <label class="language-picker"><span>Language</span><select id="languageSelect" class="language-select" aria-label="Language">
         <option value="en">English</option>
         <option value="es">Español</option>
@@ -2506,10 +2521,11 @@
       </figure>
       <article class="molecule-card about-story">
         <h2>About Me</h2>
-        <p>Hello! The site that you are on right now is made by me. I am Parker Lu, and I am currently a high school student. I have been developing for about 2 years, mastering in Python, HTML, and CSS, but weak in C++.</p>
-        <p>At the age of 8, I was introduced to computer programming, specifically in Python. Then I learned about all kinds of other programming languages, like C++, HTML and CSS, and JavaScript. I have always been fond of starting my own website, so in June of 2026, I began my journey of making my first website. It was a portfolio of a roblox game studio that I started with my friends. More info here: https://aerodexofficial.netlify.app/</p>
-        <p>The reason for this website's creation is because I got annoyed of other sites where it mentions having "Chemistry related topics" but ending up either having to share your personal info, or a paywall, or the questions aren't even related. That's where Chemica - the site you are currently on - comes in. It offers free accurate interactive chemistry content with NO COST, NO INFO, NADA. So you can cram up for your following chemistry test without having to deal with annoying popups and paywalls.</p>
-        <p> And also, if you have a suggestion, bug, or just want to say hi, just head over to feedback, or email me by clicking this button. Don't worry, it's not going to scare you.</p>
+        <p>Hey! I’m Parker Lu, a high school student and the developer behind the website you’re on right now. I’ve been developing for about two years, mostly with Python, HTML, and CSS. I also know some JavaScript and C++, although C++ and I are still working on our relationship.</p>
+        <p>I first discovered programming at eight years old, starting with Python before exploring other languages. I’d always wanted to build a website of my own, and in June 2026, I finally made it happen. My first project was a portfolio for Aerodex, a Roblox game studio I started with my friends. You can check it out here: <a href="https://aerodexofficial.netlify.app/" target="_blank" rel="noopener noreferrer">Aerodex Official</a></p>
+        <p>So, why did I build Chemica? I got tired of clicking on sites promising “chemistry practice” only to find a paywall, a request for my personal information, or questions that apparently missed chemistry class entirely.</p>
+        <p>Chemica is my answer: free, accurate, interactive chemistry content without the unnecessary hassle. No payments. No personal information required. No pop-ups standing between you and understanding what electrons are up to.</p>
+        <p>Whether you’re reviewing ahead of time or cramming for tomorrow’s test, Chemica is here to help—because chemistry already has enough barriers without an “Enter your credit card” button.</p>
         <a class="feedback-contact" href="mailto:luparker567@gmail.com">Click here!</a>
       </article>
     </section>
@@ -3161,7 +3177,9 @@
       <p class="contact-nudge-message">Suggestions, bugs, or say hi?</p>
       <a class="contact-nudge-link" href="mailto:luparker567@gmail.com?subject=Chemica%20feedback">Click here</a>
       <div class="contact-nudge-menu" id="contactNudgeMenu" role="group" aria-label="Contact prompt options" hidden>
-        <button id="contactNudgeLater" type="button">Maybe later</button>
+        <button type="button" data-remind-hours="1">Remind me in one hour</button>
+        <button type="button" data-remind-hours="12">Remind me in 12 hours</button>
+        <button type="button" data-remind-hours="24">Remind me in 1 day</button>
         <button id="contactNudgeNever" type="button">Don’t Show this Again</button>
       </div>
     </div>
@@ -5418,6 +5436,51 @@
         name:"Formaldehyde",formula:"CH₂O",description:"Carbon forms a double bond to oxygen and single bonds to two hydrogens; oxygen has two lone pairs.",
         atoms:[{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"O",x:370,y:165,lonePairs:[90,270]},{symbol:"H",x:190,y:250,lonePairs:[]},{symbol:"H",x:190,y:80,lonePairs:[]}],
         bonds:[{from:0,to:1,order:2},{from:0,to:2,order:1},{from:0,to:3,order:1}]
+      },
+      hydrogenSulfide:{
+        name:"Hydrogen sulfide",formula:"H₂S",description:"Sulfur forms two single bonds and has two lone pairs.",
+        atoms:[{symbol:"S",x:250,y:160,lonePairs:[210,330]},{symbol:"H",x:145,y:245,lonePairs:[]},{symbol:"H",x:355,y:245,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1}]
+      },
+      phosphine:{
+        name:"Phosphine",formula:"PH₃",description:"Phosphorus forms three single bonds to hydrogen and keeps one lone pair.",
+        atoms:[{symbol:"P",x:250,y:160,lonePairs:[270]},{symbol:"H",x:145,y:245,lonePairs:[]},{symbol:"H",x:250,y:270,lonePairs:[]},{symbol:"H",x:355,y:245,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1}]
+      },
+      hydrogenChloride:{
+        name:"Hydrogen chloride",formula:"HCl",description:"Hydrogen and chlorine share one bonding pair; chlorine has three lone pairs.",
+        atoms:[{symbol:"H",x:165,y:165,lonePairs:[]},{symbol:"Cl",x:335,y:165,lonePairs:[0,120,240]}],
+        bonds:[{from:0,to:1,order:1}]
+      },
+      chlorine:{
+        name:"Chlorine",formula:"Cl₂",description:"The two chlorine atoms share one pair; each chlorine keeps three lone pairs.",
+        atoms:[{symbol:"Cl",x:185,y:165,lonePairs:[90,180,270]},{symbol:"Cl",x:315,y:165,lonePairs:[0,90,270]}],
+        bonds:[{from:0,to:1,order:1}]
+      },
+      ethane:{
+        name:"Ethane",formula:"C₂H₆",description:"The carbon atoms share one single bond, and each carbon forms three C–H single bonds.",
+        atoms:[{symbol:"C",x:190,y:165,lonePairs:[]},{symbol:"C",x:310,y:165,lonePairs:[]},{symbol:"H",x:105,y:90,lonePairs:[]},{symbol:"H",x:105,y:240,lonePairs:[]},{symbol:"H",x:190,y:55,lonePairs:[]},{symbol:"H",x:395,y:90,lonePairs:[]},{symbol:"H",x:395,y:240,lonePairs:[]},{symbol:"H",x:310,y:275,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:0,to:4,order:1},{from:1,to:5,order:1},{from:1,to:6,order:1},{from:1,to:7,order:1}]
+      },
+      ethene:{
+        name:"Ethene",formula:"C₂H₄",description:"The carbon atoms share a double bond; each carbon also forms two single bonds to hydrogen.",
+        atoms:[{symbol:"C",x:195,y:165,lonePairs:[]},{symbol:"C",x:305,y:165,lonePairs:[]},{symbol:"H",x:125,y:85,lonePairs:[]},{symbol:"H",x:125,y:245,lonePairs:[]},{symbol:"H",x:375,y:85,lonePairs:[]},{symbol:"H",x:375,y:245,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:2},{from:0,to:2,order:1},{from:0,to:3,order:1},{from:1,to:4,order:1},{from:1,to:5,order:1}]
+      },
+      ethyne:{
+        name:"Ethyne",formula:"C₂H₂",description:"The carbon atoms share a triple bond, and each carbon forms one single bond to hydrogen.",
+        atoms:[{symbol:"H",x:85,y:165,lonePairs:[]},{symbol:"C",x:185,y:165,lonePairs:[]},{symbol:"C",x:315,y:165,lonePairs:[]},{symbol:"H",x:415,y:165,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:1,to:2,order:3},{from:2,to:3,order:1}]
+      },
+      hydrogenPeroxide:{
+        name:"Hydrogen peroxide",formula:"H₂O₂",description:"Each oxygen forms one O–H bond and one O–O bond, and keeps two lone pairs.",
+        atoms:[{symbol:"H",x:70,y:165,lonePairs:[]},{symbol:"O",x:180,y:165,lonePairs:[90,270]},{symbol:"O",x:320,y:165,lonePairs:[90,270]},{symbol:"H",x:430,y:165,lonePairs:[]}],
+        bonds:[{from:0,to:1,order:1},{from:1,to:2,order:1},{from:2,to:3,order:1}]
+      },
+      carbonDisulfide:{
+        name:"Carbon disulfide",formula:"CS₂",description:"Carbon forms a double bond to each sulfur; each sulfur has two lone pairs.",
+        atoms:[{symbol:"C",x:250,y:165,lonePairs:[]},{symbol:"S",x:115,y:165,lonePairs:[90,270]},{symbol:"S",x:385,y:165,lonePairs:[90,270]}],
+        bonds:[{from:0,to:1,order:2},{from:0,to:2,order:2}]
       }
     };
 
@@ -5493,13 +5556,14 @@
         svg.append(moleculeSvgNode("text",{x:atom.x,y:atom.y,class:"lewis-atom"},atom.symbol));
       });
       document.getElementById("lewisDiagramStage").replaceChildren(svg);
-      document.getElementById("lewisMoleculeTitle").textContent=`${molecule.name} · ${molecule.formula}`;
-      document.getElementById("lewisMoleculeDescription").textContent=molecule.description;
-      const valenceByElement={H:1,B:3,C:4,N:5,O:6,F:7,Cl:7};
+      document.getElementById("lewisMoleculeTitle").textContent=`${translateValue(molecule.name)} · ${molecule.formula}`;
+      document.getElementById("lewisMoleculeDescription").textContent=translateValue(molecule.description);
+      const valenceByElement={H:1,B:3,C:4,N:5,O:6,F:7,P:5,S:6,Cl:7};
       const valenceElectrons=molecule.atoms.reduce((total,atom)=>total+valenceByElement[atom.symbol],0);
       const representedElectrons=molecule.bonds.reduce((total,bond)=>total+bond.order*2,0)
         +molecule.atoms.reduce((total,atom)=>total+atom.lonePairs.length*2,0);
-      document.getElementById("lewisElectronTotal").textContent=`${valenceElectrons} valence electrons · ${representedElectrons} drawn`;
+      document.getElementById("lewisElectronTotal").textContent=translateValue("{valence} valence electrons · {drawn} drawn")
+        .replace("{valence}",String(valenceElectrons)).replace("{drawn}",String(representedElectrons));
     }
 
     function initializeElectronModelPages() {
@@ -5519,7 +5583,7 @@
       Object.entries(lewisMolecules).forEach(([key,molecule])=>{
         const option=document.createElement("option");
         option.value=key;
-        option.textContent=`${molecule.formula} · ${molecule.name}`;
+        option.textContent=`${molecule.formula} · ${translateValue(molecule.name)}`;
         lewisSelect.append(option);
       });
       lewisSelect.addEventListener("change",()=>renderLewisDiagram(lewisSelect.value));
@@ -8717,6 +8781,9 @@
       "Click here":"Haz clic aquí",
       "Dismiss contact prompt":"Cerrar el aviso de contacto",
       "Contact prompt options":"Opciones del aviso de contacto",
+      "Remind me in one hour":"Recordármelo dentro de una hora",
+      "Remind me in 12 hours":"Recordármelo dentro de 12 horas",
+      "Remind me in 1 day":"Recordármelo dentro de 1 día",
       "Don’t Show this Again":"No volver a mostrar",
       "Make Chemica yours":"Personaliza Chemica",
       "Display":"Pantalla",
@@ -9500,6 +9567,9 @@
       "Click here":"点击这里",
       "Dismiss contact prompt":"关闭联系提示",
       "Contact prompt options":"联系提示选项",
+      "Remind me in one hour":"一小时后提醒我",
+      "Remind me in 12 hours":"12 小时后提醒我",
+      "Remind me in 1 day":"一天后提醒我",
       "Don’t Show this Again":"不再显示",
       "Make Chemica yours":"个性化 Chemica",
       "Display":"显示",
@@ -11380,6 +11450,9 @@
     Object.assign(spanishText,flashcardsSpanishText);
     Object.assign(simplifiedChineseText,flashcardsChineseText);
     Object.assign(traditionalChineseText,Object.fromEntries(Object.entries(flashcardsChineseText).map(([source,translated])=>[source,toTraditionalChinese(translated)])));
+    Object.assign(spanishText,{"Instagram":"Instagram","Follow Me for Updates!":"¡Sígueme para ver las novedades!"});
+    Object.assign(simplifiedChineseText,{"Instagram":"Instagram","Follow Me for Updates!":"关注我，获取最新动态！"});
+    Object.assign(traditionalChineseText,{"Instagram":"Instagram","Follow Me for Updates!":toTraditionalChinese(simplifiedChineseText["Follow Me for Updates!"])});
     const originalTextNodes=new WeakMap();
     const originalAttributes=new WeakMap();
     const languageSelect=document.getElementById("languageSelect");
@@ -11538,14 +11611,18 @@
         dismiss.setAttribute("aria-expanded",String(opening));
         if(opening)menu.querySelector("button").focus({preventScroll:true});
       });
-      document.getElementById("contactNudgeLater").addEventListener("click",()=>{
-        const hours=12+Math.floor(Math.random()*5);
+      menu.addEventListener("click",event=>{
+        const remindButton=event.target.closest("[data-remind-hours]");
+        if(!remindButton)return;
+        const hours=Number(remindButton.dataset.remindHours);
+        if(![1,12,24].includes(hours))throw new Error(`Unsupported contact prompt reminder interval: ${remindButton.dataset.remindHours}`);
         const remindAt=Date.now()+hours*60*60*1000;
-        savePreference("remind",remindAt);
+        savePreference("remind", remindAt);
         notice.hidden=true;
         hideMenu();
-        schedule(remindAt-Date.now());
+        schedule(remindAt - Date.now());
       });
+
       document.getElementById("contactNudgeNever").addEventListener("click",()=>{
         savePreference("hide");
         notice.hidden=true;
