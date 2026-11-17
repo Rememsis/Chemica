@@ -741,7 +741,6 @@
     .settings-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; max-width: 980px; }
     .settings-card { min-width: 0; padding: 18px; }
     .settings-card h2 { margin: 0 0 14px; font-size: 13px; }
-    .settings-field { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 5px 14px; padding: 12px 0; border-top: 1px solid rgba(235,239,224,.07); }
     .settings-field label { color: #d7ddd4; font-size: 10px; font-weight: 650; }
     .settings-field output { color: var(--accent); font-size: 10px; font-variant-numeric: tabular-nums; }
     .settings-field input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
@@ -1286,6 +1285,35 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
+    .flashcard-count-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--surface-raised);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    #flashcardRequestedCount {
+      width: 68px;
+      padding: 6px 10px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    #flashcardRequestedCount:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+    }
+
   </style>
 </head>
 <body>
@@ -2564,7 +2592,7 @@
     <section class="chema-layout" aria-label="Chema chemistry assistant">
       <article class="molecule-card chema-chat">
         <div class="chema-chat-head"><h2>Ask Chema (Beta 3)</h2><button class="chema-reset" id="chemaClear" type="button">Clear chat</button></div>
-        <p class="chema-status" id="chemaStatus" role="status">Built-in guide mode · your questions stay in this browser.</p>
+        <p class="chema-status" id="chemaStatus" role="status">Built-in guide mode · Your questions stay private, not anywhere else. · Chema AI may make mistakes. </p>
         <div class="chema-transcript" id="chemaTranscript" role="log" aria-live="polite" aria-relevant="additions text"></div>
         <form class="chema-form" id="chemaForm">
           <label for="chemaInput" class="sr-only">Ask a chemistry question</label>
@@ -2599,8 +2627,9 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.5.2</p><h2>Renamed Chemica to Chemciafe Added 1000+ Questions.<span class="update-badge">MINOR UPDATE</span></h2><p>Renamed the Site to Chemica, and added more that 1000 questions to lessons, quizzes, and flashcards. Impossible AXE molecules (NF4, AX4E2): patched. Flashcards Not Showing Up: patched.</p></article>
-      <article class="molecule-card update-entry"><p>Version 1.5.1</p><h2>Ions Section and Multiple Bugs<span class="update-badge">LATEST</span><span class="update-badge">NEW SECTION</span><span class="update-badge">MINOR UPDATE</span></h2><p>Added a Ions Section with Monoatomic ions and Polyatomic ions and added more questions. Multiple bug fix for the following: Impossible AXE/Molecular Structures (NF6), Translation issues, Lewis Diagrams for Outer Elements in Group 17 with no lone pairs, and Flashcards having questions that wasn't answerable.</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.3</p><h2>Polished Flashcard Count and Bug Fixes<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE</span></h2><p>Improved the flashcard count display and fixed several bugs, like spectrum confusion for Elements 104-118, Periodic Table dissappearing all of a sudden, and dropdowns not working.</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.2</p><h2>Renamed Chemica to Chemicafe and Added 1000+ Questions.<span class="update-badge">MINOR UPDATE</span></h2><p>Renamed the Site to Chemica, and added more that 1000 questions to lessons, quizzes, and flashcards. Add 4 New Themes. Impossible AXE molecules (NF4, AX4E2): patched. Flashcards Not Showing Up: patched.</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.1</p><h2>Ions Section and Multiple Bugs<span class="update-badge">NEW SECTION</span><span class="update-badge">MINOR UPDATE</span></h2><p>Added a Ions Section with Monoatomic ions and Polyatomic ions and added more questions. Multiple bug fix for the following: Impossible AXE/Molecular Structures (NF6), Translation issues, Lewis Diagrams for Outer Elements in Group 17 with no lone pairs, and Flashcards having questions that wasn't answerable.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.5.0</p><h2>New Topics and a Smarter Chema<span class="update-badge">NEW TOPIC</span><span class="update-badge">MINOR UPDATE</span></h2><p>Added a Stoichiometry and the Mole lesson, and a States of Matter page with an interactive particle explorer. Chema can now explain phase changes, balance equations, and solve more mole calculations. Fixed a bug where there was 6 lone pairs on the chlorine atom for CH₃Cl</p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.2</p><h2>More Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>The spectrum not showing up is patched; included an API. The ability to add 3 bonds to oxygen is patched. Rearranged Practice Quiz so numbers matched the Learning Path and Lessons. Properties and Reaction have been split, so more data can be fitted. Issues with translation not functioning properly is patched. </p></article>
       <article class="molecule-card update-entry"><p>Version 1.4.1</p><h2>Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>Fixed a bug where you are able to select double and triple bonds when hydrogen was selected, and translation issues. </p></article>
@@ -4221,7 +4250,7 @@
             atomFrame = 0;
           }
           return;
-        }
+         }
         if (atomView === "structure") {
           context.save();
           context.translate(centerX, centerY);
@@ -4241,6 +4270,9 @@
             ? knownSpectrum.wavelengths.map(wavelength => ({wavelength, kind:"curated"}))
             : []);
           const dataAvailableForSpecies = charge >= 0;
+          const atomicNum = element.number ?? element.atomicNumber ?? 0;
+          const isUnmeasuredSuperheavy = atomicNum >= 100;
+
           const band = context.createLinearGradient(left, 0, right, 0);
           band.addColorStop(0, "#713d9e");
           band.addColorStop(.12, "#5952a9");
@@ -4307,31 +4339,42 @@
             ? `${spectrumLines.length} NIST ASD visible lines · observed/Ritz wavelengths; heights are not relative intensities.`
             : !dataAvailableForSpecies
               ? "Negative-ion spectral lines are not shown; the linked NIST data are for the neutral atom."
-              : charge > 0
-              ? "Loading the selected ion's reference spectrum from NIST ASD."
-              : knownSpectrum
-                ? `${knownSpectrum.source} · curated subset while NIST ASD loads.`
-                : `Loading ${element.name} visible reference lines from NIST ASD.`;
+              : isUnmeasuredSuperheavy || spectrumState === "empty" || spectrumState === "loaded"
+                ? `No experimental visible spectrum lines (380–700 nm) are recorded in NIST ASD for ${element.name}.`
+                : spectrumState === "error"
+                  ? `Could not reach NIST ASD for ${element.name}.`
+                  : charge > 0
+                    ? "Loading the selected ion's reference spectrum from NIST ASD."
+                    : knownSpectrum
+                      ? `${knownSpectrum.source} · curated subset while NIST ASD loads.`
+                      : `Loading ${element.name} visible reference lines from NIST ASD.`;
           context.fillText(spectrumLabel, left, baseline - 166, right - left);
           if (!spectrumLines.length) {
             context.textAlign = "center";
             context.fillStyle = "#bac3ce";
             context.font = "13px system-ui, sans-serif";
-            const emptyMessage = spectrumState === "loaded" || spectrumState === "empty"
-              ? "No NIST reference lines returned for this visible range."
+            const emptyMessage = isUnmeasuredSuperheavy || spectrumState === "loaded" || spectrumState === "empty"
+              ? "No NIST reference lines recorded for this visible range."
               : spectrumState === "unsupported"
                 ? "Negative-ion lines are not shown in this view."
-              : spectrumState === "error"
-                ? "NIST data could not be loaded."
-                : "Loading NIST Atomic Spectra Database lines…";
+                : spectrumState === "error"
+                  ? "NIST data could not be loaded."
+                  : "Loading NIST Atomic Spectra Database lines…";
             context.fillText(emptyMessage, centerX, baseline - 18);
             context.font = "10px system-ui, sans-serif";
             context.fillStyle = "#8994a1";
-            context.fillText("Use the NIST ASD line-list link above to view or retry the query.", centerX, baseline + 72);
+            context.fillText(
+              isUnmeasuredSuperheavy
+                ? "Synthetic elements Z ≥ 100 have no tabulated optical emission lines in NIST ASD."
+                : "Use the NIST ASD line-list link above to view or retry the query.",
+              centerX,
+              baseline + 72
+            );
           }
           atomFrame = 0;
           return;
         }
+
 
         const orbitPoints = [];
         if (atomView === "structure") shellCounts.forEach((count, shellIndex) => {
@@ -7328,7 +7371,7 @@
       const validCount=Number.isInteger(requestedCount)&&requestedCount>=1&&requestedCount<=availableCount;
       document.getElementById("flashcardStart").disabled=selectedCount===0||!validCount;
       document.getElementById("flashcardAvailableCount").textContent=availableCount
-        ?flashcardText("{total} flashcards available.",{total:availableCount})
+        ?flashcardText("of {total}  flashcards available.",{total:availableCount})
         :translateValue("Select topics to see available flashcards.");
       document.getElementById("flashcardSelectAll").textContent=translateValue(allSelected?"Clear selection":"Select all");
       document.getElementById("flashcardSetupStatus").textContent=selectedCount===0
