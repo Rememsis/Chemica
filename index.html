@@ -2633,7 +2633,8 @@
       <div><p class="eyebrow">Fresh from the lab</p><h1>Update <em>log.</em></h1><p class="intro-copy">A quick record of what’s new in your chemistry guide.</p></div>
     </section>
     <section class="update-list" aria-label="Website updates">
-      <article class="molecule-card update-entry"><p>Version 1.5.4</p><h2>Moved Socials<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE</span></h2><p>Moved Socials To the sidebar, and added a Youtube Page (Yes we have a Youtube Channel now!)</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.5</p><h2>Anion-ion Valance fix<span class="update-badge">LATEST</span><span class="update-badge">MINOR UPDATE</span></h2><p>Fixed a bug where Hydride ion (H⁻ anion-ion) had 8 valance electrons instead of 2</p></article>
+      <article class="molecule-card update-entry"><p>Version 1.5.4</p><h2>Moved Socials<span class="update-badge">MINOR UPDATE</span></h2><p>Moved Socials To the sidebar, and added a Youtube Page (Yes we have a Youtube Channel now!)</p></article>
       <article class="molecule-card update-entry"><p>Version 1.5.3</p><h2>Polished Flashcard Count and Bug Fixes<span class="update-badge">MINOR UPDATE</span></h2><p>Improved the flashcard count display and fixed several bugs, like spectrum confusion for Elements 104-118, Periodic Table dissappearing all of a sudden, and dropdowns not working.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.5.2</p><h2>Renamed Chemica to Chemicafe and Added 1000+ Questions.<span class="update-badge">MINOR UPDATE</span></h2><p>Renamed the Site to Chemica, and added more that 1000 questions to lessons, quizzes, and flashcards. Add 4 New Themes. Impossible AXE molecules (NF4, AX4E2): patched. Flashcards Not Showing Up: patched.</p></article>
       <article class="molecule-card update-entry"><p>Version 1.5.1</p><h2>Ions Section and Multiple Bugs<span class="update-badge">NEW SECTION</span><span class="update-badge">MINOR UPDATE</span></h2><p>Added a Ions Section with Monoatomic ions and Polyatomic ions and added more questions. Multiple bug fix for the following: Impossible AXE/Molecular Structures (NF6), Translation issues, Lewis Diagrams for Outer Elements in Group 17 with no lone pairs, and Flashcards having questions that wasn't answerable.</p></article>
@@ -13731,120 +13732,187 @@
         return {atomSymbols,positions,bonds};
       }
 
-      function renderIonLewis(ion,geometry,label) {
-        const svgNamespace="http://www.w3.org/2000/svg";
-        const svg=document.createElementNS(svgNamespace,"svg");
-        svg.setAttribute("viewBox","0 0 520 230");
-        svg.setAttribute("class","ion-lewis-svg");
-        svg.setAttribute("role","img");
-        svg.setAttribute("aria-label",`${label} Lewis diagram`);
-        const makeNode=(name,attributes={},text="")=>{
-          const node=document.createElementNS(svgNamespace,name);
-          Object.entries(attributes).forEach(([key,value])=>node.setAttribute(key,String(value)));
-          if(text)node.textContent=text;
+      function renderIonLewis(ion, geometry, label) {
+        const svgNamespace = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNamespace, "svg");
+        svg.setAttribute("viewBox", "0 0 520 230");
+        svg.setAttribute("class", "ion-lewis-svg");
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", `${label} Lewis diagram`);
+
+        const makeNode = (name, attributes = {}, text = "") => {
+          const node = document.createElementNS(svgNamespace, name);
+          Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+          if (text) node.textContent = text;
           return node;
         };
-        const {atomSymbols,positions,bonds}=geometry;
-        const valence={H:1,Li:1,Na:1,K:1,Ag:1,Mg:2,Ca:2,Ba:2,Zn:2,Al:3,Fe:2,Cu:1,Sn:2,Pb:2,C:4,N:5,O:6,F:7,Cl:7,Br:7,I:7,Si:4,P:5,S:6,Mn:7,Cr:6};
-        const doubleBonds={
-          "NO2-":[[0,1]],"NO3-":[[0,1]],"HCO3-":[[1,4]],"CH3COO-":[[1,5]],"ClO2-":[[0,1]],"ClO3-":[[0,1]],"ClO4-":[[0,1],[0,2],[0,3]],
-          "MnO4-":[[0,1],[0,2],[0,3]],"CO3-2":[[0,1]],"SO3-2":[[0,1]],"SO4-2":[[0,1],[0,2]],
-          "HSO4-":[[1,4],[1,5]],"HPO4-2":[[1,3]],"H2PO4-":[[2,5]],"PO4-3":[[0,1]],
-          "C2O4-2":[[0,2],[1,4]],"CrO4-2":[[0,1],[0,2]],"Cr2O7-2":[[0,3],[1,6]]
+
+        const { atomSymbols, positions, bonds } = geometry;
+
+        const valence = {
+          H: 1, Li: 1, Na: 1, K: 1, Ag: 1, Mg: 2, Ca: 2, Ba: 2, Zn: 2, Al: 3, Fe: 2, Cu: 1,
+          Sn: 2, Pb: 2, C: 4, N: 5, O: 6, F: 7, Cl: 7, Br: 7, I: 7, Si: 4, P: 5, S: 6, Mn: 7, Cr: 6
         };
-        const tripleBonds={"CN-":[[0,1]]};
-        const formalCharges={"NH4+":[[0,1]],"H3O+":[[3,1]],"OH-":[[0,-1]],"CN-":[[0,-1]],
-          "NO2-":[[2,-1]],"NO3-":[[0,1],[2,-1],[3,-1]],"HCO3-":[[3,-1]],"CH3COO-":[[6,-1]],"ClO-":[[1,-1]],
-          "ClO2-":[[2,-1]],"ClO3-":[[0,1],[2,-1],[3,-1]],"ClO4-":[[4,-1]],"MnO4-":[[4,-1]],
-          "CO3-2":[[2,-1],[3,-1]],"SO3-2":[[2,-1],[3,-1]],"SO4-2":[[3,-1],[4,-1]],
-          "HSO4-":[[3,-1]],"HPO4-2":[[4,-1],[5,-1]],"H2PO4-":[[6,-1]],"PO4-3":[[2,-1],[3,-1],[4,-1]],
-          "C2O4-2":[[3,-1],[5,-1]],"CrO4-2":[[3,-1],[4,-1]],"Cr2O7-2":[[0,1],[1,1],[4,-1],[5,-1],[7,-1],[8,-1]],
-          "O2-2":[[0,-1],[1,-1]]};
-        const charges=new Map(formalCharges[ion.id]||[]);
-        if(atomSymbols.length===1)charges.set(0,ion.charge);
-        const bondOrderFor=(first,second)=>{
-          const pair=[first,second].sort((a,b)=>a-b);
-          if((tripleBonds[ion.id]||[]).some(candidate=>candidate[0]===pair[0]&&candidate[1]===pair[1]))return 3;
-          if((doubleBonds[ion.id]||[]).some(candidate=>candidate[0]===pair[0]&&candidate[1]===pair[1]))return 2;
+
+        const doubleBonds = {
+          "NO2-": [[0, 1]], "NO3-": [[0, 1]], "HCO3-": [[1, 4]], "CH3COO-": [[1, 5]],
+          "ClO2-": [[0, 1]], "ClO3-": [[0, 1]], "ClO4-": [[0, 1], [0, 2], [0, 3]],
+          "MnO4-": [[0, 1], [0, 2], [0, 3]], "CO3-2": [[0, 1]], "SO3-2": [[0, 1]],
+          "SO4-2": [[0, 1], [0, 2]], "HSO4-": [[1, 4], [1, 5]], "HPO4-2": [[1, 3]],
+          "H2PO4-": [[2, 5]], "PO4-3": [[0, 1]], "C2O4-2": [[0, 2], [1, 4]],
+          "CrO4-2": [[0, 1], [0, 2]], "Cr2O7-2": [[0, 3], [1, 6]]
+        };
+
+        const tripleBonds = { "CN-": [[0, 1]] };
+
+        const formalCharges = {
+          "NH4+": [[0, 1]], "H3O+": [[3, 1]], "OH-": [[0, -1]], "CN-": [[0, -1]],
+          "NO2-": [[2, -1]], "NO3-": [[0, 1], [2, -1], [3, -1]], "HCO3-": [[3, -1]],
+          "CH3COO-": [[6, -1]], "ClO-": [[1, -1]], "ClO2-": [[2, -1]],
+          "ClO3-": [[0, 1], [2, -1], [3, -1]], "ClO4-": [[4, -1]], "MnO4-": [[4, -1]],
+          "CO3-2": [[2, -1], [3, -1]], "SO3-2": [[2, -1], [3, -1]], "SO4-2": [[3, -1], [4, -1]],
+          "HSO4-": [[3, -1]], "HPO4-2": [[4, -1], [5, -1]], "H2PO4-": [[6, -1]],
+          "PO4-3": [[2, -1], [3, -1], [4, -1]], "C2O4-2": [[3, -1], [5, -1]],
+          "CrO4-2": [[3, -1], [4, -1]],
+          "Cr2O7-2": [[0, 1], [1, 1], [4, -1], [5, -1], [7, -1], [8, -1]],
+          "O2-2": [[0, -1], [1, -1]]
+        };
+
+        const charges = new Map(formalCharges[ion.id] || []);
+        if (atomSymbols.length === 1) charges.set(0, ion.charge);
+
+        const bondOrderFor = (first, second) => {
+          const pair = [first, second].sort((a, b) => a - b);
+          if ((tripleBonds[ion.id] || []).some(c => c[0] === pair[0] && c[1] === pair[1])) return 3;
+          if ((doubleBonds[ion.id] || []).some(c => c[0] === pair[0] && c[1] === pair[1])) return 2;
           return 1;
         };
-        const bondOrders=bonds.map(([first,second])=>bondOrderFor(first,second));
-        const formalChargeTotal=[...charges.values()].reduce((sum,charge)=>sum+charge,0);
-        if(formalChargeTotal!==ion.charge)
+
+        const bondOrders = bonds.map(([first, second]) => bondOrderFor(first, second));
+
+        const formalChargeTotal = [...charges.values()].reduce((sum, charge) => sum + charge, 0);
+        if (formalChargeTotal !== ion.charge) {
           throw new Error(`Lewis structure charges do not sum to ${ion.charge} for ${ion.formula}.`);
-        const loneElectrons=atomSymbols.map((symbol,index)=>{
-          if(atomSymbols.length===1)return ion.charge<0?4:0;
-          const pairBondOrder=bonds.reduce((sum,[first,second],bondIndex)=>sum+((first===index||second===index)?bondOrders[bondIndex]:0),0);
-          const electronCount=(valence[symbol]??0)-(charges.get(index)||0)-pairBondOrder;
-          if(electronCount<0||electronCount>8||electronCount%2!==0)
+        }
+
+        // Number of lone PAIRS on each atom
+        const loneElectrons = atomSymbols.map((symbol, index) => {
+          if (atomSymbols.length === 1) {
+            // Hydride (H-) has 2 valence electrons (a duet), so it gets 1 lone pair
+            if (symbol === "H" && ion.charge === -1) return 1;
+            return ion.charge < 0 ? 4 : 0;
+          }
+          const pairBondOrder = bonds.reduce(
+            (sum, [first, second], bondIndex) =>
+              sum + ((first === index || second === index) ? bondOrders[bondIndex] : 0),
+            0
+          );
+          const electronCount = (valence[symbol] ?? 0) - (charges.get(index) || 0) - pairBondOrder;
+          if (electronCount < 0 || electronCount > 8 || electronCount % 2 !== 0) {
             throw new Error(`Could not make a whole-pair Lewis diagram for ${ion.formula} at ${symbol}.`);
-          return electronCount/2;
+          }
+          return electronCount / 2;
         });
-        const projected=positions.map(position=>new THREE.Vector2(position.x+position.z*0.3,-position.y-position.z*0.22));
-        const maxX=Math.max(...projected.map(point=>Math.abs(point.x)),0.5);
-        const maxY=Math.max(...projected.map(point=>Math.abs(point.y)),0.5);
-        const scale=Math.min(145/maxX,64/maxY,72);
-        const centerX=260;
-        const centerY=114;
-        const atomPoints=projected.map(point=>({x:centerX+point.x*scale,y:centerY+point.y*scale}));
-        const bounds=atomPoints.reduce((result,point)=>({
-          left:Math.min(result.left,point.x),right:Math.max(result.right,point.x),
-          top:Math.min(result.top,point.y),bottom:Math.max(result.bottom,point.y)
-        }),{left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity});
-        const bracketLeft=Math.max(26,bounds.left-34);
-        const bracketRight=Math.min(494,bounds.right+34);
-        const bracketTop=Math.max(25,bounds.top-27);
-        const bracketBottom=Math.min(204,bounds.bottom+27);
-        svg.append(
-          makeNode("path",{d:`M ${bracketLeft+10} ${bracketTop} H ${bracketLeft} V ${bracketBottom} H ${bracketLeft+10}`,class:"ion-lewis-bracket"}),
-          makeNode("path",{d:`M ${bracketRight-10} ${bracketTop} H ${bracketRight} V ${bracketBottom} H ${bracketRight-10}`,class:"ion-lewis-bracket"})
+
+        const projected = positions.map(
+          position => new THREE.Vector2(position.x + position.z * 0.3, -position.y - position.z * 0.22)
         );
-        bonds.forEach(([first,second],bondIndex)=>{
-          const start=atomPoints[first];
-          const end=atomPoints[second];
-          const dx=end.x-start.x;
-          const dy=end.y-start.y;
-          const length=Math.hypot(dx,dy)||1;
-          const perpendicular={x:-dy/length,y:dx/length};
-          const order=bondOrders[bondIndex];
-          const offsets=order===1?[0]:order===2?[-3,3]:[-5,0,5];
-          offsets.forEach(offset=>svg.append(makeNode("line",{
-            x1:start.x+perpendicular.x*offset,y1:start.y+perpendicular.y*offset,
-            x2:end.x+perpendicular.x*offset,y2:end.y+perpendicular.y*offset,class:"ion-lewis-bond"
+        const maxX = Math.max(...projected.map(point => Math.abs(point.x)), 0.5);
+        const maxY = Math.max(...projected.map(point => Math.abs(point.y)), 0.5);
+        const scale = Math.min(145 / maxX, 64 / maxY, 72);
+        const centerX = 260;
+        const centerY = 114;
+        const atomPoints = projected.map(point => ({ x: centerX + point.x * scale, y: centerY + point.y * scale }));
+
+        const bounds = atomPoints.reduce((result, point) => ({
+          left: Math.min(result.left, point.x),
+          right: Math.max(result.right, point.x),
+          top: Math.min(result.top, point.y),
+          bottom: Math.max(result.bottom, point.y)
+        }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
+
+        const bracketLeft = Math.max(26, bounds.left - 34);
+        const bracketRight = Math.min(494, bounds.right + 34);
+        const bracketTop = Math.max(25, bounds.top - 27);
+        const bracketBottom = Math.min(204, bounds.bottom + 27);
+
+        svg.append(
+          makeNode("path", {
+            d: `M ${bracketLeft + 10} ${bracketTop} H ${bracketLeft} V ${bracketBottom} H ${bracketLeft + 10}`,
+            class: "ion-lewis-bracket"
+          }),
+          makeNode("path", {
+            d: `M ${bracketRight - 10} ${bracketTop} H ${bracketRight} V ${bracketBottom} H ${bracketRight - 10}`,
+            class: "ion-lewis-bracket"
+          })
+        );
+
+        bonds.forEach(([first, second], bondIndex) => {
+          const start = atomPoints[first];
+          const end = atomPoints[second];
+          const dx = end.x - start.x;
+          const dy = end.y - start.y;
+          const length = Math.hypot(dx, dy) || 1;
+          const perpendicular = { x: -dy / length, y: dx / length };
+          const order = bondOrders[bondIndex];
+          const offsets = order === 1 ? [0] : order === 2 ? [-3, 3] : [-5, 0, 5];
+          offsets.forEach(offset => svg.append(makeNode("line", {
+            x1: start.x + perpendicular.x * offset,
+            y1: start.y + perpendicular.y * offset,
+            x2: end.x + perpendicular.x * offset,
+            y2: end.y + perpendicular.y * offset,
+            class: "ion-lewis-bond"
           })));
         });
-        atomSymbols.forEach((symbol,index)=>{
-          const point=atomPoints[index];
-          const connectedAngles=bonds.flatMap(([first,second])=>{
-            if(first!==index&&second!==index)return [];
-            const other=atomPoints[first===index?second:first];
-            return [Math.atan2(other.y-point.y,other.x-point.x)];
+
+        atomSymbols.forEach((symbol, index) => {
+          const point = atomPoints[index];
+          const connectedAngles = bonds.flatMap(([first, second]) => {
+            if (first !== index && second !== index) return [];
+            const other = atomPoints[first === index ? second : first];
+            return [Math.atan2(other.y - point.y, other.x - point.x)];
           });
-          const candidates=[-Math.PI/2,0,Math.PI/2,Math.PI,Math.PI/4,3*Math.PI/4,-Math.PI/4,-3*Math.PI/4]
-            .map(angle=>({angle,clearance:connectedAngles.length?Math.min(...connectedAngles.map(other=>Math.abs(Math.atan2(Math.sin(angle-other),Math.cos(angle-other))))):Math.PI}))
-            .sort((first,second)=>second.clearance-first.clearance);
-          for(let pair=0;pair<loneElectrons[index];pair++){
-            const angle=candidates[pair%candidates.length].angle;
-            const distance=16+Math.floor(pair/candidates.length)*7;
-            const cx=point.x+Math.cos(angle)*distance;
-            const cy=point.y+Math.sin(angle)*distance;
-            const tangentX=Math.cos(angle+Math.PI/2)*2.1;
-            const tangentY=Math.sin(angle+Math.PI/2)*2.1;
+
+          const candidates = [
+            -Math.PI / 2, 0, Math.PI / 2, Math.PI,
+            Math.PI / 4, 3 * Math.PI / 4, -Math.PI / 4, -3 * Math.PI / 4
+          ]
+            .map(angle => ({
+              angle,
+              clearance: connectedAngles.length
+                ? Math.min(...connectedAngles.map(other =>
+                    Math.abs(Math.atan2(Math.sin(angle - other), Math.cos(angle - other)))))
+                : Math.PI
+            }))
+            .sort((first, second) => second.clearance - first.clearance);
+
+          for (let pair = 0; pair < loneElectrons[index]; pair++) {
+            const angle = candidates[pair % candidates.length].angle;
+            const distance = 16 + Math.floor(pair / candidates.length) * 7;
+            const cx = point.x + Math.cos(angle) * distance;
+            const cy = point.y + Math.sin(angle) * distance;
+            const tangentX = Math.cos(angle + Math.PI / 2) * 2.1;
+            const tangentY = Math.sin(angle + Math.PI / 2) * 2.1;
             svg.append(
-              makeNode("circle",{cx:cx-tangentX,cy:cy-tangentY,r:1.75,class:"ion-lewis-dot"}),
-              makeNode("circle",{cx:cx+tangentX,cy:cy+tangentY,r:1.75,class:"ion-lewis-dot"})
+              makeNode("circle", { cx: cx - tangentX, cy: cy - tangentY, r: 1.75, class: "ion-lewis-dot" }),
+              makeNode("circle", { cx: cx + tangentX, cy: cy + tangentY, r: 1.75, class: "ion-lewis-dot" })
             );
           }
-          svg.append(makeNode("text",{x:point.x,y:point.y,class:"ion-lewis-atom"},symbol));
-        });
-        const chargeText=ion.charge===1?"+":ion.charge===-1?"−":`${Math.abs(ion.charge)}${ion.charge>0?"+":"−"}`;
-        svg.append(makeNode("text",{x:bracketRight+5,y:bracketTop+5,class:"ion-lewis-charge"},chargeText));
-        const stage=document.getElementById("ionLewisStage");
-        stage.replaceChildren(svg);
-        stage.setAttribute("aria-label",`${label} Lewis electron-dot diagram`);
-        document.getElementById("ionLewisFormula").textContent=ion.formula;
-      }
 
+          svg.append(makeNode("text", { x: point.x, y: point.y, class: "ion-lewis-atom" }, symbol));
+        });
+
+        const chargeText = ion.charge === 1 ? "+"
+          : ion.charge === -1 ? "−"
+          : `${Math.abs(ion.charge)}${ion.charge > 0 ? "+" : "−"}`;
+
+        svg.append(makeNode("text", { x: bracketRight + 5, y: bracketTop + 5, class: "ion-lewis-charge" }, chargeText));
+
+        const stage = document.getElementById("ionLewisStage");
+        stage.replaceChildren(svg);
+        stage.setAttribute("aria-label", `${label} Lewis electron-dot diagram`);
+        document.getElementById("ionLewisFormula").textContent = ion.formula;
+      }
       function createIonView(container) {
         const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
         renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
